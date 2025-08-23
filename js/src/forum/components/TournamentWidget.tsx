@@ -88,6 +88,14 @@ export default class TournamentWidget extends Component {
 
     return (
       <div className="TournamentWidget">
+        <div className="TournamentHeader">
+          <img 
+            className="TournamentHeader-image" 
+            src="https://i.mji.rip/2025/08/23/678aa40f68db12909bb4a4871d603876.webp" 
+            alt="Tournament"
+          />
+          <span className="TournamentHeader-title">锦标赛</span>
+        </div>
         <TournamentCard
           title={this.tournamentData.title}
           prizePool={this.tournamentData.prizePool}
