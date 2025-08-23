@@ -1,12 +1,20 @@
 wusong8899-tournament-widget:
   admin:
     settings:
+      title_label: 锦标赛标题
+      title_help: 在前端显示的锦标赛名称
+      prize_pool_label: 奖金池
+      prize_pool_help: 奖金池显示文本，例如: $12,500
       start_date_label: 锦标赛开始时间
       start_date_help: "格式: YYYY-MM-DDTHH:MM:SSZ (UTC时间), 例如: 2025-08-23T00:00:00Z"
       details_url_label: 锦标赛详情页链接
       details_url_help: 用户点击"详情"按钮时跳转的链接
       background_image_label: 锦标赛背景图片
       background_image_help: 锦标赛卡片的背景图片URL
+      initial_score_label: 初始积分
+      initial_score_help: 新参与者的默认积分值
+    permissions:
+      participate: 参加锦标赛
   
   forum:
     tournament:

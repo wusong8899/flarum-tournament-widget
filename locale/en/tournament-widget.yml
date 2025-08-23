@@ -1,12 +1,20 @@
 wusong8899-tournament-widget:
   admin:
     settings:
+      title_label: Tournament Title
+      title_help: Tournament name displayed on the frontend
+      prize_pool_label: Prize Pool
+      prize_pool_help: Prize pool display text, e.g. $12,500
       start_date_label: Tournament Start Date
       start_date_help: "Format: YYYY-MM-DDTHH:MM:SSZ (UTC time), example: 2025-08-23T00:00:00Z"
       details_url_label: Tournament Details URL
       details_url_help: Link that users will be redirected to when clicking "Details"
       background_image_label: Tournament Background Image
       background_image_help: Background image URL for the tournament card
+      initial_score_label: Initial Score
+      initial_score_help: Default score value for new participants
+    permissions:
+      participate: Participate in tournaments
   
   forum:
     tournament:

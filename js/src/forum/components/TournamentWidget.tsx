@@ -1,6 +1,7 @@
 import app from 'flarum/forum/app';
 import Component from 'flarum/common/Component';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
+import m from 'mithril';
 import TournamentCard from './TournamentCard';
 import Leaderboard from './Leaderboard';
 import { Vnode } from 'mithril';
@@ -46,7 +47,9 @@ export default class TournamentWidget extends Component {
   loading: boolean = true;
   tournamentData: ITournamentData | null = null;
   timerInterval: number | null = null;
+  animationFrame: number | null = null;
   timeElapsed = { days: '00', hours: '00', mins: '00', secs: '00' };
+  lastUpdateTime: number = 0;
 
   oninit(vnode: Vnode) {
     super.oninit(vnode);
@@ -62,6 +65,9 @@ export default class TournamentWidget extends Component {
     super.onremove(vnode);
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
+    }
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame);
     }
   }
 
@@ -102,14 +108,23 @@ export default class TournamentWidget extends Component {
     if (!this.tournamentData?.startDate) return;
     
     const startDate = new Date(this.tournamentData.startDate);
+    this.lastUpdateTime = Date.now();
     
-    this.timerInterval = setInterval(() => {
-      const diff = new Date().getTime() - startDate.getTime();
-      if (diff > 0) {
-        this.timeElapsed = formatDuration(diff);
-        m.redraw();
+    const updateTimer = () => {
+      const now = Date.now();
+      // Only update every second, not on every frame
+      if (now - this.lastUpdateTime >= 1000) {
+        const diff = now - startDate.getTime();
+        if (diff > 0) {
+          this.timeElapsed = formatDuration(diff);
+          this.lastUpdateTime = now;
+          m.redraw();
+        }
       }
-    }, 1000) as unknown as number;
+      this.animationFrame = requestAnimationFrame(updateTimer);
+    };
+    
+    this.animationFrame = requestAnimationFrame(updateTimer);
   }
 
   loadData() {

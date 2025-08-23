@@ -25,7 +25,7 @@ class ParticipantSerializer extends AbstractSerializer
         ];
     }
 
-    protected function user($participant)
+    protected function user(Participant $participant): ?\Tobscure\JsonApi\Relationship
     {
         return $this->hasOne($participant, UserSerializer::class);
     }

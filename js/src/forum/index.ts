@@ -1,5 +1,6 @@
 import app from 'flarum/forum/app';
 import { extend } from 'flarum/common/extend';
+import m from 'mithril';
 import TournamentWidget from './components/TournamentWidget';
 import TagsPage from 'flarum/tags/forum/components/TagsPage';
 

@@ -31,9 +31,15 @@
         }
     },
     "scripts": {
-        "analyse:phpstan": "phpstan analyse --memory-limit=512M",
+        "analyse:phpstan": "phpstan analyse --memory-limit=2G",
         "clear-cache:phpstan": "phpstan clear-result-cache",
-        "test": "phpunit"
+        "test": [
+            "@test:unit",
+            "@test:integration"
+        ],
+        "test:unit": "phpunit -c tests/phpunit.unit.xml",
+        "test:integration": "phpunit -c tests/phpunit.integration.xml",
+        "test:setup": "@php tests/integration/setup.php"
     },
     "extra": {
         "flarum-extension": {
@@ -44,6 +50,24 @@
                 "color": "#FFD700",
                 "backgroundColor": "#2a2a3e"
             }
+        },
+        "flarum-cli": {
+            "modules": {
+                "phpstan": true,
+                "backendTesting": true
+            }
+        }
+    },
+    "scripts-descriptions": {
+        "analyse:phpstan": "Run static analysis",
+        "test": "Runs all tests.",
+        "test:unit": "Runs all unit tests.",
+        "test:integration": "Runs all integration tests.",
+        "test:setup": "Sets up a database for use with integration tests. Execute this only once."
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "wusong8899\\TournamentWidget\\Tests\\": "tests/"
         }
     }
 }

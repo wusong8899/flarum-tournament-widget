@@ -24,44 +24,10 @@ class ShowTournamentController extends AbstractShowController
     {
         $actor = RequestUtil::getActor($request);
         
-        $participants = Participant::with('user')
-            ->orderBy('score', 'desc')
-            ->orderBy('created_at', 'asc')
-            ->get();
-
-        $userParticipation = null;
-        if ($actor && !$actor->isGuest()) {
-            $userParticipation = $participants->firstWhere('user_id', $actor->id);
-        }
-
-        $participantsData = $participants->map(function ($participant) {
-            return [
-                'id' => $participant->id,
-                'platformAccount' => $participant->platform_account,
-                'score' => $participant->score,
-                'createdAt' => $participant->created_at->toISOString(),
-                'user' => [
-                    'id' => $participant->user_id,
-                    'username' => $participant->user->username,
-                    'displayName' => $participant->user->display_name,
-                    'avatarUrl' => $participant->user->avatar_url,
-                ]
-            ];
-        })->values()->all();
-
+        // Pass the data needed by the serializer
         return [
-            'type' => 'tournament',
-            'id' => '1',
-            'attributes' => [
-                'title' => 'K8 无双积分王',
-                'prizePool' => '$12,500',
-                'startDate' => $this->settings->get('wusong8899_tournament.start_date', '2025-08-23T00:00:00Z'),
-                'detailsUrl' => $this->settings->get('wusong8899_tournament.details_url', '#'),
-                'backgroundImage' => $this->settings->get('wusong8899_tournament.background_image', 'https://via.placeholder.com/400x200'),
-                'userParticipated' => $userParticipation !== null,
-                'totalParticipants' => $participants->count(),
-                'participants' => $participantsData,
-            ]
+            'actor' => $actor,
+            'settings' => $this->settings
         ];
     }
 }

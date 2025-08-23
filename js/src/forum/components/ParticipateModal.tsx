@@ -1,9 +1,14 @@
 import app from 'flarum/forum/app';
 import Modal from 'flarum/common/components/Modal';
 import Button from 'flarum/common/components/Button';
+import m from 'mithril';
 import { Vnode } from 'mithril';
 
-export default class ParticipateModal extends Modal {
+interface ParticipateModalAttrs {
+  onParticipate?: () => void;
+}
+
+export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
   platformAccount: string = '';
   loading: boolean = false;
 
@@ -12,7 +17,7 @@ export default class ParticipateModal extends Modal {
   }
 
   title() {
-    return '参加活动';
+    return app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.title');
   }
 
   content() {
@@ -20,11 +25,11 @@ export default class ParticipateModal extends Modal {
       <div className="Modal-body">
         <div className="Form">
           <div className="Form-group">
-            <label className="FormLabel">平台账号</label>
+            <label className="FormLabel">{app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.platform_account_label')}</label>
             <input
               className="FormControl"
               type="text"
-              placeholder="请输入您的平台账号"
+              placeholder={app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.platform_account_placeholder')}
               value={this.platformAccount}
               oninput={(e: Event) => {
                 this.platformAccount = (e.target as HTMLInputElement).value;
@@ -39,7 +44,7 @@ export default class ParticipateModal extends Modal {
               disabled={!this.platformAccount.trim()}
               onclick={this.onsubmit.bind(this)}
             >
-              提交
+              {app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.submit')}
             </Button>
           </div>
         </div>
@@ -69,13 +74,13 @@ export default class ParticipateModal extends Modal {
     }).then(
       () => {
         this.hide();
-        app.alerts.show('success', '参加成功！');
+        app.alerts.show('success', app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.success'));
         // Trigger a refresh of the tournament widget
-        m.redraw();
+        this.attrs.onParticipate?.();
       },
       (error) => {
         this.loading = false;
-        const errorMessage = error?.response?.errors?.[0]?.detail || '参加失败，请重试';
+        const errorMessage = error?.response?.errors?.[0]?.detail || app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.error');
         app.alerts.show('error', errorMessage);
       }
     );

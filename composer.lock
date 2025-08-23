@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b14a72e4a0c1ba1cd1a3a2b8843ff467",
+    "content-hash": "0560020dcf4110f5b0f6bdafb56a340e",
     "packages": [
         {
             "name": "antoinefr/flarum-ext-money",

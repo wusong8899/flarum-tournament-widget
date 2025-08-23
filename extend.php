@@ -5,6 +5,7 @@ namespace wusong8899\TournamentWidget;
 use Flarum\Extend;
 use Flarum\Api\Serializer\ForumSerializer;
 use wusong8899\TournamentWidget\Api\Controller;
+use wusong8899\TournamentWidget\Middleware\RateLimitMiddleware;
 
 return [
     (new Extend\Frontend('forum'))
@@ -16,7 +17,11 @@ return [
 
     (new Extend\Routes('api'))
         ->get('/tournament', 'tournament.show', Controller\ShowTournamentController::class)
-        ->post('/tournament/participate', 'tournament.participate', Controller\ParticipateController::class),
+        ->post('/tournament/participate', 'tournament.participate', Controller\ParticipateController::class)
+        ->patch('/tournament/participant/{id}', 'tournament.update_score', Controller\UpdateScoreController::class),
+
+    (new Extend\Middleware('api'))
+        ->add(RateLimitMiddleware::class),
 
 
     (new Extend\ApiSerializer(ForumSerializer::class))

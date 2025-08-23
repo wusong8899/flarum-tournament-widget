@@ -1,3 +1,4 @@
+import app from 'flarum/forum/app';
 import Component from 'flarum/common/Component';
 import Button from 'flarum/common/components/Button';
 import { Vnode } from 'mithril';
@@ -29,8 +30,8 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
     return (
       <div className="Leaderboard">
         <div className="Leaderboard-header">
-          <h3>排行榜</h3>
-          <h4>积分</h4>
+          <h3>{app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.title')}</h3>
+          <h4>{app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.points')}</h4>
         </div>
         <ul className="Leaderboard-list">
           {rankingsToShow.length > 0 ? (
@@ -49,7 +50,7 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
               </li>
             ))
           ) : (
-            <div className="Leaderboard-empty">暂无参与者</div>
+            <div className="Leaderboard-empty">{app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.no_participants')}</div>
           )}
         </ul>
         {!this.showAll && participants.length > 5 && (
@@ -59,7 +60,7 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
               this.showAll = true; 
             }}
           >
-            详情 (查看全部 {participants.length} 名)
+            {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.view_all', { count: participants.length })}
           </Button>
         )}
         {this.showAll && participants.length > 5 && (
@@ -69,7 +70,7 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
               this.showAll = false; 
             }}
           >
-            收起
+            {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.collapse')}
           </Button>
         )}
       </div>
