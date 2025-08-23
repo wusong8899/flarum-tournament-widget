@@ -1,0 +1,22 @@
+{
+  "name": "@wusong8899/flarum-tournament-widget",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --mode development --watch --config vite.config.admin.mts",
+    "dev:forum": "vite build --mode development --watch --config vite.config.forum.mts",
+    "build": "vite build --config vite.config.admin.mts && vite build --config vite.config.forum.mts",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix"
+  },
+  "devDependencies": {
+    "@types/mithril": "^2.0.0",
+    "flarum-tsconfig": "^1.0.0",
+    "flarum-webpack-config": "^2.0.0",
+    "oxlint": "latest",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0",
+    "vite-plugin-oxlint": "^1.0.0"
+  }
+}

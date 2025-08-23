@@ -1,0 +1,16 @@
+{
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "globals": {
+    "m": "readonly",
+    "dayjs": "readonly",
+    "app": "readonly",
+    "flarum": "readonly"
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn"
+  }
+}

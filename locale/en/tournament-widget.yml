@@ -1,0 +1,36 @@
+wusong8899-tournament-widget:
+  admin:
+    settings:
+      start_date_label: Tournament Start Date
+      start_date_help: "Format: YYYY-MM-DDTHH:MM:SSZ (UTC time), example: 2025-08-23T00:00:00Z"
+      details_url_label: Tournament Details URL
+      details_url_help: Link that users will be redirected to when clicking "Details"
+      background_image_label: Tournament Background Image
+      background_image_help: Background image URL for the tournament card
+  
+  forum:
+    tournament:
+      title: "K8 Unmatched Points King"
+      prize_pool: Prize Pool
+      started_at: Started At
+      participate_now: Participate Now
+      participated: Participated
+      login_to_participate: Login to Participate
+      details: Details
+      
+    leaderboard:
+      title: Leaderboard
+      points: Points
+      no_participants: No participants yet
+      view_all: "Details (View all {count} participants)"
+      collapse: Collapse
+      
+    participate_modal:
+      title: Join Tournament
+      platform_account_label: Platform Account
+      platform_account_placeholder: Please enter your platform account
+      submit: Submit
+      success: Successfully joined!
+      error: Failed to join, please try again
+      already_participated: You have already participated in this tournament
+      account_required: Platform account is required

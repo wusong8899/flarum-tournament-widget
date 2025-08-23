@@ -1,0 +1,48 @@
+{
+    "name": "wusong8899/flarum-tournament-widget",
+    "description": "Dynamic tournament widget with leaderboard and participation system",
+    "type": "flarum-extension",
+    "license": "MIT",
+    "keywords": [
+        "flarum",
+        "extension",
+        "tournament",
+        "widget",
+        "leaderboard"
+    ],
+    "authors": [
+        {
+            "name": "wusong8899",
+            "email": "your-email@example.com"
+        }
+    ],
+    "require": {
+        "flarum/core": "^1.8",
+        "antoinefr/flarum-ext-money": "*"
+    },
+    "require-dev": {
+        "flarum/testing": "^1.0",
+        "flarum/phpstan": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "wusong8899\\TournamentWidget\\": "src/"
+        }
+    },
+    "scripts": {
+        "analyse:phpstan": "phpstan analyse --memory-limit=512M",
+        "clear-cache:phpstan": "phpstan clear-result-cache",
+        "test": "phpunit"
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Tournament Widget",
+            "category": "feature",
+            "icon": {
+                "name": "fas fa-trophy",
+                "color": "#FFD700",
+                "backgroundColor": "#2a2a3e"
+            }
+        }
+    }
+}
