@@ -26,7 +26,7 @@ class TournamentSerializer extends AbstractSerializer
         $rankTitles = json_decode($settings->get('wusong8899_tournament.rank_titles', '{}'), true);
         $defaultTitles = [
             1 => '冠军',
-            2 => '亚军', 
+            2 => '亚军',
             3 => '季军',
             '4-10' => '优秀选手',
             'default' => '参赛选手'
@@ -35,7 +35,7 @@ class TournamentSerializer extends AbstractSerializer
 
         $participantsData = $participants->map(function ($participant, $index) use ($rankTitles) {
             $rank = $index + 1;
-            
+
             // Determine rank title
             $title = $rankTitles['default'];
             if (isset($rankTitles[$rank])) {

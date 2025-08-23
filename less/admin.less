@@ -1,0 +1,308 @@
+.TournamentManagementPage {
+  .TournamentManagementPage-header {
+    margin-bottom: 30px;
+    
+    h2 {
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+    
+    .helpText {
+      color: var(--muted-color);
+      font-size: 14px;
+    }
+  }
+
+  .TournamentManagementPage-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--control-bg);
+    
+    .TournamentManagementPage-tab {
+      padding: 12px 24px;
+      border: none;
+      border-bottom: 3px solid transparent;
+      background: transparent;
+      color: var(--muted-color);
+      font-weight: 500;
+      transition: all 0.2s;
+      
+      &:hover {
+        color: var(--primary-color);
+        background: var(--control-bg);
+      }
+      
+      &.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
+        background: var(--control-bg);
+      }
+    }
+  }
+
+  .TournamentManagementPage-content {
+    .TournamentManagementPage-generalSettings {
+      .Form {
+        max-width: 600px;
+      }
+    }
+  }
+}
+
+.RankTitleManagement {
+  .RankTitleManagement-header {
+    margin-bottom: 20px;
+    
+    h3 {
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+  }
+
+  .RankTitleManagement-list {
+    border: 1px solid var(--control-bg);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
+
+    .RankTitleManagement-listHeader {
+      display: grid;
+      grid-template-columns: 150px 1fr 100px;
+      gap: 15px;
+      padding: 15px;
+      background: var(--control-bg);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .RankTitleManagement-entry {
+      display: grid;
+      grid-template-columns: 150px 1fr 100px;
+      gap: 15px;
+      padding: 15px;
+      border-bottom: 1px solid var(--control-bg);
+      align-items: center;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .rank-column input {
+        width: 100%;
+      }
+
+      .title-column input {
+        width: 100%;
+      }
+
+      .actions-column {
+        text-align: center;
+      }
+    }
+  }
+
+  .RankTitleManagement-actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+
+  .RankTitleManagement-preview {
+    border: 1px solid var(--control-bg);
+    border-radius: 6px;
+    padding: 20px;
+    background: var(--body-bg);
+
+    h4 {
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+
+    .preview-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .preview-item {
+      display: flex;
+      gap: 15px;
+      padding: 8px 0;
+      align-items: center;
+
+      .preview-rank {
+        font-weight: 600;
+        color: var(--primary-color);
+        min-width: 40px;
+      }
+
+      .preview-title {
+        color: var(--text-color);
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.PlatformManagement {
+  .PlatformManagement-header {
+    margin-bottom: 20px;
+    
+    h3 {
+      color: var(--primary-color);
+    }
+  }
+
+  .PlatformManagement-addForm {
+    border: 1px solid var(--control-bg);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 30px;
+    background: var(--body-bg);
+
+    h4 {
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+
+    .Form-group {
+      margin-bottom: 15px;
+      
+      .FormLabel {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+
+      .FormControl {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+  }
+
+  .PlatformManagement-list {
+    h4 {
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+
+    .PlatformList {
+      border: 1px solid var(--control-bg);
+      border-radius: 6px;
+      overflow: hidden;
+
+      .PlatformList-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        border-bottom: 1px solid var(--control-bg);
+        
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .platform-info {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          flex: 1;
+
+          .platform-icon {
+            .platform-icon-img {
+              width: 32px;
+              height: 32px;
+              object-fit: contain;
+              border-radius: 4px;
+            }
+
+            .platform-icon-css {
+              font-size: 24px;
+              color: var(--primary-color);
+              width: 32px;
+              text-align: center;
+            }
+          }
+
+          .platform-details {
+            .platform-name {
+              font-weight: 600;
+              margin-bottom: 4px;
+            }
+
+            .platform-meta {
+              display: flex;
+              gap: 15px;
+              font-size: 12px;
+              color: var(--muted-color);
+
+              .meta-item {
+                background: var(--control-bg);
+                padding: 2px 6px;
+                border-radius: 3px;
+              }
+            }
+          }
+        }
+
+        .platform-controls {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+        }
+      }
+    }
+
+    .PlatformList-empty {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted-color);
+      border: 1px solid var(--control-bg);
+      border-radius: 6px;
+    }
+  }
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+  .TournamentManagementPage {
+    .TournamentManagementPage-tabs {
+      flex-direction: column;
+      
+      .TournamentManagementPage-tab {
+        border-bottom: 1px solid var(--control-bg);
+        border-right: 3px solid transparent;
+        
+        &.active {
+          border-bottom-color: var(--control-bg);
+          border-right-color: var(--primary-color);
+        }
+      }
+    }
+  }
+
+  .RankTitleManagement {
+    .RankTitleManagement-list {
+      .RankTitleManagement-listHeader,
+      .RankTitleManagement-entry {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+    }
+  }
+
+  .PlatformManagement {
+    .PlatformManagement-list {
+      .PlatformList-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+
+        .platform-controls {
+          align-self: flex-end;
+        }
+      }
+    }
+  }
+}

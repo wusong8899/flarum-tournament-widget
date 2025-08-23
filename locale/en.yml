@@ -1,5 +1,8 @@
 wusong8899-tournament-widget:
   admin:
+    title: Tournament Management
+    description: Manage tournament settings, platforms, and rank titles
+    
     settings:
       title_label: Tournament Title
       title_help: Tournament name displayed on the frontend
@@ -34,9 +37,11 @@ wusong8899-tournament-widget:
       title: Rank Title Management
       rank_label: Rank
       title_label: Title
+      title_placeholder: Enter title name
       add_rank: Add Rank
       save_button: Save All Titles
       help: Set titles for different ranks, supports ranges (e.g. 4-10)
+      preview_title: Preview
       
     permissions:
       participate: Participate in tournaments

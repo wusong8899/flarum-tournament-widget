@@ -13,7 +13,8 @@ return [
         ->css(__DIR__.'/less/forum.less'),
         
     (new Extend\Frontend('admin'))
-        ->js(__DIR__.'/js/dist/admin.js'),
+        ->js(__DIR__.'/js/dist/admin.js')
+        ->css(__DIR__.'/less/admin.less'),
 
     (new Extend\Routes('api'))
         ->get('/tournament', 'tournament.show', Controller\ShowTournamentController::class)
@@ -21,7 +22,9 @@ return [
         ->get('/tournament/platforms', 'tournament.platforms.list', Controller\ListPlatformsController::class)
         ->post('/tournament/platforms', 'tournament.platforms.create', Controller\CreatePlatformController::class)
         ->patch('/tournament/platforms/{id}', 'tournament.platforms.update', Controller\UpdatePlatformController::class)
-        ->delete('/tournament/platforms/{id}', 'tournament.platforms.delete', Controller\DeletePlatformController::class),
+        ->delete('/tournament/platforms/{id}', 'tournament.platforms.delete', Controller\DeletePlatformController::class)
+        ->get('/tournament/rank-titles', 'tournament.rank-titles.list', Controller\ListRankTitlesController::class)
+        ->post('/tournament/rank-titles', 'tournament.rank-titles.update', Controller\UpdateRankTitlesController::class),
 
     (new Extend\Middleware('api'))
         ->add(RateLimitMiddleware::class),

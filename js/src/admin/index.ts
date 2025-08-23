@@ -1,41 +1,18 @@
 import app from 'flarum/admin/app';
+import TournamentManagementPage from './components/TournamentManagementPage';
 
 app.initializers.add('wusong8899-tournament-widget', () => {
   app.extensionData
     .for('wusong8899-tournament-widget')
-    .registerSetting({
-      setting: 'wusong8899_tournament.title',
-      type: 'text',
-      label: app.translator.trans('wusong8899-tournament-widget.admin.settings.title_label'),
-      help: app.translator.trans('wusong8899-tournament-widget.admin.settings.title_help'),
-    })
-    .registerSetting({
-      setting: 'wusong8899_tournament.prize_pool',
-      type: 'text',
-      label: app.translator.trans('wusong8899-tournament-widget.admin.settings.prize_pool_label'),
-      help: app.translator.trans('wusong8899-tournament-widget.admin.settings.prize_pool_help'),
-    })
-    .registerSetting({
-      setting: 'wusong8899_tournament.start_date',
-      type: 'text',
-      label: app.translator.trans('wusong8899-tournament-widget.admin.settings.start_date_label'),
-      help: app.translator.trans('wusong8899-tournament-widget.admin.settings.start_date_help'),
-    })
-    .registerSetting({
-      setting: 'wusong8899_tournament.details_url',
-      type: 'url',
-      label: app.translator.trans('wusong8899-tournament-widget.admin.settings.details_url_label'),
-      help: app.translator.trans('wusong8899-tournament-widget.admin.settings.details_url_help'),
-    })
-    .registerSetting({
-      setting: 'wusong8899_tournament.background_image',
-      type: 'url',
-      label: app.translator.trans('wusong8899-tournament-widget.admin.settings.background_image_label'),
-      help: app.translator.trans('wusong8899-tournament-widget.admin.settings.background_image_help'),
-    })
+    .registerPage(TournamentManagementPage)
     .registerPermission({
       icon: 'fas fa-trophy',
       label: app.translator.trans('wusong8899-tournament-widget.admin.permissions.participate'),
       permission: 'tournament.participate',
-    }, 'start');
+    }, 'start')
+    .registerPermission({
+      icon: 'fas fa-cog',
+      label: app.translator.trans('wusong8899-tournament-widget.admin.permissions.manage_platforms'),
+      permission: 'tournament.managePlatforms',
+    }, 'moderate');
 });

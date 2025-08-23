@@ -1,5 +1,8 @@
 wusong8899-tournament-widget:
   admin:
+    title: 锦标赛管理
+    description: 管理锦标赛设置、平台和排名称号
+    
     settings:
       title_label: 锦标赛标题
       title_help: 在前端显示的锦标赛名称
@@ -34,9 +37,11 @@ wusong8899-tournament-widget:
       title: 排名称号管理
       rank_label: 排名
       title_label: 称号
+      title_placeholder: 输入称号名称
       add_rank: 添加排名
       save_button: 保存所有称号
       help: 设置不同排名的称号，支持范围设置（如4-10）
+      preview_title: 预览效果
       
     permissions:
       participate: 参加锦标赛
