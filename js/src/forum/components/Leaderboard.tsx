@@ -6,7 +6,7 @@ import { Vnode } from 'mithril';
 interface IParticipant {
   id: string;
   platformAccount: string;
-  score: number;
+  money: number;
   createdAt: string;
   user: {
     id: string;
@@ -43,10 +43,10 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
                 <span className="Leaderboard-user">
                   <div className="username">{participant.user.displayName}</div>
                   <div className="prize">
-                    <i className="fas fa-gem"></i> {participant.score}
+                    <i className="fas fa-gem"></i> {participant.money}
                   </div>
                 </span>
-                <span className="Leaderboard-score">{participant.score}</span>
+                <span className="Leaderboard-score">{participant.money}</span>
               </li>
             ))
           ) : (

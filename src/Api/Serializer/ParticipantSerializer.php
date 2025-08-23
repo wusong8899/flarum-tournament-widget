@@ -19,7 +19,7 @@ class ParticipantSerializer extends AbstractSerializer
         return [
             'id' => $participant->id,
             'platformAccount' => $participant->platform_account,
-            'score' => $participant->score,
+            'money' => $participant->user !== null ? (int) $participant->user->getAttribute('money') : 0,
             'createdAt' => $this->formatDate($participant->created_at),
             'updatedAt' => $this->formatDate($participant->updated_at),
         ];

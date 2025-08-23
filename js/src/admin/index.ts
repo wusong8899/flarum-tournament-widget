@@ -33,12 +33,6 @@ app.initializers.add('wusong8899-tournament-widget', () => {
       label: app.translator.trans('wusong8899-tournament-widget.admin.settings.background_image_label'),
       help: app.translator.trans('wusong8899-tournament-widget.admin.settings.background_image_help'),
     })
-    .registerSetting({
-      setting: 'wusong8899_tournament.initial_score',
-      type: 'number',
-      label: app.translator.trans('wusong8899-tournament-widget.admin.settings.initial_score_label'),
-      help: app.translator.trans('wusong8899-tournament-widget.admin.settings.initial_score_help'),
-    })
     .registerPermission({
       icon: 'fas fa-trophy',
       label: app.translator.trans('wusong8899-tournament-widget.admin.permissions.participate'),

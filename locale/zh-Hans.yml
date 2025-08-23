@@ -11,8 +11,6 @@ wusong8899-tournament-widget:
       details_url_help: 用户点击"详情"按钮时跳转的链接
       background_image_label: 锦标赛背景图片
       background_image_help: 锦标赛卡片的背景图片URL
-      initial_score_label: 初始积分
-      initial_score_help: 新参与者的默认积分值
     permissions:
       participate: 参加锦标赛
 
@@ -28,7 +26,7 @@ wusong8899-tournament-widget:
 
     leaderboard:
       title: 排行榜
-      points: 积分
+      points: 金币
       no_participants: 暂无参与者
       view_all: "详情 (查看全部 {count} 名)"
       collapse: 收起

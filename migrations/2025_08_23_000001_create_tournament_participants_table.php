@@ -10,11 +10,10 @@ return [
                 $table->increments('id');
                 $table->unsignedInteger('user_id')->unique();
                 $table->string('platform_account');
-                $table->integer('score')->default(0);
                 $table->timestamps();
 
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-                $table->index(['score', 'created_at']);
+                $table->index('created_at');
             });
         }
     },

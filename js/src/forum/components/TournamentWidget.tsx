@@ -9,7 +9,7 @@ import { Vnode } from 'mithril';
 interface IParticipant {
   id: string;
   platformAccount: string;
-  score: number;
+  money: number;
   createdAt: string;
   user: {
     id: string;

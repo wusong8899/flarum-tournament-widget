@@ -19,7 +19,7 @@ class Participant extends AbstractModel
 {
     protected $table = 'ziven_tournament_participants';
     
-    protected $fillable = ['user_id', 'platform_account', 'score'];
+    protected $fillable = ['user_id', 'platform_account'];
     
     protected $dates = ['created_at', 'updated_at'];
 

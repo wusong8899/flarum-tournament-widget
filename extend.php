@@ -17,8 +17,7 @@ return [
 
     (new Extend\Routes('api'))
         ->get('/tournament', 'tournament.show', Controller\ShowTournamentController::class)
-        ->post('/tournament/participate', 'tournament.participate', Controller\ParticipateController::class)
-        ->patch('/tournament/participant/{id}', 'tournament.update_score', Controller\UpdateScoreController::class),
+        ->post('/tournament/participate', 'tournament.participate', Controller\ParticipateController::class),
 
     (new Extend\Middleware('api'))
         ->add(RateLimitMiddleware::class),

@@ -11,8 +11,6 @@ wusong8899-tournament-widget:
       details_url_help: Link that users will be redirected to when clicking "Details"
       background_image_label: Tournament Background Image
       background_image_help: Background image URL for the tournament card
-      initial_score_label: Initial Score
-      initial_score_help: Default score value for new participants
     permissions:
       participate: Participate in tournaments
   
@@ -28,7 +26,7 @@ wusong8899-tournament-widget:
       
     leaderboard:
       title: Leaderboard
-      points: Points
+      points: Money
       no_participants: No participants yet
       view_all: "Details (View all {count} participants)"
       collapse: Collapse

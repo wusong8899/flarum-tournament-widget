@@ -16,15 +16,17 @@ class TournamentSerializer extends AbstractSerializer
         $settings = $data->settings ?? resolve(SettingsRepositoryInterface::class);
 
         $participants = Participant::with('user')
-            ->orderBy('score', 'desc')
-            ->orderBy('created_at', 'asc')
+            ->join('users', 'ziven_tournament_participants.user_id', '=', 'users.id')
+            ->orderBy('users.money', 'desc')
+            ->orderBy('ziven_tournament_participants.created_at', 'asc')
+            ->select('ziven_tournament_participants.*')
             ->get();
 
         $participantsData = $participants->map(function ($participant) {
             return [
                 'id' => $participant->id,
                 'platformAccount' => $participant->platform_account,
-                'score' => $participant->score,
+                'money' => $participant->user !== null ? (int) $participant->user->getAttribute('money') : 0,
                 'createdAt' => $participant->created_at !== null ? $participant->created_at->toISOString() : null,
                 'user' => $participant->user !== null ? [
                     'id' => $participant->user_id,

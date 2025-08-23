@@ -3,16 +3,11 @@
 namespace wusong8899\TournamentWidget\Command;
 
 use Flarum\Foundation\ValidationException;
-use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Support\Str;
 use wusong8899\TournamentWidget\Model\Participant;
 
 class ParticipateHandler
 {
-    public function __construct(
-        private SettingsRepositoryInterface $settings
-    ) {
-    }
 
     public function handle(Participate $command): Participant
     {
@@ -62,7 +57,6 @@ class ParticipateHandler
         $participant = new Participant();
         $participant->user_id = $actor->id;
         $participant->platform_account = $platformAccount;
-        $participant->score = (int) $this->settings->get('wusong8899_tournament.initial_score', 0);
         $participant->save();
 
         return $participant;
