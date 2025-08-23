@@ -1,8 +1,8 @@
 import app from 'flarum/admin/app';
 
-app.initializers.add('wusong8899-tournament-widget-admin', () => {
+app.initializers.add('wusong8899-tournament-widget', () => {
   app.extensionData
-    .for('wusong8899-flarum-tournament-widget')
+    .for('wusong8899-tournament-widget')
     .registerSetting({
       setting: 'wusong8899_tournament.title',
       type: 'text',
