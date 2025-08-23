@@ -24,10 +24,12 @@ class ShowTournamentController extends AbstractShowController
     {
         $actor = RequestUtil::getActor($request);
         
-        // Pass the data needed by the serializer
-        return [
-            'actor' => $actor,
-            'settings' => $this->settings
-        ];
+        // Create an object with id for JSON API serialization
+        $tournamentData = new \stdClass();
+        $tournamentData->id = 'tournament';
+        $tournamentData->actor = $actor;
+        $tournamentData->settings = $this->settings;
+        
+        return $tournamentData;
     }
 }

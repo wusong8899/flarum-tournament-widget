@@ -12,8 +12,8 @@ class TournamentSerializer extends AbstractSerializer
 
     protected function getDefaultAttributes($data)
     {
-        $actor = $data['actor'] ?? null;
-        $settings = $data['settings'] ?? resolve(SettingsRepositoryInterface::class);
+        $actor = $data->actor ?? null;
+        $settings = $data->settings ?? resolve(SettingsRepositoryInterface::class);
         
         $participants = Participant::with('user')
             ->orderBy('score', 'desc')
