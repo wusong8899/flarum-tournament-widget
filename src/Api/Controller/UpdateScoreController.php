@@ -24,7 +24,7 @@ class UpdateScoreController extends AbstractShowController
     {
         $actor = RequestUtil::getActor($request);
         $attributes = Arr::get($request->getParsedBody(), 'data.attributes', []);
-        
+
         $participantId = (int) Arr::get($request->getQueryParams(), 'id');
         $newScore = (int) Arr::get($attributes, 'score');
 

@@ -14,7 +14,7 @@ class TournamentSerializer extends AbstractSerializer
     {
         $actor = $data->actor ?? null;
         $settings = $data->settings ?? resolve(SettingsRepositoryInterface::class);
-        
+
         $participants = Participant::with('user')
             ->orderBy('score', 'desc')
             ->orderBy('created_at', 'asc')
@@ -25,12 +25,17 @@ class TournamentSerializer extends AbstractSerializer
                 'id' => $participant->id,
                 'platformAccount' => $participant->platform_account,
                 'score' => $participant->score,
-                'createdAt' => $participant->created_at->toISOString(),
-                'user' => [
+                'createdAt' => $participant->created_at !== null ? $participant->created_at->toISOString() : null,
+                'user' => $participant->user !== null ? [
                     'id' => $participant->user_id,
                     'username' => $participant->user->username,
                     'displayName' => $participant->user->display_name,
                     'avatarUrl' => $participant->user->avatar_url,
+                ] : [
+                    'id' => $participant->user_id,
+                    'username' => 'Deleted User',
+                    'displayName' => 'Deleted User',
+                    'avatarUrl' => null,
                 ]
             ];
         })->values()->all();

@@ -23,13 +23,13 @@ class ShowTournamentController extends AbstractShowController
     protected function data(ServerRequestInterface $request, Document $document)
     {
         $actor = RequestUtil::getActor($request);
-        
+
         // Create an object with id for JSON API serialization
         $tournamentData = new \stdClass();
         $tournamentData->id = 'tournament';
         $tournamentData->actor = $actor;
         $tournamentData->settings = $this->settings;
-        
+
         return $tournamentData;
     }
 }
