@@ -5,8 +5,6 @@ namespace wusong8899\TournamentWidget;
 use Flarum\Extend;
 use Flarum\Api\Serializer\ForumSerializer;
 use wusong8899\TournamentWidget\Api\Controller;
-use wusong8899\TournamentWidget\Command\Participate;
-use wusong8899\TournamentWidget\Command\ParticipateHandler;
 
 return [
     (new Extend\Frontend('forum'))
@@ -20,8 +18,6 @@ return [
         ->get('/tournament', 'tournament.show', Controller\ShowTournamentController::class)
         ->post('/tournament/participate', 'tournament.participate', Controller\ParticipateController::class),
 
-    (new Extend\Bus())
-        ->command(Participate::class, ParticipateHandler::class),
 
     (new Extend\ApiSerializer(ForumSerializer::class))
         ->attributes(function () {
