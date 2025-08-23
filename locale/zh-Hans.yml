@@ -55,7 +55,7 @@ wusong8899-tournament-widget:
     leaderboard:
       title: 排行榜
       rank: 排行
-      title: 称号
+      rank_title: 称号
       user: 用户
       platform: 平台
       money: 金币

@@ -46,7 +46,7 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
               {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.rank')}
             </div>
             <div className="Leaderboard-headerCell title">
-              {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.title')}
+              {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.rank_title')}
             </div>
             <div className="Leaderboard-headerCell user">
               {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.user')}

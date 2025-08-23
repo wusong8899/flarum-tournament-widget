@@ -55,7 +55,7 @@ wusong8899-tournament-widget:
     leaderboard:
       title: Leaderboard
       rank: Rank
-      title: Title
+      rank_title: Title
       user: User
       platform: Platform
       money: Money
