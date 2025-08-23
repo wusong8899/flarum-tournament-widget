@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Platform extends AbstractModel
 {
-    protected $table = 'ziven_tournament_platforms';
+    protected $table = 'wusong8899_tournament_platforms';
     
     protected $fillable = [
         'name',

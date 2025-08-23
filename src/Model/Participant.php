@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Participant extends AbstractModel
 {
-    protected $table = 'ziven_tournament_participants';
+    protected $table = 'wusong8899_tournament_participants';
     
     protected $fillable = [
         'user_id', 

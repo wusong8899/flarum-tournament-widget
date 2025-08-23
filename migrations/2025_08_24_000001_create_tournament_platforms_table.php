@@ -5,8 +5,8 @@ use Illuminate\Database\Schema\Builder;
 
 return [
     'up' => function (Builder $schema) {
-        if (!$schema->hasTable('ziven_tournament_platforms')) {
-            $schema->create('ziven_tournament_platforms', function (Blueprint $table) {
+        if (!$schema->hasTable('wusong8899_tournament_platforms')) {
+            $schema->create('wusong8899_tournament_platforms', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name');
                 $table->string('icon_url')->nullable();
@@ -20,6 +20,6 @@ return [
         }
     },
     'down' => function (Builder $schema) {
-        $schema->dropIfExists('ziven_tournament_platforms');
+        $schema->dropIfExists('wusong8899_tournament_platforms');
     },
 ];
