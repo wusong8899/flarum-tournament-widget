@@ -139,29 +139,44 @@ export default class ParticipantManagement extends Component {
     try {
       const response = await app.request({
         method: 'GET',
-        url: `${app.forum.attribute('apiUrl')}/tournament/participants`,
+        url: `${app.forum.attribute('apiUrl')}/tournament/participants?include=user,platform`,
       });
 
-      this.participants = response.data.map((item: any) => ({
-        id: item.id,
-        score: item.attributes.score,
-        platformUsername: item.attributes.platformUsername,
-        createdAt: item.attributes.createdAt,
-        user: item.relationships?.user?.data ? {
-          id: item.relationships.user.data.id,
-          username: item.relationships.user.data.attributes?.username || 'Unknown',
-          displayName: item.relationships.user.data.attributes?.displayName || 'Unknown',
-          avatarUrl: item.relationships.user.data.attributes?.avatarUrl,
-        } : {
-          id: '0',
-          username: 'Deleted User',
-          displayName: 'Deleted User',
-        },
-        platform: item.relationships?.platform?.data ? {
-          id: item.relationships.platform.data.id,
-          name: item.relationships.platform.data.attributes?.name || 'Unknown',
-        } : undefined,
-      }));
+      // Handle included data properly
+      const included = response.included || [];
+      const users = included.filter((item: any) => item.type === 'users');
+      const platforms = included.filter((item: any) => item.type === 'platforms');
+
+      this.participants = response.data.map((item: any) => {
+        // Find related user
+        const userId = item.relationships?.user?.data?.id;
+        const user = users.find((u: any) => u.id === userId);
+        
+        // Find related platform
+        const platformId = item.relationships?.platform?.data?.id;
+        const platform = platforms.find((p: any) => p.id === platformId);
+
+        return {
+          id: item.id,
+          score: item.attributes.score,
+          platformUsername: item.attributes.platformUsername,
+          createdAt: item.attributes.createdAt,
+          user: user ? {
+            id: user.id,
+            username: user.attributes?.username || 'Unknown',
+            displayName: user.attributes?.displayName || 'Unknown',
+            avatarUrl: user.attributes?.avatarUrl,
+          } : {
+            id: '0',
+            username: 'Deleted User',
+            displayName: 'Deleted User',
+          },
+          platform: platform ? {
+            id: platform.id,
+            name: platform.attributes?.name || 'Unknown',
+          } : undefined,
+        };
+      });
 
       // Initialize editing scores
       this.editingScores = {};

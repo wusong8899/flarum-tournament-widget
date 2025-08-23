@@ -7,7 +7,7 @@ use wusong8899\TournamentWidget\Model\Platform;
 
 class PlatformSerializer extends AbstractSerializer
 {
-    protected $type = 'tournament-platforms';
+    protected $type = 'platforms';
 
     protected function getDefaultAttributes($platform)
     {

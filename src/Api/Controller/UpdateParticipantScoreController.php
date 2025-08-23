@@ -23,7 +23,7 @@ class UpdateParticipantScoreController extends AbstractShowController
         // Only admins can update scores
         $actor->assertAdmin();
 
-        $id = Arr::get($request->getQueryParams(), 'id');
+        $id = Arr::get($request->getAttributes(), 'id');
         $participant = Participant::with(['user', 'platform'])->findOrFail($id);
 
         $attributes = Arr::get($request->getParsedBody(), 'data.attributes', []);
