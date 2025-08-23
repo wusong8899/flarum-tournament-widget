@@ -4,7 +4,7 @@ wusong8899-tournament-widget:
       title_label: 锦标赛标题
       title_help: 在前端显示的锦标赛名称
       prize_pool_label: 奖金池
-      prize_pool_help: 奖金池显示文本，例如: $12,500
+      prize_pool_help: "奖金池显示文本，例如: $12,500"
       start_date_label: 锦标赛开始时间
       start_date_help: "格式: YYYY-MM-DDTHH:MM:SSZ (UTC时间), 例如: 2025-08-23T00:00:00Z"
       details_url_label: 锦标赛详情页链接
@@ -15,7 +15,7 @@ wusong8899-tournament-widget:
       initial_score_help: 新参与者的默认积分值
     permissions:
       participate: 参加锦标赛
-  
+
   forum:
     tournament:
       title: "K8 无双积分王"
@@ -25,14 +25,14 @@ wusong8899-tournament-widget:
       participated: 已参加
       login_to_participate: 登录参加
       details: 详情
-      
+
     leaderboard:
       title: 排行榜
       points: 积分
       no_participants: 暂无参与者
       view_all: "详情 (查看全部 {count} 名)"
       collapse: 收起
-      
+
     participate_modal:
       title: 参加活动
       platform_account_label: 平台账号
