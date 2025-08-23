@@ -362,6 +362,27 @@
       padding: 8px;
       font-size: 14px;
     }
+    
+    .Button--size-small {
+      padding: 6px 12px;
+      font-size: 12px;
+      
+      &.Button--danger {
+        background-color: #d32f2f;
+        color: white;
+        border-color: #d32f2f;
+        
+        &:hover:not(:disabled) {
+          background-color: #b71c1c;
+          border-color: #b71c1c;
+        }
+        
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+    }
   }
 
   .ParticipantManagement-actions {

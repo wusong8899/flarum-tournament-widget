@@ -52,11 +52,15 @@ wusong8899-tournament-widget:
       score: 分数
       actions: 操作
       update: 更新
+      remove: 踢出
       refresh: 刷新
       no_participants: 暂无参与者
       load_error: 加载参与者失败
       update_success: 分数更新成功
       update_error: 更新分数失败
+      confirm_remove: 确定要将 {username} 踢出比赛吗？
+      remove_success: 成功踢出参赛者
+      remove_error: 踢出参赛者失败
 
     permissions:
       participate: 参加锦标赛

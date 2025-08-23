@@ -25,6 +25,7 @@ export default class ParticipantManagement extends Component {
   private participants: Participant[] = [];
   private loading = false;
   private saving = false;
+  private deleting = false;
   private editingScores: Record<string, number> = {};
 
   oninit(vnode: Mithril.VnodeDOM) {
@@ -103,14 +104,24 @@ export default class ParticipantManagement extends Component {
                       />
                     </td>
                     <td>
-                      <Button
-                        className="Button Button--primary Button--size-small"
-                        loading={this.saving}
-                        disabled={this.saving}
-                        onclick={() => this.updateScore(participant)}
-                      >
-                        {app.translator.trans('wusong8899-tournament-widget.admin.participants.update')}
-                      </Button>
+                      <div style="display: flex; gap: 8px; justify-content: center;">
+                        <Button
+                          className="Button Button--primary Button--size-small"
+                          loading={this.saving}
+                          disabled={this.saving || this.deleting}
+                          onclick={() => this.updateScore(participant)}
+                        >
+                          {app.translator.trans('wusong8899-tournament-widget.admin.participants.update')}
+                        </Button>
+                        <Button
+                          className="Button Button--danger Button--size-small"
+                          loading={this.deleting}
+                          disabled={this.saving || this.deleting}
+                          onclick={() => this.confirmDeleteParticipant(participant)}
+                        >
+                          {app.translator.trans('wusong8899-tournament-widget.admin.participants.remove')}
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -226,6 +237,47 @@ export default class ParticipantManagement extends Component {
       this.editingScores[participant.id] = participant.score;
     } finally {
       this.saving = false;
+      m.redraw();
+    }
+  }
+
+  private confirmDeleteParticipant(participant: Participant): void {
+    const confirmMessage = app.translator.trans(
+      'wusong8899-tournament-widget.admin.participants.confirm_remove',
+      { username: participant.user.displayName || participant.user.username }
+    );
+
+    if (confirm(confirmMessage)) {
+      this.deleteParticipant(participant);
+    }
+  }
+
+  private async deleteParticipant(participant: Participant): Promise<void> {
+    this.deleting = true;
+    m.redraw();
+
+    try {
+      await app.request({
+        method: 'DELETE',
+        url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}`,
+      });
+
+      // Remove participant from local state
+      this.participants = this.participants.filter(p => p.id !== participant.id);
+      delete this.editingScores[participant.id];
+
+      app.alerts.show(
+        { type: 'success' },
+        app.translator.trans('wusong8899-tournament-widget.admin.participants.remove_success')
+      );
+    } catch (error) {
+      console.error('Failed to delete participant:', error);
+      app.alerts.show(
+        { type: 'error' },
+        app.translator.trans('wusong8899-tournament-widget.admin.participants.remove_error')
+      );
+    } finally {
+      this.deleting = false;
       m.redraw();
     }
   }
