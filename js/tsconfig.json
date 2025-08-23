@@ -1,23 +1,22 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "jsxFactory": "m",
-    "strict": true,
-    "skipLibCheck": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "isolatedModules": true,
-    "lib": ["ES2020", "DOM"]
-  },
+  "extends": "./node_modules/flarum-tsconfig/tsconfig.json",
   "include": [
-    "src/**/*",
-    "admin.js",
-    "forum.js"
-  ]
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules/**/*",
+    "dist/**/*"
+  ],
+  "compilerOptions": {
+    "isolatedModules": true,
+    "declaration": true,
+    "paths": {
+      "flarum/*": [
+        "../vendor/flarum/core/js/dist-typings/*"
+      ],
+      "flarum/tags/*": [
+        "../vendor/flarum/tags/js/dist-typings/*"
+      ]
+    }
+  }
 }

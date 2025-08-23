@@ -1,12 +1,10 @@
 import app from 'flarum/forum/app';
 import { extend } from 'flarum/common/extend';
 import TournamentWidget from './components/TournamentWidget';
+import TagsPage from 'flarum/tags/forum/components/TagsPage';
 
 app.initializers.add('wusong8899-tournament-widget', () => {
-  // We need to find TagsPage and extend it
-  // First check if flarum/tags extension is available
-  const TagsPage = flarum.core.compat['tags/components/TagsPage'];
-  
+
   if (TagsPage) {
     extend(TagsPage.prototype, 'content', function (vnode) {
       const children = vnode.children;
