@@ -94,7 +94,7 @@ export default class TournamentWidget extends Component {
             src="https://i.mji.rip/2025/08/23/678aa40f68db12909bb4a4871d603876.webp" 
             alt="Tournament"
           />
-          <span className="TournamentHeader-title">锦标赛</span>
+          <span className="TournamentHeader-title">老哥榜</span>
         </div>
         <TournamentCard
           title={this.tournamentData.title}
