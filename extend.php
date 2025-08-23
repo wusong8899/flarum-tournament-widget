@@ -8,11 +8,11 @@ use wusong8899\TournamentWidget\Api\Controller;
 
 return [
     (new Extend\Frontend('forum'))
-        ->js(__DIR__.'/js/dist-forum/extension.js')
+        ->js(__DIR__.'/js/dist/forum.js')
         ->css(__DIR__.'/less/forum.less'),
         
     (new Extend\Frontend('admin'))
-        ->js(__DIR__.'/js/dist-admin/extension.js'),
+        ->js(__DIR__.'/js/dist/forum.js'),
 
     (new Extend\Routes('api'))
         ->get('/tournament', 'tournament.show', Controller\ShowTournamentController::class)
