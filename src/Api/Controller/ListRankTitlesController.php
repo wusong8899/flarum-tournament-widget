@@ -2,17 +2,15 @@
 
 namespace wusong8899\TournamentWidget\Api\Controller;
 
-use Flarum\Api\Controller\AbstractShowController;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Tobscure\JsonApi\Document;
-use wusong8899\TournamentWidget\Api\Serializer\RankTitleSerializer;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ListRankTitlesController extends AbstractShowController
+class ListRankTitlesController implements RequestHandlerInterface
 {
-    public $serializer = RankTitleSerializer::class;
-
     protected SettingsRepositoryInterface $settings;
 
     public function __construct(SettingsRepositoryInterface $settings)
@@ -20,7 +18,7 @@ class ListRankTitlesController extends AbstractShowController
         $this->settings = $settings;
     }
 
-    protected function data(ServerRequestInterface $request, Document $document)
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $actor = RequestUtil::getActor($request);
         $actor->assertAdmin();
@@ -38,9 +36,14 @@ class ListRankTitlesController extends AbstractShowController
             ];
         }
 
-        return [
-            'id' => 'rank-titles',
-            'rankTitles' => $rankTitles
-        ];
+        return new JsonResponse([
+            'data' => [
+                'type' => 'rank-titles',
+                'id' => 'rank-titles',
+                'attributes' => [
+                    'rankTitles' => $rankTitles
+                ]
+            ]
+        ]);
     }
 }
