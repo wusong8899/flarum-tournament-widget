@@ -1,7 +1,8 @@
 node_modules/
-dist-*/
-extension.js
-*.log
+dist/
+CLAUDE.md
+vendor/
+.claude
 .DS_Store
 .vscode/
 .idea/
