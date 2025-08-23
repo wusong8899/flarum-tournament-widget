@@ -25,14 +25,18 @@ class ParticipateController extends AbstractCreateController
         $actor = RequestUtil::getActor($request);
         $attributes = Arr::get($request->getParsedBody(), 'data.attributes', []);
         
-        $platformAccount = Arr::get($attributes, 'platformAccount');
+        // Handle both new platform system and legacy platform account
+        $platformId = Arr::get($attributes, 'platformId');
+        $platformUsername = Arr::get($attributes, 'platformUsername');
+        $legacyPlatformAccount = Arr::get($attributes, 'platformAccount');
         
-        if (!$platformAccount) {
-            throw new \InvalidArgumentException('Platform account is required');
-        }
-
         return $this->bus->dispatch(
-            new Participate($actor, $platformAccount)
+            new Participate(
+                $actor,
+                $legacyPlatformAccount,
+                $platformId,
+                $platformUsername
+            )
         );
     }
 }

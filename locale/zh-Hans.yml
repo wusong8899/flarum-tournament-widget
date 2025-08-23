@@ -11,8 +11,36 @@ wusong8899-tournament-widget:
       details_url_help: 用户点击"详情"按钮时跳转的链接
       background_image_label: 锦标赛背景图片
       background_image_help: 锦标赛卡片的背景图片URL
+      
+    tabs:
+      general: 基本设置
+      platforms: 平台管理
+      rank_titles: 排名称号
+      
+    platforms:
+      title: 平台管理
+      name_label: 平台名称
+      name_help: 例如：Steam、Xbox、PlayStation等
+      icon_url_label: 图标URL
+      icon_url_help: 平台图标的图片链接
+      icon_class_label: 图标CSS类
+      icon_class_help: FontAwesome图标类名，例如：fas fa-gamepad
+      add_button: 添加平台
+      empty: 暂无平台
+      enable: 启用
+      disable: 禁用
+      
+    rank_titles:
+      title: 排名称号管理
+      rank_label: 排名
+      title_label: 称号
+      add_rank: 添加排名
+      save_button: 保存所有称号
+      help: 设置不同排名的称号，支持范围设置（如4-10）
+      
     permissions:
       participate: 参加锦标赛
+      manage_platforms: 管理比赛平台
 
   forum:
     tournament:
@@ -26,17 +54,27 @@ wusong8899-tournament-widget:
 
     leaderboard:
       title: 排行榜
-      points: 金币
+      rank: 排行
+      title: 称号
+      user: 用户
+      platform: 平台
+      money: 金币
       no_participants: 暂无参与者
       view_all: "详情 (查看全部 {count} 名)"
       collapse: 收起
 
     participate_modal:
       title: 参加活动
+      platform_label: 选择平台
+      platform_placeholder: 请选择您的游戏平台
+      platform_username_label: 平台用户名
+      platform_username_placeholder: 请输入您在该平台的用户名
       platform_account_label: 平台账号
       platform_account_placeholder: 请输入您的平台账号
       submit: 提交
       success: 参加成功！
       error: 参加失败，请重试
       already_participated: 您已经参加过此次锦标赛
+      platform_required: 请选择平台
+      username_required: 请输入平台用户名
       account_required: 平台账号不能为空

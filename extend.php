@@ -17,7 +17,11 @@ return [
 
     (new Extend\Routes('api'))
         ->get('/tournament', 'tournament.show', Controller\ShowTournamentController::class)
-        ->post('/tournament/participate', 'tournament.participate', Controller\ParticipateController::class),
+        ->post('/tournament/participate', 'tournament.participate', Controller\ParticipateController::class)
+        ->get('/tournament/platforms', 'tournament.platforms.list', Controller\ListPlatformsController::class)
+        ->post('/tournament/platforms', 'tournament.platforms.create', Controller\CreatePlatformController::class)
+        ->patch('/tournament/platforms/{id}', 'tournament.platforms.update', Controller\UpdatePlatformController::class)
+        ->delete('/tournament/platforms/{id}', 'tournament.platforms.delete', Controller\DeletePlatformController::class),
 
     (new Extend\Middleware('api'))
         ->add(RateLimitMiddleware::class),

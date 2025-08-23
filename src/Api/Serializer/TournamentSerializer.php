@@ -15,17 +15,48 @@ class TournamentSerializer extends AbstractSerializer
         $actor = $data->actor ?? null;
         $settings = $data->settings ?? resolve(SettingsRepositoryInterface::class);
 
-        $participants = Participant::with('user')
+        $participants = Participant::with(['user', 'platform'])
             ->join('users', 'ziven_tournament_participants.user_id', '=', 'users.id')
             ->orderBy('users.money', 'desc')
             ->orderBy('ziven_tournament_participants.created_at', 'asc')
             ->select('ziven_tournament_participants.*')
             ->get();
 
-        $participantsData = $participants->map(function ($participant) {
+        // Get custom rank titles from settings
+        $rankTitles = json_decode($settings->get('wusong8899_tournament.rank_titles', '{}'), true);
+        $defaultTitles = [
+            1 => '冠军',
+            2 => '亚军', 
+            3 => '季军',
+            '4-10' => '优秀选手',
+            'default' => '参赛选手'
+        ];
+        $rankTitles = array_merge($defaultTitles, $rankTitles);
+
+        $participantsData = $participants->map(function ($participant, $index) use ($rankTitles) {
+            $rank = $index + 1;
+            
+            // Determine rank title
+            $title = $rankTitles['default'];
+            if (isset($rankTitles[$rank])) {
+                $title = $rankTitles[$rank];
+            } else {
+                // Check range titles like "4-10"
+                foreach ($rankTitles as $key => $value) {
+                    if (strpos($key, '-') !== false) {
+                        [$start, $end] = explode('-', $key);
+                        if ($rank >= (int)$start && $rank <= (int)$end) {
+                            $title = $value;
+                            break;
+                        }
+                    }
+                }
+            }
+
             return [
                 'id' => $participant->id,
-                'platformAccount' => $participant->platform_account,
+                'rank' => $rank,
+                'title' => $title,
                 'money' => $participant->user !== null ? (int) $participant->user->getAttribute('money') : 0,
                 'createdAt' => $participant->created_at !== null ? $participant->created_at->toISOString() : null,
                 'user' => $participant->user !== null ? [
@@ -38,7 +69,18 @@ class TournamentSerializer extends AbstractSerializer
                     'username' => 'Deleted User',
                     'displayName' => 'Deleted User',
                     'avatarUrl' => null,
-                ]
+                ],
+                'platform' => [
+                    'id' => $participant->platform_id,
+                    'name' => $participant->platform_display_name,
+                    'username' => $participant->platform_username_display,
+                    'iconUrl' => $participant->platform?->icon_url,
+                    'iconClass' => $participant->platform?->icon_class,
+                    'usesUrlIcon' => $participant->platform?->uses_url_icon ?? false,
+                    'usesCssIcon' => $participant->platform?->uses_css_icon ?? false,
+                ],
+                // Keep legacy field for compatibility
+                'platformAccount' => $participant->platform_account,
             ];
         })->values()->all();
 

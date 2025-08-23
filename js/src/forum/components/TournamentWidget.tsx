@@ -8,7 +8,8 @@ import { Vnode } from 'mithril';
 
 interface IParticipant {
   id: string;
-  platformAccount: string;
+  rank: number;
+  title: string;
   money: number;
   createdAt: string;
   user: {
@@ -17,6 +18,16 @@ interface IParticipant {
     displayName: string;
     avatarUrl: string;
   };
+  platform: {
+    id: number | null;
+    name: string;
+    username: string;
+    iconUrl: string | null;
+    iconClass: string | null;
+    usesUrlIcon: boolean;
+    usesCssIcon: boolean;
+  };
+  platformAccount: string; // Legacy field for backward compatibility
 }
 
 interface ITournamentData {

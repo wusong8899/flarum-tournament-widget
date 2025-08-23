@@ -11,8 +11,36 @@ wusong8899-tournament-widget:
       details_url_help: Link that users will be redirected to when clicking "Details"
       background_image_label: Tournament Background Image
       background_image_help: Background image URL for the tournament card
+      
+    tabs:
+      general: General Settings
+      platforms: Platform Management
+      rank_titles: Rank Titles
+      
+    platforms:
+      title: Platform Management
+      name_label: Platform Name
+      name_help: e.g. Steam, Xbox, PlayStation, etc.
+      icon_url_label: Icon URL
+      icon_url_help: Image URL for the platform icon
+      icon_class_label: Icon CSS Class
+      icon_class_help: FontAwesome icon class name, e.g. fas fa-gamepad
+      add_button: Add Platform
+      empty: No platforms available
+      enable: Enable
+      disable: Disable
+      
+    rank_titles:
+      title: Rank Title Management
+      rank_label: Rank
+      title_label: Title
+      add_rank: Add Rank
+      save_button: Save All Titles
+      help: Set titles for different ranks, supports ranges (e.g. 4-10)
+      
     permissions:
       participate: Participate in tournaments
+      manage_platforms: Manage tournament platforms
   
   forum:
     tournament:
@@ -26,17 +54,27 @@ wusong8899-tournament-widget:
       
     leaderboard:
       title: Leaderboard
-      points: Money
+      rank: Rank
+      title: Title
+      user: User
+      platform: Platform
+      money: Money
       no_participants: No participants yet
       view_all: "Details (View all {count} participants)"
       collapse: Collapse
       
     participate_modal:
       title: Join Tournament
+      platform_label: Select Platform
+      platform_placeholder: Please select your gaming platform
+      platform_username_label: Platform Username
+      platform_username_placeholder: Please enter your username on this platform
       platform_account_label: Platform Account
       platform_account_placeholder: Please enter your platform account
       submit: Submit
       success: Successfully joined!
       error: Failed to join, please try again
       already_participated: You have already participated in this tournament
+      platform_required: Please select a platform
+      username_required: Please enter your platform username
       account_required: Platform account is required

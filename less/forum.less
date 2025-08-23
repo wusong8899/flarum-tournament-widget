@@ -123,24 +123,29 @@
   color: white;
 
   &-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
     margin-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
+  }
 
-    h3 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: bold;
-    }
+  &-headerRow {
+    display: grid;
+    grid-template-columns: 80px 120px 1fr 150px 100px;
+    gap: 15px;
+    padding: 12px 0;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+  }
 
-    h4 {
-      margin: 0;
-      font-size: 14px;
-      opacity: 0.8;
-    }
+  &-headerCell {
+    &.rank { text-align: center; }
+    &.title { text-align: center; }
+    &.user { text-align: left; }
+    &.platform { text-align: left; }
+    &.money { text-align: right; }
   }
 
   &-list {
@@ -150,10 +155,12 @@
   }
 
   &-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 0;
+    display: grid;
+    grid-template-columns: 80px 120px 1fr 150px 100px;
+    gap: 15px;
+    padding: 15px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: center;
     transition: background-color 0.3s;
 
     &:last-child {
@@ -161,15 +168,15 @@
     }
 
     &.rank-1 {
-      background: linear-gradient(90deg, rgba(255, 215, 0, 0.1), transparent);
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.15), transparent);
     }
 
     &.rank-2 {
-      background: linear-gradient(90deg, rgba(192, 192, 192, 0.1), transparent);
+      background: linear-gradient(90deg, rgba(192, 192, 192, 0.15), transparent);
     }
 
     &.rank-3 {
-      background: linear-gradient(90deg, rgba(205, 127, 50, 0.1), transparent);
+      background: linear-gradient(90deg, rgba(205, 127, 50, 0.15), transparent);
     }
 
     &:hover {
@@ -177,56 +184,119 @@
     }
   }
 
-  &-rank {
-    flex: 0 0 80px;
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-
-    i {
-      margin-right: 8px;
-      font-size: 16px;
-      margin-left: 5px;
-
-      &.rank-gold {
-        color: #ffd700;
-      }
-
-      &.rank-silver {
-        color: #c0c0c0;
-      }
-
-      &.rank-bronze {
-        color: #cd7f32;
-      }
-    }
-  }
-
-  &-user {
-    flex: 1;
-    margin: 0 15px;
-
-    .username {
+  &-cell {
+    &.rank {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-weight: bold;
-      margin-bottom: 2px;
-    }
-
-    .prize {
-      font-size: 12px;
-      opacity: 0.8;
 
       i {
-        color: #00bcd4;
-        margin-right: 4px;
+        margin-right: 6px;
+        font-size: 16px;
+
+        &.rank-gold { color: #ffd700; }
+        &.rank-silver { color: #c0c0c0; }
+        &.rank-bronze { color: #cd7f32; }
+      }
+
+      .rank-number {
+        font-size: 16px;
       }
     }
-  }
 
-  &-score {
-    flex: 0 0 80px;
-    text-align: right;
-    font-weight: bold;
-    color: #ffd700;
+    &.title {
+      text-align: center;
+
+      .title-text {
+        font-size: 13px;
+        font-weight: 600;
+        color: #ffd700;
+        background: rgba(255, 215, 0, 0.1);
+        padding: 4px 8px;
+        border-radius: 12px;
+        display: inline-block;
+      }
+    }
+
+    &.user {
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .user-avatar {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-name {
+          font-weight: 600;
+          font-size: 14px;
+        }
+      }
+    }
+
+    &.platform {
+      .platform-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .platform-icon {
+          width: 24px;
+          height: 24px;
+          flex-shrink: 0;
+
+          &.image-icon {
+            object-fit: cover;
+            border-radius: 4px;
+          }
+
+          &.css-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #00bcd4;
+          }
+        }
+
+        .platform-details {
+          min-width: 0;
+          flex: 1;
+
+          .platform-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #00bcd4;
+            line-height: 1.2;
+          }
+
+          .platform-username {
+            font-size: 11px;
+            opacity: 0.8;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+
+    &.money {
+      text-align: right;
+
+      .money-amount {
+        font-weight: bold;
+        font-size: 16px;
+        color: #ffd700;
+      }
+    }
   }
 
   &-empty {
@@ -234,6 +304,7 @@
     padding: 40px 20px;
     opacity: 0.6;
     font-style: italic;
+    grid-column: 1 / -1;
   }
 
   &-expandBtn,
@@ -305,17 +376,74 @@
 
   .Leaderboard {
     padding: 15px;
+    overflow-x: auto;
 
-    &-rank {
-      flex: 0 0 60px;
-    }
-
-    &-score {
-      flex: 0 0 60px;
+    &-headerRow {
+      grid-template-columns: 50px 80px 1fr 120px 80px;
+      gap: 10px;
+      font-size: 12px;
     }
 
     &-item {
-      padding: 10px 0;
+      grid-template-columns: 50px 80px 1fr 120px 80px;
+      gap: 10px;
+      padding: 12px 0;
+    }
+
+    &-cell {
+      &.rank {
+        i {
+          font-size: 14px;
+        }
+        .rank-number {
+          font-size: 14px;
+        }
+      }
+
+      &.title .title-text {
+        font-size: 11px;
+        padding: 2px 6px;
+      }
+
+      &.user .user-info {
+        gap: 6px;
+        
+        .user-avatar {
+          width: 24px;
+          height: 24px;
+        }
+        
+        .user-name {
+          font-size: 12px;
+        }
+      }
+
+      &.platform .platform-info {
+        gap: 6px;
+        
+        .platform-icon {
+          width: 20px;
+          height: 20px;
+          
+          &.css-icon {
+            font-size: 14px;
+          }
+        }
+        
+        .platform-details {
+          .platform-name {
+            font-size: 11px;
+          }
+          
+          .platform-username {
+            font-size: 10px;
+          }
+        }
+      }
+
+      &.money .money-amount {
+        font-size: 14px;
+      }
     }
   }
 
