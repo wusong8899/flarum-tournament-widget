@@ -4,15 +4,13 @@ namespace wusong8899\TournamentWidget\Command;
 
 use Flarum\Foundation\ValidationException;
 use Flarum\Settings\SettingsRepositoryInterface;
-use Illuminate\Cache\CacheManager;
 use Illuminate\Support\Str;
 use wusong8899\TournamentWidget\Model\Participant;
 
 class ParticipateHandler
 {
     public function __construct(
-        private SettingsRepositoryInterface $settings,
-        private CacheManager $cache
+        private SettingsRepositoryInterface $settings
     ) {
     }
 
@@ -66,9 +64,6 @@ class ParticipateHandler
         $participant->platform_account = $platformAccount;
         $participant->score = (int) $this->settings->get('wusong8899_tournament.initial_score', 0);
         $participant->save();
-
-        // Clear cache to force refresh
-        $this->cache->forget('tournament_data');
 
         return $participant;
     }
