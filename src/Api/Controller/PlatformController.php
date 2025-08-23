@@ -25,7 +25,7 @@ class ListPlatformsController extends AbstractListController
         // For admins, show all platforms
         $query = Platform::query()->ordered();
         
-        if (!$actor->can('tournament.managePlatforms')) {
+        if (!$actor->isAdmin() && !$actor->can('tournament.managePlatforms')) {
             $query->active();
         }
 
@@ -40,7 +40,10 @@ class CreatePlatformController extends AbstractCreateController
     protected function data(ServerRequestInterface $request, Document $document)
     {
         $actor = RequestUtil::getActor($request);
-        $actor->assertCan('tournament.managePlatforms');
+        
+        if (!$actor->isAdmin()) {
+            $actor->assertCan('tournament.managePlatforms');
+        }
 
         $attributes = Arr::get($request->getParsedBody(), 'data.attributes', []);
 
@@ -64,7 +67,10 @@ class UpdatePlatformController extends AbstractShowController
     protected function data(ServerRequestInterface $request, Document $document)
     {
         $actor = RequestUtil::getActor($request);
-        $actor->assertCan('tournament.managePlatforms');
+        
+        if (!$actor->isAdmin()) {
+            $actor->assertCan('tournament.managePlatforms');
+        }
 
         $id = Arr::get($request->getQueryParams(), 'id');
         $platform = Platform::findOrFail($id);
@@ -98,7 +104,10 @@ class DeletePlatformController extends AbstractDeleteController
     protected function delete(ServerRequestInterface $request): void
     {
         $actor = RequestUtil::getActor($request);
-        $actor->assertCan('tournament.managePlatforms');
+        
+        if (!$actor->isAdmin()) {
+            $actor->assertCan('tournament.managePlatforms');
+        }
 
         $id = Arr::get($request->getQueryParams(), 'id');
         $platform = Platform::findOrFail($id);

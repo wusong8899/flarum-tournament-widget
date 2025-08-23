@@ -8,49 +8,13 @@ use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
-use Tobscure\JsonApi\Resource;
-
-class ListRankTitlesController extends AbstractShowController
-{
-    public $serializer = RankTitleSerializer::class;
-
-    protected $settings;
-
-    public function __construct(SettingsRepositoryInterface $settings)
-    {
-        $this->settings = $settings;
-    }
-
-    protected function data(ServerRequestInterface $request, Document $document)
-    {
-        $actor = RequestUtil::getActor($request);
-        $actor->assertCan('tournament.managePlatforms');
-
-        $rankTitles = json_decode($this->settings->get('wusong8899_tournament.rank_titles', '{}'), true);
-        
-        // Merge with defaults if empty
-        if (empty($rankTitles)) {
-            $rankTitles = [
-                1 => '冠军',
-                2 => '亚军',
-                3 => '季军',
-                '4-10' => '优秀选手',
-                'default' => '参赛选手'
-            ];
-        }
-
-        return [
-            'id' => 'rank-titles',
-            'rankTitles' => $rankTitles
-        ];
-    }
-}
+use wusong8899\TournamentWidget\Api\Serializer\RankTitleSerializer;
 
 class UpdateRankTitlesController extends AbstractShowController
 {
     public $serializer = RankTitleSerializer::class;
 
-    protected $settings;
+    protected SettingsRepositoryInterface $settings;
 
     public function __construct(SettingsRepositoryInterface $settings)
     {
@@ -60,7 +24,7 @@ class UpdateRankTitlesController extends AbstractShowController
     protected function data(ServerRequestInterface $request, Document $document)
     {
         $actor = RequestUtil::getActor($request);
-        $actor->assertCan('tournament.managePlatforms');
+        $actor->assertAdmin();
 
         $attributes = Arr::get($request->getParsedBody(), 'data.attributes', []);
         $rankTitles = Arr::get($attributes, 'rankTitles', []);
@@ -84,13 +48,5 @@ class UpdateRankTitlesController extends AbstractShowController
             'id' => 'rank-titles',
             'rankTitles' => $validatedTitles
         ];
-    }
-}
-
-class RankTitleSerializer
-{
-    public function serialize($data): Resource
-    {
-        return new Resource('rank-titles', $data['id'], $data);
     }
 }
