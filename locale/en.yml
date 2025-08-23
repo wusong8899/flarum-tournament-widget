@@ -19,6 +19,7 @@ wusong8899-tournament-widget:
       general: General Settings
       platforms: Platform Management
       rank_titles: Rank Titles
+      participants: Participant Management
       
     platforms:
       title: Platform Management
@@ -43,6 +44,20 @@ wusong8899-tournament-widget:
       help: Set titles for different ranks, supports ranges (e.g. 4-10)
       preview_title: Preview
       
+    participants:
+      title: Participant Management
+      description: Manage participant scores and view tournament statistics
+      user: User
+      platform: Platform
+      score: Score
+      actions: Actions
+      update: Update
+      refresh: Refresh
+      no_participants: No participants yet
+      load_error: Failed to load participants
+      update_success: Score updated successfully
+      update_error: Failed to update score
+
     permissions:
       participate: Participate in tournaments
       manage_platforms: Manage tournament platforms
@@ -63,7 +78,7 @@ wusong8899-tournament-widget:
       rank_title: Title
       user: User
       platform: Platform
-      money: Money
+      score: Score
       no_participants: No participants yet
       view_all: "Details (View all {count} participants)"
       collapse: Collapse

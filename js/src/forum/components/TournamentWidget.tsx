@@ -10,7 +10,7 @@ interface IParticipant {
   id: string;
   rank: number;
   title: string;
-  money: number;
+  score: number;
   createdAt: string;
   user: {
     id: string;

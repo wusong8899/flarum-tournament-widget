@@ -18,7 +18,6 @@
     ],
     "require": {
         "flarum/core": "^1.8",
-        "antoinefr/flarum-ext-money": "*",
         "flarum/tags": "^1.8"
     },
     "require-dev": {

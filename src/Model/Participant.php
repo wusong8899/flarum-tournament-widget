@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null $platform_id
  * @property string|null $platform_username
  * @property string $platform_account
+ * @property int $score
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read User $user
@@ -25,7 +26,8 @@ class Participant extends AbstractModel
         'user_id', 
         'platform_id', 
         'platform_username',
-        'platform_account' // Keep for backward compatibility during migration
+        'platform_account', // Keep for backward compatibility during migration
+        'score'
     ];
     
     protected $dates = ['created_at', 'updated_at'];

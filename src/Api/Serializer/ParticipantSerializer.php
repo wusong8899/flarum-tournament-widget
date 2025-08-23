@@ -4,6 +4,7 @@ namespace wusong8899\TournamentWidget\Api\Serializer;
 
 use Flarum\Api\Serializer\AbstractSerializer;
 use Flarum\Api\Serializer\UserSerializer;
+use wusong8899\TournamentWidget\Api\Serializer\PlatformSerializer;
 use wusong8899\TournamentWidget\Model\Participant;
 
 class ParticipantSerializer extends AbstractSerializer
@@ -19,7 +20,8 @@ class ParticipantSerializer extends AbstractSerializer
         return [
             'id' => $participant->id,
             'platformAccount' => $participant->platform_account,
-            'money' => $participant->user !== null ? (int) $participant->user->getAttribute('money') : 0,
+            'platformUsername' => $participant->platform_username,
+            'score' => (int) $participant->score,
             'createdAt' => $this->formatDate($participant->created_at),
             'updatedAt' => $this->formatDate($participant->updated_at),
         ];
@@ -28,5 +30,10 @@ class ParticipantSerializer extends AbstractSerializer
     protected function user(Participant $participant): ?\Tobscure\JsonApi\Relationship
     {
         return $this->hasOne($participant, UserSerializer::class);
+    }
+
+    protected function platform(Participant $participant): ?\Tobscure\JsonApi\Relationship
+    {
+        return $this->hasOne($participant, PlatformSerializer::class);
     }
 }

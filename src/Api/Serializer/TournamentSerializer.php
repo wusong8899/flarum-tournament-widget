@@ -16,10 +16,8 @@ class TournamentSerializer extends AbstractSerializer
         $settings = $data->settings ?? resolve(SettingsRepositoryInterface::class);
 
         $participants = Participant::with(['user', 'platform'])
-            ->join('users', 'ziven_tournament_participants.user_id', '=', 'users.id')
-            ->orderBy('users.money', 'desc')
-            ->orderBy('ziven_tournament_participants.created_at', 'asc')
-            ->select('ziven_tournament_participants.*')
+            ->orderBy('score', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
         // Get custom rank titles from settings
@@ -57,7 +55,7 @@ class TournamentSerializer extends AbstractSerializer
                 'id' => $participant->id,
                 'rank' => $rank,
                 'title' => $title,
-                'money' => $participant->user !== null ? (int) $participant->user->getAttribute('money') : 0,
+                'score' => (int) $participant->score,
                 'createdAt' => $participant->created_at !== null ? $participant->created_at->toISOString() : null,
                 'user' => $participant->user !== null ? [
                     'id' => $participant->user_id,

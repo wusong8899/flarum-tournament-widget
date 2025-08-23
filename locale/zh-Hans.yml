@@ -19,6 +19,7 @@ wusong8899-tournament-widget:
       general: 基本设置
       platforms: 平台管理
       rank_titles: 排名称号
+      participants: 参赛者管理
       
     platforms:
       title: 平台管理
@@ -43,6 +44,20 @@ wusong8899-tournament-widget:
       help: 设置不同排名的称号，支持范围设置（如4-10）
       preview_title: 预览效果
       
+    participants:
+      title: 参赛者管理
+      description: 管理参赛者分数和查看比赛统计
+      user: 用户
+      platform: 平台
+      score: 分数
+      actions: 操作
+      update: 更新
+      refresh: 刷新
+      no_participants: 暂无参与者
+      load_error: 加载参与者失败
+      update_success: 分数更新成功
+      update_error: 更新分数失败
+
     permissions:
       participate: 参加锦标赛
       manage_platforms: 管理比赛平台
@@ -63,7 +78,7 @@ wusong8899-tournament-widget:
       rank_title: 称号
       user: 用户
       platform: 平台
-      money: 金币
+      score: 分数
       no_participants: 暂无参与者
       view_all: "详情 (查看全部 {count} 名)"
       collapse: 收起

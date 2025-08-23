@@ -12,6 +12,8 @@ use wusong8899\TournamentWidget\Api\Controller\UpdatePlatformController;
 use wusong8899\TournamentWidget\Api\Controller\DeletePlatformController;
 use wusong8899\TournamentWidget\Api\Controller\ListRankTitlesController;
 use wusong8899\TournamentWidget\Api\Controller\UpdateRankTitlesController;
+use wusong8899\TournamentWidget\Api\Controller\ListParticipantsController;
+use wusong8899\TournamentWidget\Api\Controller\UpdateParticipantScoreController;
 use wusong8899\TournamentWidget\Middleware\RateLimitMiddleware;
 
 return [
@@ -31,7 +33,9 @@ return [
         ->patch('/tournament/platforms/{id}', 'tournament.platforms.update', UpdatePlatformController::class)
         ->delete('/tournament/platforms/{id}', 'tournament.platforms.delete', DeletePlatformController::class)
         ->get('/tournament/rank-titles', 'tournament.rank-titles.list', ListRankTitlesController::class)
-        ->post('/tournament/rank-titles', 'tournament.rank-titles.update', UpdateRankTitlesController::class),
+        ->post('/tournament/rank-titles', 'tournament.rank-titles.update', UpdateRankTitlesController::class)
+        ->get('/tournament/participants', 'tournament.participants.list', ListParticipantsController::class)
+        ->patch('/tournament/participants/{id}', 'tournament.participants.update', UpdateParticipantScoreController::class),
 
     (new Extend\Middleware('api'))
         ->add(RateLimitMiddleware::class),

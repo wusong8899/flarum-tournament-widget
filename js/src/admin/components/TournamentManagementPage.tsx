@@ -6,6 +6,7 @@ import Stream from 'flarum/common/utils/Stream';
 import type Mithril from 'mithril';
 import PlatformManagement from './PlatformManagement';
 import RankTitleManagement from './RankTitleManagement';
+import ParticipantManagement from './ParticipantManagement';
 
 export default class TournamentManagementPage extends ExtensionPage {
   private activeTab = Stream('general');
@@ -35,6 +36,7 @@ export default class TournamentManagementPage extends ExtensionPage {
             {this.renderTab('general', 'wusong8899-tournament-widget.admin.tabs.general')}
             {this.renderTab('platforms', 'wusong8899-tournament-widget.admin.tabs.platforms')}
             {this.renderTab('rank_titles', 'wusong8899-tournament-widget.admin.tabs.rank_titles')}
+            {this.renderTab('participants', 'wusong8899-tournament-widget.admin.tabs.participants')}
           </nav>
 
           <div className="TournamentManagementPage-content">
@@ -66,6 +68,8 @@ export default class TournamentManagementPage extends ExtensionPage {
         return <PlatformManagement />;
       case 'rank_titles':
         return <RankTitleManagement />;
+      case 'participants':
+        return <ParticipantManagement />;
       default:
         return this.renderGeneralSettings();
     }
