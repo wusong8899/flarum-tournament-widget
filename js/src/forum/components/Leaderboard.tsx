@@ -2,6 +2,7 @@ import app from 'flarum/forum/app';
 import Component from 'flarum/common/Component';
 import Button from 'flarum/common/components/Button';
 import avatar from 'flarum/common/helpers/avatar';
+import User from 'flarum/common/models/User';
 import { Vnode } from 'mithril';
 
 interface IParticipant {
@@ -74,7 +75,7 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
                 </div>
                 <div className="Leaderboard-cell user">
                   <div className="user-info">
-                    {avatar(participant.user, { className: 'user-avatar' })}
+                    {this.renderUserAvatar(participant.user)}
                     <span className="user-name">{participant.user.displayName}</span>
                   </div>
                 </div>
@@ -127,6 +128,29 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
     if (rank === 2) return 'fas fa-crown rank-silver';
     if (rank === 3) return 'fas fa-crown rank-bronze';
     return 'fas fa-medal';
+  }
+
+  renderUserAvatar(userData: IParticipant['user']) {
+    // Try to get the User model from the store
+    const user = app.store.getById<User>('users', userData.id);
+    
+    if (user) {
+      // Use Flarum's avatar helper with the proper User model
+      return avatar(user, { className: 'user-avatar' });
+    } else {
+      // Fallback to manual avatar rendering
+      return userData.avatarUrl ? (
+        <img 
+          className="user-avatar" 
+          src={userData.avatarUrl} 
+          alt={userData.displayName}
+        />
+      ) : (
+        <div className="user-avatar user-avatar--default">
+          <i className="fas fa-user"></i>
+        </div>
+      );
+    }
   }
 
   renderPlatformIcon(platform: IParticipant['platform']) {

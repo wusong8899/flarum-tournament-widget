@@ -286,6 +286,15 @@
           border-radius: 50%;
           object-fit: cover;
           border: 2px solid rgba(255, 255, 255, 0.2);
+          
+          &--default {
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+          }
         }
 
         .user-name {
@@ -466,6 +475,10 @@
         .user-avatar {
           width: 24px;
           height: 24px;
+          
+          &--default {
+            font-size: 10px;
+          }
         }
         
         .user-name {
