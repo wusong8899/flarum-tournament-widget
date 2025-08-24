@@ -5,18 +5,18 @@ import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import type Mithril from 'mithril';
 
 interface Participant {
-  id: string;
+  id: number;
   score: number;
   platformUsername: string;
   createdAt: string;
   user: {
-    id: string;
+    id: number;
     username: string;
     displayName: string;
     avatarUrl?: string;
   };
   platform?: {
-    id: string;
+    id: number;
     name: string;
   };
 }
@@ -26,7 +26,7 @@ export default class ParticipantManagement extends Component {
   private loading = false;
   private saving = false;
   private deleting = false;
-  private editingScores: Record<string, number> = {};
+  private editingScores: Record<number, number> = {};
 
   oninit(vnode: Mithril.VnodeDOM) {
     super.oninit(vnode);
@@ -168,22 +168,22 @@ export default class ParticipantManagement extends Component {
         const platform = platforms.find((p: any) => p.id === platformId);
 
         return {
-          id: item.id,
+          id: parseInt(item.id),
           score: item.attributes.score,
           platformUsername: item.attributes.platformUsername,
           createdAt: item.attributes.createdAt,
           user: user ? {
-            id: user.id,
+            id: parseInt(user.id),
             username: user.attributes?.username || 'Unknown',
             displayName: user.attributes?.displayName || 'Unknown',
             avatarUrl: user.attributes?.avatarUrl,
           } : {
-            id: '0',
+            id: 0,
             username: 'Deleted User',
             displayName: 'Deleted User',
           },
           platform: platform ? {
-            id: platform.id,
+            id: parseInt(platform.id),
             name: platform.attributes?.name || 'Unknown',
           } : undefined,
         };
@@ -215,11 +215,10 @@ export default class ParticipantManagement extends Component {
     try {
       await app.request({
         method: 'PATCH',
-        url: app.forum.attribute('apiUrl') + '/tournament/participants/' + participant.id,
+        url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}`,
         body: {
           data: {
             type: 'participants',
-            id: participant.id,
             attributes: {
               score: newScore,
             },
