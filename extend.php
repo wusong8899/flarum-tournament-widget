@@ -36,7 +36,10 @@ return [
         ->post('/tournament/rank-titles', 'tournament.rank-titles.update', UpdateRankTitlesController::class)
         ->get('/tournament/participants', 'tournament.participants.list', ListParticipantsController::class)
         ->patch('/tournament/participants/{id}', 'tournament.participants.update', UpdateParticipantScoreController::class)
-        ->delete('/tournament/participants/{id}', 'tournament.participants.delete', DeleteParticipantController::class),
+        ->delete('/tournament/participants/{id}', 'tournament.participants.delete', DeleteParticipantController::class)
+        ->get('/tournament/test', 'tournament.test', function () {
+            return new \Laminas\Diactoros\Response\JsonResponse(['status' => 'working']);
+        }),
 
 
     (new Extend\ApiSerializer(ForumSerializer::class))
