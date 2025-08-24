@@ -15,7 +15,6 @@ use wusong8899\TournamentWidget\Api\Controller\UpdateRankTitlesController;
 use wusong8899\TournamentWidget\Api\Controller\ListParticipantsController;
 use wusong8899\TournamentWidget\Api\Controller\UpdateParticipantScoreController;
 use wusong8899\TournamentWidget\Api\Controller\DeleteParticipantController;
-use wusong8899\TournamentWidget\Middleware\RateLimitMiddleware;
 
 return [
     (new Extend\Frontend('forum'))
@@ -38,9 +37,6 @@ return [
         ->get('/tournament/participants', 'tournament.participants.list', ListParticipantsController::class)
         ->patch('/tournament/participants/{id}', 'tournament.participants.update', UpdateParticipantScoreController::class)
         ->delete('/tournament/participants/{id}', 'tournament.participants.delete', DeleteParticipantController::class),
-
-    (new Extend\Middleware('api'))
-        ->add(RateLimitMiddleware::class),
 
 
     (new Extend\ApiSerializer(ForumSerializer::class))

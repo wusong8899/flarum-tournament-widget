@@ -258,8 +258,11 @@ export default class ParticipantManagement extends Component {
 
     try {
       await app.request({
-        method: 'DELETE',
+        method: 'POST',
         url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}`,
+        headers: {
+          'X-HTTP-Method-Override': 'DELETE'
+        }
       });
 
       // Remove participant from local state

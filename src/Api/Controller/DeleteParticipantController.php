@@ -19,7 +19,7 @@ class DeleteParticipantController extends AbstractDeleteController
 
         $id = Arr::get($request->getAttributes(), 'id');
         $participant = Participant::findOrFail($id);
-        
+
         $participant->delete();
     }
 }

@@ -17,7 +17,7 @@ class CreatePlatformController extends AbstractCreateController
     protected function data(ServerRequestInterface $request, Document $document)
     {
         $actor = RequestUtil::getActor($request);
-        
+
         if (!$actor->isAdmin()) {
             $actor->assertCan('tournament.managePlatforms');
         }
@@ -30,7 +30,7 @@ class CreatePlatformController extends AbstractCreateController
         $platform->icon_class = Arr::get($attributes, 'iconClass');
         $platform->is_active = Arr::get($attributes, 'isActive', true);
         $platform->display_order = Arr::get($attributes, 'displayOrder', 0);
-        
+
         $platform->save();
 
         return $platform;
