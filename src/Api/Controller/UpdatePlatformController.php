@@ -17,7 +17,7 @@ class UpdatePlatformController extends AbstractShowController
     protected function data(ServerRequestInterface $request, Document $document)
     {
         $actor = RequestUtil::getActor($request);
-        
+
         if (!$actor->isAdmin()) {
             $actor->assertCan('tournament.managePlatforms');
         }

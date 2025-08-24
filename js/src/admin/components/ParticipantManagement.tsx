@@ -215,7 +215,7 @@ export default class ParticipantManagement extends Component {
     try {
       await app.request({
         method: 'PATCH',
-        url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}`,
+        url: app.forum.attribute('apiUrl') + '/tournament/participants/' + participant.id,
         body: {
           data: {
             type: 'participants',

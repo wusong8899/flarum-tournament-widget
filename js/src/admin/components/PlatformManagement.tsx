@@ -203,7 +203,7 @@ export default class PlatformManagement extends Component {
     try {
       const response = await app.request({
         method: 'PATCH',
-        url: app.forum.attribute('apiUrl') + `/tournament/platforms/${id}`,
+        url: app.forum.attribute('apiUrl') + `/tournament/platforms/` + id,
         body: {
           data: {
             type: 'platforms',
