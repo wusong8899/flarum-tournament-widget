@@ -32,6 +32,11 @@ class ParticipateController extends AbstractCreateController
         $platformUsername = Arr::get($attributes, 'platformUsername');
         $legacyPlatformAccount = Arr::get($attributes, 'platformAccount');
         
+        // Cast platformId to integer if provided
+        if ($platformId !== null) {
+            $platformId = (int) $platformId;
+        }
+        
         return $this->bus->dispatch(
             new Participate(
                 $actor,
