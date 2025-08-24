@@ -21,12 +21,12 @@ class DeleteParticipantController extends AbstractDeleteController
         // Only admins can delete participants
         $actor->assertAdmin();
 
-        $id = Arr::get($request->getAttributes(), 'id');
+        $id = Arr::get($request->getQueryParams(), 'id');
         
         // Validate ID parameter
         if (empty($id) || !is_numeric($id)) {
             throw new ValidationException([
-                'id' => 'Invalid participant ID provided.'
+                'participant' => 'Invalid participant ID provided.'
             ]);
         }
         
