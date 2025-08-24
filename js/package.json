@@ -14,6 +14,7 @@
     "@types/mithril": "^2.0.0",
     "flarum-tsconfig": "^1.0.0",
     "flarum-webpack-config": "^2.0.0",
+    "less": "^4.4.1",
     "oxlint": "latest",
     "typescript": "^5.0.0",
     "vite": "^5.0.0",
