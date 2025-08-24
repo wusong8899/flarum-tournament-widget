@@ -31,7 +31,7 @@ class TournamentSerializer extends AbstractSerializer
             '4-10' => '优秀选手',
             'default' => '参赛选手'
         ];
-        $rankTitles = array_merge($defaultTitles, $rankTitles);
+        $rankTitles = $rankTitles + $defaultTitles;
 
         $participantsData = $participants->map(function ($participant, $index) use ($rankTitles) {
             $rank = $index + 1;

@@ -262,7 +262,7 @@ export default class TournamentManagementPage extends ExtensionPage {
     
     return super.saveSettings(e).then(
       () => {
-        app.alerts.show({ type: 'success' }, app.translator.trans('wusong8899-tournament-widget.admin.settings.saved'));
+        // Flarum automatically shows success message
       },
       (error) => {
         console.error('Settings save error:', error);
