@@ -14,6 +14,8 @@ wusong8899-tournament-widget:
       details_url_help: Link that users will be redirected to when clicking "Details"
       background_image_label: Tournament Background Image
       background_image_help: Background image URL for the tournament card
+      saved: Settings saved successfully
+      save_error: Failed to save settings
       
     tabs:
       general: General Settings
@@ -62,6 +64,11 @@ wusong8899-tournament-widget:
       remove_success: Participant removed successfully
       remove_error: Failed to remove participant
 
+    validation:
+      invalid_url: Please enter a valid URL
+      invalid_date: Please enter a valid date and time
+      fix_errors: Please fix the validation errors above
+      
     permissions:
       participate: Participate in tournaments
       manage_platforms: Manage tournament platforms
