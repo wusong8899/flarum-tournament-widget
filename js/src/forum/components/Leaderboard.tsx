@@ -7,7 +7,7 @@ interface IParticipant {
   id: string;
   rank: number;
   title: string;
-  score: number;
+  amount: number;
   createdAt: string;
   user: {
     id: string;
@@ -55,7 +55,7 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
               {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.platform')}
             </div>
             <div className="Leaderboard-headerCell score">
-              {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.score')}
+              {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.amount')}
             </div>
           </div>
         </div>
@@ -92,7 +92,7 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
                   </div>
                 </div>
                 <div className="Leaderboard-cell score">
-                  <span className="score-amount">{participant.score}</span>
+                  <span className="score-amount">{participant.amount}</span>
                 </div>
               </div>
             ))

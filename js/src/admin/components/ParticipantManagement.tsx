@@ -21,7 +21,7 @@ interface JsonApiResponse {
 
 interface Participant {
   id: number;
-  score: number;
+  amount: number;
   platformUsername: string;
   createdAt: string;
   user: {
@@ -29,6 +29,7 @@ interface Participant {
     username: string;
     displayName: string;
     avatarUrl?: string;
+    money: number;
   };
   platform?: {
     id: number;
@@ -41,7 +42,6 @@ export default class ParticipantManagement extends Component {
   private loading = false;
   private saving = false;
   private deleting = false;
-  private editingScores: Record<number, number> = {};
 
   oninit(vnode: Mithril.VnodeDOM) {
     super.oninit(vnode);
@@ -73,7 +73,7 @@ export default class ParticipantManagement extends Component {
                 <tr>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.user')}</th>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.platform')}</th>
-                  <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.score')}</th>
+                  <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.amount')}</th>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.actions')}</th>
                 </tr>
               </thead>
@@ -107,27 +107,11 @@ export default class ParticipantManagement extends Component {
                       </div>
                     </td>
                     <td>
-                      <input
-                        type="number"
-                        className="FormControl FormControl--compact"
-                        value={this.editingScores[participant.id] ?? participant.score}
-                        oninput={(e: Event) => {
-                          const target = e.target as HTMLInputElement;
-                          this.editingScores[participant.id] = parseInt(target.value) || 0;
-                        }}
-                        min="0"
-                      />
+                      <span className="participant-money">{participant.user.money || 0}</span>
+                      <div className="helpText">来自用户金币余额</div>
                     </td>
                     <td>
                       <div style="display: flex; gap: 8px; justify-content: center;">
-                        <Button
-                          className="Button Button--primary Button--size-small"
-                          loading={this.saving}
-                          disabled={this.saving || this.deleting}
-                          onclick={() => this.updateScore(participant)}
-                        >
-                          {app.translator.trans('wusong8899-tournament-widget.admin.participants.update')}
-                        </Button>
                         <Button
                           className="Button Button--danger Button--size-small"
                           loading={this.deleting}
@@ -185,7 +169,7 @@ export default class ParticipantManagement extends Component {
 
         // Safely extract participant attributes
         const participantAttrs = item.attributes as {
-          score?: number;
+          amount?: number;
           platformUsername?: string;
           createdAt?: string;
         };
@@ -204,7 +188,7 @@ export default class ParticipantManagement extends Component {
 
         return {
           id: parseInt(item.id, 10),
-          score: participantAttrs?.score || 0,
+          amount: participantAttrs?.amount || 0,
           platformUsername: participantAttrs?.platformUsername || '',
           createdAt: participantAttrs?.createdAt || '',
           user: userResource ? {
@@ -212,10 +196,12 @@ export default class ParticipantManagement extends Component {
             username: userAttrs?.username || 'Unknown',
             displayName: userAttrs?.displayName || 'Unknown',
             avatarUrl: userAttrs?.avatarUrl,
+            money: userAttrs?.money || 0,
           } : {
             id: 0,
             username: 'Deleted User',
             displayName: 'Deleted User',
+            money: 0,
           },
           platform: platformResource ? {
             id: parseInt(platformResource.id, 10),
@@ -224,11 +210,7 @@ export default class ParticipantManagement extends Component {
         };
       });
 
-      // Initialize editing scores
-      this.editingScores = {};
-      this.participants.forEach(participant => {
-        this.editingScores[participant.id] = participant.score;
-      });
+      // Participants loaded successfully
     } catch (error) {
       console.error('Failed to load participants:', error);
       app.alerts.show({ type: 'error' }, app.translator.trans('wusong8899-tournament-widget.admin.participants.load_error'));
@@ -238,42 +220,6 @@ export default class ParticipantManagement extends Component {
     }
   }
 
-  private async updateScore(participant: Participant): Promise<void> {
-    const newScore = this.editingScores[participant.id];
-    if (newScore === participant.score) {
-      return; // No change
-    }
-
-    this.saving = true;
-    m.redraw();
-
-    try {
-      await app.request({
-        method: 'PATCH',
-        url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}`,
-        body: {
-          data: {
-            type: 'participants',
-            attributes: {
-              score: newScore,
-            },
-          },
-        },
-      });
-
-      // Update local state
-      participant.score = newScore;
-      app.alerts.show({ type: 'success' }, app.translator.trans('wusong8899-tournament-widget.admin.participants.update_success'));
-    } catch (error) {
-      console.error('Failed to update score:', error);
-      app.alerts.show({ type: 'error' }, app.translator.trans('wusong8899-tournament-widget.admin.participants.update_error'));
-      // Revert editing score on error
-      this.editingScores[participant.id] = participant.score;
-    } finally {
-      this.saving = false;
-      m.redraw();
-    }
-  }
 
   private confirmDeleteParticipant(participant: Participant): void {
     const confirmMessage = app.translator.trans(
@@ -298,7 +244,6 @@ export default class ParticipantManagement extends Component {
 
       // Remove participant from local state
       this.participants = this.participants.filter(p => p.id !== participant.id);
-      delete this.editingScores[participant.id];
 
       app.alerts.show(
         { type: 'success' },

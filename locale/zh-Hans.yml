@@ -14,6 +14,10 @@ wusong8899-tournament-widget:
       details_url_help: 用户点击"详情"按钮时跳转的链接
       background_image_label: 锦标赛背景图片
       background_image_help: 锦标赛卡片的背景图片URL
+      header_title_label: 排行榜标题
+      header_title_help: 显示在排行榜顶部的标题文本，默认为"老哥榜"
+      header_image_label: 排行榜标题图片
+      header_image_help: 显示在排行榜标题旁边的图片URL
       
     tabs:
       general: 基本设置
@@ -49,15 +53,15 @@ wusong8899-tournament-widget:
       description: 管理参赛者分数和查看比赛统计
       user: 用户
       platform: 平台
-      score: 分数
+      amount: 金额
       actions: 操作
       update: 更新
       remove: 踢出
       refresh: 刷新
       no_participants: 暂无参与者
       load_error: 加载参与者失败
-      update_success: 分数更新成功
-      update_error: 更新分数失败
+      update_success: 金额更新成功
+      update_error: 更新金额失败
       confirm_remove: 确定要将 {username} 踢出比赛吗？
       remove_success: 成功踢出参赛者
       remove_error: 踢出参赛者失败
@@ -82,7 +86,7 @@ wusong8899-tournament-widget:
       rank_title: 称号
       user: 用户
       platform: 平台
-      score: 分数
+      amount: 金额
       no_participants: 暂无参与者
       view_all: "详情 (查看全部 {count} 名)"
       collapse: 收起

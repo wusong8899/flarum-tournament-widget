@@ -160,6 +160,36 @@ export default class TournamentManagementPage extends ExtensionPage {
             </div>
           </div>
 
+          <div className="Form-group">
+            <label className="FormLabel">{app.translator.trans('wusong8899-tournament-widget.admin.settings.header_title_label')}</label>
+            <input
+              className="FormControl"
+              type="text"
+              bidi={this.setting('wusong8899_tournament.header_title')}
+            />
+            <div className="helpText">
+              {app.translator.trans('wusong8899-tournament-widget.admin.settings.header_title_help')}
+            </div>
+          </div>
+
+          <div className="Form-group">
+            <label className="FormLabel">{app.translator.trans('wusong8899-tournament-widget.admin.settings.header_image_label')}</label>
+            <input
+              className={`FormControl ${this.validationErrors.header_image ? 'FormControl--error' : ''}`}
+              type="url"
+              bidi={this.setting('wusong8899_tournament.header_image')}
+              onchange={(e: Event) => this.validateUrl('header_image', (e.target as HTMLInputElement).value)}
+            />
+            {this.validationErrors.header_image && (
+              <div className="FormGroup-error">
+                {this.validationErrors.header_image}
+              </div>
+            )}
+            <div className="helpText">
+              {app.translator.trans('wusong8899-tournament-widget.admin.settings.header_image_help')}
+            </div>
+          </div>
+
           {this.submitButton()}
         </div>
       </div>
@@ -250,6 +280,16 @@ export default class TournamentManagementPage extends ExtensionPage {
         new URL(backgroundImage);
       } catch {
         this.validationErrors.background_image = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_url');
+        hasErrors = true;
+      }
+    }
+    
+    const headerImage = this.setting('wusong8899_tournament.header_image')();
+    if (headerImage && headerImage.trim()) {
+      try {
+        new URL(headerImage);
+      } catch {
+        this.validationErrors.header_image = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_url');
         hasErrors = true;
       }
     }

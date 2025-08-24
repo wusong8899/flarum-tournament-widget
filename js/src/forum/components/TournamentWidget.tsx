@@ -10,7 +10,7 @@ interface IParticipant {
   id: string;
   rank: number;
   title: string;
-  score: number;
+  amount: number;
   createdAt: string;
   user: {
     id: string;
@@ -36,6 +36,8 @@ interface ITournamentData {
   startDate: string;
   detailsUrl: string;
   backgroundImage: string;
+  headerTitle: string;
+  headerImage: string;
   userParticipated: boolean;
   totalParticipants: number;
   participants: IParticipant[];
@@ -102,10 +104,10 @@ export default class TournamentWidget extends Component {
         <div className="TournamentHeader">
           <img 
             className="TournamentHeader-image" 
-            src="https://i.mji.rip/2025/08/23/678aa40f68db12909bb4a4871d603876.webp" 
+            src={this.tournamentData.headerImage || "https://i.mji.rip/2025/08/23/678aa40f68db12909bb4a4871d603876.webp"}
             alt="Tournament"
           />
-          <span className="TournamentHeader-title">老哥榜</span>
+          <span className="TournamentHeader-title">{this.tournamentData.headerTitle || "老哥榜"}</span>
         </div>
         <TournamentCard
           title={this.tournamentData.title}
@@ -159,6 +161,8 @@ export default class TournamentWidget extends Component {
         startDate: response.data.attributes.startDate,
         detailsUrl: response.data.attributes.detailsUrl,
         backgroundImage: response.data.attributes.backgroundImage,
+        headerTitle: response.data.attributes.headerTitle,
+        headerImage: response.data.attributes.headerImage,
         userParticipated: response.data.attributes.userParticipated,
         totalParticipants: response.data.attributes.totalParticipants,
         participants: response.data.attributes.participants || []

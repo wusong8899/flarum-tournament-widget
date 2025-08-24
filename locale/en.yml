@@ -2,7 +2,7 @@ wusong8899-tournament-widget:
   admin:
     title: Tournament Management
     description: Manage tournament settings, platforms, and rank titles
-    
+
     settings:
       title_label: Tournament Title
       title_help: Tournament name displayed on the frontend
@@ -14,15 +14,18 @@ wusong8899-tournament-widget:
       details_url_help: Link that users will be redirected to when clicking "Details"
       background_image_label: Tournament Background Image
       background_image_help: Background image URL for the tournament card
-      saved: Settings saved successfully
+      header_title_label: Leaderboard Title
+      header_title_help: Title text displayed at the top of the leaderboard, defaults to "老哥榜"
+      header_image_label: Leaderboard Header Image
+      header_image_help: Image URL displayed next to the leaderboard title
       save_error: Failed to save settings
-      
+
     tabs:
       general: General Settings
       platforms: Platform Management
       rank_titles: Rank Titles
       participants: Participant Management
-      
+
     platforms:
       title: Platform Management
       name_label: Platform Name
@@ -35,7 +38,7 @@ wusong8899-tournament-widget:
       empty: No platforms available
       enable: Enable
       disable: Disable
-      
+
     rank_titles:
       title: Rank Title Management
       rank_label: Rank
@@ -45,21 +48,21 @@ wusong8899-tournament-widget:
       save_button: Save All Titles
       help: Set titles for different ranks, supports ranges (e.g. 4-10)
       preview_title: Preview
-      
+
     participants:
       title: Participant Management
-      description: Manage participant scores and view tournament statistics
+      description: Manage participant amounts and view tournament statistics
       user: User
       platform: Platform
-      score: Score
+      amount: Amount
       actions: Actions
       update: Update
       remove: Remove
       refresh: Refresh
       no_participants: No participants yet
       load_error: Failed to load participants
-      update_success: Score updated successfully
-      update_error: Failed to update score
+      update_success: Amount updated successfully
+      update_error: Failed to update amount
       confirm_remove: Are you sure you want to remove {username} from the tournament?
       remove_success: Participant removed successfully
       remove_error: Failed to remove participant
@@ -68,11 +71,11 @@ wusong8899-tournament-widget:
       invalid_url: Please enter a valid URL
       invalid_date: Please enter a valid date and time
       fix_errors: Please fix the validation errors above
-      
+
     permissions:
       participate: Participate in tournaments
       manage_platforms: Manage tournament platforms
-  
+
   forum:
     tournament:
       title: "K8 Unmatched Points King"
@@ -82,18 +85,18 @@ wusong8899-tournament-widget:
       participated: Participated
       login_to_participate: Login to Participate
       details: Details
-      
+
     leaderboard:
       title: Leaderboard
       rank: Rank
       rank_title: Title
       user: User
       platform: Platform
-      score: Score
+      amount: Amount
       no_participants: No participants yet
       view_all: "Details (View all {count} participants)"
       collapse: Collapse
-      
+
     participate_modal:
       title: Join Tournament
       platform_label: Select Platform

@@ -18,8 +18,10 @@ class TournamentSerializer extends AbstractSerializer
         $settings = $data->settings ?? resolve(SettingsRepositoryInterface::class);
 
         $participants = Participant::with(['user', 'platform'])
-            ->orderBy('score', 'desc')
-            ->orderBy('created_at', 'asc')
+            ->join('users', 'wusong8899_tournament_participants.user_id', '=', 'users.id')
+            ->orderBy('users.money', 'desc')
+            ->orderBy('wusong8899_tournament_participants.created_at', 'asc')
+            ->select('wusong8899_tournament_participants.*')
             ->get();
 
         // Get custom rank titles from settings
@@ -57,7 +59,7 @@ class TournamentSerializer extends AbstractSerializer
                 'id' => $participant->id,
                 'rank' => $rank,
                 'title' => $title,
-                'score' => (int) $participant->score,
+                'amount' => (int) ($participant->user->money ?? 0),
                 'createdAt' => $participant->created_at !== null ? $participant->created_at->toISOString() : null,
                 'user' => $participant->user !== null ? [
                     'id' => $participant->user_id,
@@ -91,6 +93,8 @@ class TournamentSerializer extends AbstractSerializer
             'detailsUrl' => $settings->get('wusong8899_tournament.details_url', '#'),
             'backgroundImage' => $settings
                 ->get('wusong8899_tournament.background_image', 'https://via.placeholder.com/400x200'),
+            'headerTitle' => $settings->get('wusong8899_tournament.header_title', '老哥榜'),
+            'headerImage' => $settings->get('wusong8899_tournament.header_image', 'https://i.mji.rip/2025/08/23/678aa40f68db12909bb4a4871d603876.webp'),
             'totalParticipants' => $participants->count(),
             'participants' => $participantsData,
         ];
