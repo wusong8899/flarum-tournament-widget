@@ -23,7 +23,7 @@ class ParticipateHandler
         $existingParticipation = Participant::where('user_id', $actor->id)->first();
         if ($existingParticipation) {
             throw new ValidationException([
-                'message' => 'You have already participated in this tournament.'
+                'message' => '您已经参加过此次锦标赛'
             ]);
         }
 
@@ -35,24 +35,12 @@ class ParticipateHandler
         $legacyPlatformAccount = trim(strip_tags($command->platformAccount ?? ''));
         
         // If we have new platform data, use it; otherwise fall back to legacy
-        if ($platformId && $platformUsername) {
+        if ($platformId && !empty($platformUsername)) {
             // New platform system
             $platform = Platform::where('id', $platformId)->where('is_active', true)->first();
             if (!$platform) {
                 throw new ValidationException([
-                    'platformId' => 'Selected platform is not available.'
-                ]);
-            }
-
-            if (strlen($platformUsername) < 2) {
-                throw new ValidationException([
-                    'platformUsername' => 'Platform username must be at least 2 characters long.'
-                ]);
-            }
-            
-            if (strlen($platformUsername) > 50) {
-                throw new ValidationException([
-                    'platformUsername' => 'Platform username must be less than 50 characters.'
+                    'platformId' => '所选平台不可用'
                 ]);
             }
             
@@ -62,7 +50,7 @@ class ParticipateHandler
                                             ->first();
             if ($existingParticipant) {
                 throw new ValidationException([
-                    'platformUsername' => 'This username is already registered on the selected platform.'
+                    'platformUsername' => '此用户名在该平台上已被注册'
                 ]);
             }
 
@@ -72,32 +60,14 @@ class ParticipateHandler
             $participant->platform_username = $platformUsername;
             $participant->save();
             
-        } else if ($legacyPlatformAccount) {
+        } else if (!empty($legacyPlatformAccount)) {
             // Legacy platform account system (for backward compatibility)
-            if (strlen($legacyPlatformAccount) < 3) {
-                throw new ValidationException([
-                    'platformAccount' => 'Platform account must be at least 3 characters long.'
-                ]);
-            }
-            
-            if (strlen($legacyPlatformAccount) > 100) {
-                throw new ValidationException([
-                    'platformAccount' => 'Platform account must be less than 100 characters.'
-                ]);
-            }
-            
-            // Check for invalid characters
-            if (!preg_match('/^[a-zA-Z0-9_-]+$/', $legacyPlatformAccount)) {
-                throw new ValidationException([
-                    'platformAccount' => 'Platform account can only contain letters, numbers, underscores and hyphens.'
-                ]);
-            }
             
             // Check for duplicate platform accounts
             $existingPlatformAccount = Participant::where('platform_account', $legacyPlatformAccount)->first();
             if ($existingPlatformAccount) {
                 throw new ValidationException([
-                    'platformAccount' => 'This platform account is already registered.'
+                    'platformAccount' => '此平台账号已被注册'
                 ]);
             }
 
@@ -108,7 +78,7 @@ class ParticipateHandler
             
         } else {
             throw new ValidationException([
-                'platform' => 'Please select a platform and enter your username.'
+                'platform' => '请选择平台并输入用户名'
             ]);
         }
 

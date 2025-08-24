@@ -17,6 +17,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
   platforms: TournamentPlatform[] = [];
   loading: boolean = false;
   loadingPlatforms: boolean = true;
+  errors: Record<string, string> = {};
 
   oninit(vnode: Vnode<ParticipateModalAttrs>) {
     super.oninit(vnode);
@@ -50,18 +51,38 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
               selectedPlatform={this.selectedPlatform}
               onPlatformSelect={(platform) => this.onPlatformSelect(platform)}
             />
+            {this.errors.platform && (
+              <div className="Alert Alert--error" style={{ marginTop: '8px' }}>
+                {this.errors.platform}
+              </div>
+            )}
+            {this.errors.platformId && (
+              <div className="Alert Alert--error" style={{ marginTop: '8px' }}>
+                {this.errors.platformId}
+              </div>
+            )}
           </div>
           <div className="Form-group">
             <label className="FormLabel">平台用户名</label>
             <input
-              className="FormControl"
+              className={`FormControl ${this.errors.platformUsername ? 'FormControl--error' : ''}`}
               type="text"
-              placeholder="请输入您在该平台的用户名"
+              placeholder="请输入您在该平台的用户名（支持中文、英文、数字等任意字符）"
               value={this.platformUsername}
               oninput={(e: Event) => {
                 this.platformUsername = (e.target as HTMLInputElement).value;
+                // Clear error when user starts typing
+                if (this.errors.platformUsername) {
+                  delete this.errors.platformUsername;
+                  m.redraw();
+                }
               }}
             />
+            {this.errors.platformUsername && (
+              <div className="Alert Alert--error" style={{ marginTop: '8px' }}>
+                {this.errors.platformUsername}
+              </div>
+            )}
           </div>
           <div className="Form-group">
             <Button
@@ -82,7 +103,21 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
   onsubmit(e: Event) {
     e.preventDefault();
     
-    if (!this.selectedPlatform || !this.platformUsername.trim()) {
+    // Clear previous errors
+    this.errors = {};
+    
+    // Client-side validation
+    if (!this.selectedPlatform) {
+      this.errors.platform = app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.platform_required');
+    }
+    
+    if (!this.platformUsername.trim()) {
+      this.errors.platformUsername = app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.username_required');
+    }
+    
+    // If there are validation errors, don't submit
+    if (Object.keys(this.errors).length > 0) {
+      m.redraw();
       return;
     }
 
@@ -110,8 +145,8 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
       },
       (error) => {
         this.loading = false;
-        const errorMessage = error?.response?.errors?.[0]?.detail || app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.error');
-        app.alerts.show('error', errorMessage);
+        this.handleError(error);
+        m.redraw();
       }
     );
   }
@@ -146,5 +181,39 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
     this.selectedPlatform = platform;
     // Clear username when switching platforms
     this.platformUsername = '';
+    // Clear platform related errors
+    delete this.errors.platform;
+    delete this.errors.platformId;
+  }
+
+  private handleError(error: any) {
+    // Clear previous errors
+    this.errors = {};
+    
+    if (error?.response?.errors) {
+      // Handle JSON:API validation errors
+      const errors = error.response.errors;
+      errors.forEach((err: any) => {
+        if (err.source?.pointer) {
+          const field = err.source.pointer.replace('/data/attributes/', '');
+          this.errors[field] = err.detail || err.title;
+        } else {
+          // If error doesn't have a specific field, show as general message
+          app.alerts.show('error', err.detail || err.title || app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.error'));
+        }
+      });
+    } else if (error?.response?.data?.errors) {
+      // Handle Laravel validation errors
+      const errors = error.response.data.errors;
+      Object.keys(errors).forEach(field => {
+        this.errors[field] = errors[field][0]; // Take first error message
+      });
+    } else {
+      // Generic error handling
+      const errorMessage = error?.response?.data?.message || 
+                          error?.message || 
+                          app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.error');
+      app.alerts.show('error', errorMessage);
+    }
   }
 }

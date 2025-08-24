@@ -109,3 +109,8 @@ wusong8899-tournament-widget:
       platform_required: Please select a platform
       username_required: Please enter your platform username
       account_required: Platform account is required
+      username_empty: Platform username cannot be empty
+      username_duplicate: This username is already registered on the selected platform
+      platform_unavailable: Selected platform is not available
+      account_duplicate: This platform account is already registered
+      validation_error: Submission information is incorrect, please check and try again

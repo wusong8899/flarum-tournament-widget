@@ -102,3 +102,8 @@ wusong8899-tournament-widget:
       platform_required: 请选择平台
       username_required: 请输入平台用户名
       account_required: 平台账号不能为空
+      username_empty: 平台用户名不能为空
+      username_duplicate: 此用户名在该平台上已被注册
+      platform_unavailable: 所选平台不可用
+      account_duplicate: 此平台账号已被注册
+      validation_error: 提交信息有误，请检查后重试
