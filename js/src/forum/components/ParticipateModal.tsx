@@ -139,7 +139,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
     }).then(
       () => {
         this.hide();
-        app.alerts.show('success', app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.success'));
+        app.alerts.show({ type: 'success' }, app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.success'));
         // Trigger a refresh of the tournament widget
         this.attrs.onParticipate?.();
       },
@@ -171,7 +171,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
       (error) => {
         console.error('Failed to load platforms:', error);
         this.loadingPlatforms = false;
-        app.alerts.show('error', '加载平台信息失败');
+        app.alerts.show({ type: 'error' }, '加载平台信息失败');
         m.redraw();
       }
     );
@@ -199,7 +199,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
           this.errors[field] = err.detail || err.title;
         } else {
           // If error doesn't have a specific field, show as general message
-          app.alerts.show('error', err.detail || err.title || app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.error'));
+          app.alerts.show({ type: 'error' }, err.detail || err.title || app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.error'));
         }
       });
     } else if (error?.response?.data?.errors) {
@@ -213,7 +213,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
       const errorMessage = error?.response?.data?.message || 
                           error?.message || 
                           app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.error');
-      app.alerts.show('error', errorMessage);
+      app.alerts.show({ type: 'error' }, errorMessage);
     }
   }
 }

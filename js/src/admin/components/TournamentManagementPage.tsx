@@ -227,7 +227,7 @@ export default class TournamentManagementPage extends ExtensionPage {
     }
   }
 
-  saveSettings() {
+  saveSettings(e?: MouseEvent) {
     // Clear any existing validation errors
     this.validationErrors = {};
     
@@ -255,19 +255,19 @@ export default class TournamentManagementPage extends ExtensionPage {
     }
     
     if (hasErrors) {
-      app.alerts.show('error', app.translator.trans('wusong8899-tournament-widget.admin.validation.fix_errors'));
+      app.alerts.show({ type: 'error' }, app.translator.trans('wusong8899-tournament-widget.admin.validation.fix_errors'));
       m.redraw();
       return Promise.resolve();
     }
     
-    return super.saveSettings().then(
+    return super.saveSettings(e).then(
       () => {
-        app.alerts.show('success', app.translator.trans('wusong8899-tournament-widget.admin.settings.saved'));
+        app.alerts.show({ type: 'success' }, app.translator.trans('wusong8899-tournament-widget.admin.settings.saved'));
       },
       (error) => {
         console.error('Settings save error:', error);
         const errorMessage = error?.response?.errors?.[0]?.detail || app.translator.trans('wusong8899-tournament-widget.admin.settings.save_error');
-        app.alerts.show('error', errorMessage);
+        app.alerts.show({ type: 'error' }, errorMessage);
       }
     );
   }
