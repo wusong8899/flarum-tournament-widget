@@ -4,6 +4,21 @@ import Button from 'flarum/common/components/Button';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import type Mithril from 'mithril';
 
+// JSON:API response types
+interface JsonApiResource {
+  id: string;
+  type: string;
+  attributes: Record<string, unknown>;
+  relationships?: Record<string, {
+    data?: { id: string; type: string } | null;
+  }>;
+}
+
+interface JsonApiResponse {
+  data: JsonApiResource[];
+  included?: JsonApiResource[];
+}
+
 interface Participant {
   id: number;
   score: number;
@@ -153,38 +168,58 @@ export default class ParticipantManagement extends Component {
         url: `${app.forum.attribute('apiUrl')}/tournament/participants?include=user,platform`,
       });
 
-      // Handle included data properly
-      const included = response.included || [];
-      const users = included.filter((item: any) => item.type === 'users');
-      const platforms = included.filter((item: any) => item.type === 'platforms');
+      // Handle included data properly with proper typing
+      const apiResponse = response as JsonApiResponse;
+      const included = apiResponse.included || [];
+      const users = included.filter((item): item is JsonApiResource => item.type === 'users');
+      const platforms = included.filter((item): item is JsonApiResource => item.type === 'platforms');
 
-      this.participants = response.data.map((item: any) => {
+      this.participants = apiResponse.data.map((item): Participant => {
         // Find related user
         const userId = item.relationships?.user?.data?.id;
-        const user = users.find((u: any) => u.id === userId);
+        const userResource = users.find((u) => u.id === userId);
         
         // Find related platform
         const platformId = item.relationships?.platform?.data?.id;
-        const platform = platforms.find((p: any) => p.id === platformId);
+        const platformResource = platforms.find((p) => p.id === platformId);
+
+        // Safely extract participant attributes
+        const participantAttrs = item.attributes as {
+          score?: number;
+          platformUsername?: string;
+          createdAt?: string;
+        };
+
+        // Safely extract user attributes
+        const userAttrs = userResource?.attributes as {
+          username?: string;
+          displayName?: string;
+          avatarUrl?: string;
+        } | undefined;
+
+        // Safely extract platform attributes
+        const platformAttrs = platformResource?.attributes as {
+          name?: string;
+        } | undefined;
 
         return {
-          id: parseInt(item.id),
-          score: item.attributes.score,
-          platformUsername: item.attributes.platformUsername,
-          createdAt: item.attributes.createdAt,
-          user: user ? {
-            id: parseInt(user.id),
-            username: user.attributes?.username || 'Unknown',
-            displayName: user.attributes?.displayName || 'Unknown',
-            avatarUrl: user.attributes?.avatarUrl,
+          id: parseInt(item.id, 10),
+          score: participantAttrs?.score || 0,
+          platformUsername: participantAttrs?.platformUsername || '',
+          createdAt: participantAttrs?.createdAt || '',
+          user: userResource ? {
+            id: parseInt(userResource.id, 10),
+            username: userAttrs?.username || 'Unknown',
+            displayName: userAttrs?.displayName || 'Unknown',
+            avatarUrl: userAttrs?.avatarUrl,
           } : {
             id: 0,
             username: 'Deleted User',
             displayName: 'Deleted User',
           },
-          platform: platform ? {
-            id: parseInt(platform.id),
-            name: platform.attributes?.name || 'Unknown',
+          platform: platformResource ? {
+            id: parseInt(platformResource.id, 10),
+            name: platformAttrs?.name || 'Unknown',
           } : undefined,
         };
       });
