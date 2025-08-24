@@ -1,6 +1,7 @@
 import app from 'flarum/forum/app';
 import Component from 'flarum/common/Component';
 import Button from 'flarum/common/components/Button';
+import avatar from 'flarum/common/helpers/avatar';
 import { Vnode } from 'mithril';
 
 interface IParticipant {
@@ -8,6 +9,7 @@ interface IParticipant {
   rank: number;
   title: string;
   amount: number;
+  score: number;
   createdAt: string;
   user: {
     id: string;
@@ -72,13 +74,7 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
                 </div>
                 <div className="Leaderboard-cell user">
                   <div className="user-info">
-                    {participant.user.avatarUrl && (
-                      <img 
-                        className="user-avatar" 
-                        src={participant.user.avatarUrl} 
-                        alt={participant.user.displayName}
-                      />
-                    )}
+                    {avatar(participant.user, { className: 'user-avatar' })}
                     <span className="user-name">{participant.user.displayName}</span>
                   </div>
                 </div>

@@ -51,18 +51,19 @@ wusong8899-tournament-widget:
 
     participants:
       title: Participant Management
-      description: Manage participant amounts and view tournament statistics
+      description: Manage participant scores and view tournament statistics
       user: User
       platform: Platform
       amount: Amount
+      score: Score
       actions: Actions
       update: Update
       remove: Remove
       refresh: Refresh
       no_participants: No participants yet
       load_error: Failed to load participants
-      update_success: Amount updated successfully
-      update_error: Failed to update amount
+      update_success: Score updated successfully
+      update_error: Failed to update score
       confirm_remove: Are you sure you want to remove {username} from the tournament?
       remove_success: Participant removed successfully
       remove_error: Failed to remove participant

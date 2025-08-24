@@ -18,10 +18,8 @@ class TournamentSerializer extends AbstractSerializer
         $settings = $data->settings ?? resolve(SettingsRepositoryInterface::class);
 
         $participants = Participant::with(['user', 'platform'])
-            ->join('users', 'wusong8899_tournament_participants.user_id', '=', 'users.id')
-            ->orderBy('users.money', 'desc')
-            ->orderBy('wusong8899_tournament_participants.created_at', 'asc')
-            ->select('wusong8899_tournament_participants.*')
+            ->orderBy('score', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
         // Get custom rank titles from settings
@@ -59,7 +57,7 @@ class TournamentSerializer extends AbstractSerializer
                 'id' => $participant->id,
                 'rank' => $rank,
                 'title' => $title,
-                'amount' => (int) ($participant->user->money ?? 0),
+                'amount' => (int) ($participant->score ?? 0),
                 'createdAt' => $participant->created_at !== null ? $participant->created_at->toISOString() : null,
                 'user' => $participant->user !== null ? [
                     'id' => $participant->user_id,

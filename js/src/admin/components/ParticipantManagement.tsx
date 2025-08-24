@@ -22,6 +22,7 @@ interface JsonApiResponse {
 interface Participant {
   id: number;
   amount: number;
+  score: number;
   platformUsername: string;
   createdAt: string;
   user: {
@@ -42,6 +43,7 @@ export default class ParticipantManagement extends Component {
   private loading = false;
   private saving = false;
   private deleting = false;
+  private editingScores: Record<number, number> = {};
 
   oninit(vnode: Mithril.VnodeDOM) {
     super.oninit(vnode);
@@ -73,7 +75,7 @@ export default class ParticipantManagement extends Component {
                 <tr>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.user')}</th>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.platform')}</th>
-                  <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.amount')}</th>
+                  <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.score')}</th>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.actions')}</th>
                 </tr>
               </thead>
@@ -107,8 +109,25 @@ export default class ParticipantManagement extends Component {
                       </div>
                     </td>
                     <td>
-                      <span className="participant-money">{participant.user.money || 0}</span>
-                      <div className="helpText">来自用户金币余额</div>
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input
+                          type="number"
+                          className="FormControl"
+                          style="width: 100px;"
+                          value={this.editingScores[participant.id] ?? participant.score}
+                          oninput={(e: any) => {
+                            this.editingScores[participant.id] = parseInt(e.target.value) || 0;
+                          }}
+                        />
+                        <Button
+                          className="Button Button--primary Button--size-small"
+                          loading={this.saving}
+                          disabled={this.saving || this.deleting}
+                          onclick={() => this.updateScore(participant)}
+                        >
+                          {app.translator.trans('wusong8899-tournament-widget.admin.participants.update')}
+                        </Button>
+                      </div>
                     </td>
                     <td>
                       <div style="display: flex; gap: 8px; justify-content: center;">
@@ -170,6 +189,7 @@ export default class ParticipantManagement extends Component {
         // Safely extract participant attributes
         const participantAttrs = item.attributes as {
           amount?: number;
+          score?: number;
           platformUsername?: string;
           createdAt?: string;
         };
@@ -189,6 +209,7 @@ export default class ParticipantManagement extends Component {
         return {
           id: parseInt(item.id, 10),
           amount: participantAttrs?.amount || 0,
+          score: participantAttrs?.score || 0,
           platformUsername: participantAttrs?.platformUsername || '',
           createdAt: participantAttrs?.createdAt || '',
           user: userResource ? {
@@ -257,6 +278,44 @@ export default class ParticipantManagement extends Component {
       );
     } finally {
       this.deleting = false;
+      m.redraw();
+    }
+  }
+
+  private async updateScore(participant: Participant): Promise<void> {
+    const newScore = this.editingScores[participant.id];
+    if (newScore === participant.score) {
+      return; // No change
+    }
+
+    this.saving = true;
+    m.redraw();
+
+    try {
+      await app.request({
+        method: 'PATCH',
+        url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}`,
+        body: {
+          data: {
+            type: 'participants',
+            attributes: {
+              score: newScore,
+            },
+          },
+        },
+      });
+
+      // Update local state
+      participant.score = newScore;
+      participant.amount = newScore; // Keep amount in sync
+      app.alerts.show({ type: 'success' }, app.translator.trans('wusong8899-tournament-widget.admin.participants.update_success'));
+    } catch (error) {
+      console.error('Failed to update score:', error);
+      app.alerts.show({ type: 'error' }, app.translator.trans('wusong8899-tournament-widget.admin.participants.update_error'));
+      // Revert editing score on error
+      this.editingScores[participant.id] = participant.score;
+    } finally {
+      this.saving = false;
       m.redraw();
     }
   }
