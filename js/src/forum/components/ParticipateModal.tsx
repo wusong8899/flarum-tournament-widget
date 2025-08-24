@@ -65,7 +65,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
           <div className="Form-group">
             <label className="FormLabel">平台用户名</label>
             <input
-              className={`FormControl ${this.errors.platformUsername ? 'FormControl--error' : ''}`}
+              className={this.errors.platformUsername ? 'FormControl FormControl--error' : 'FormControl'}
               type="text"
               placeholder="请输入您在该平台的用户名（支持中文、英文、数字等任意字符）"
               value={this.platformUsername}
