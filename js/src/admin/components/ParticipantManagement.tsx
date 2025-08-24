@@ -150,7 +150,7 @@ export default class ParticipantManagement extends Component {
                             {app.translator.trans('wusong8899-tournament-widget.admin.participants.status_approved')}
                           </span>
                         ) : (
-                          <span className="Badge Badge--warning">
+                          <span className="Badge Badge--danger">
                             {app.translator.trans('wusong8899-tournament-widget.admin.participants.status_pending')}
                           </span>
                         )}

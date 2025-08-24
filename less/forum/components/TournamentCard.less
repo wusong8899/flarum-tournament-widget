@@ -70,6 +70,36 @@
       margin-right: 5px;
     }
   }
+
+  &-status {
+    margin-top: 15px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    
+    &.approved {
+      background-color: #28a745;
+      color: white;
+      border: 1px solid #1e7e34;
+      
+      i {
+        color: white;
+      }
+    }
+    
+    &.pending {
+      background-color: #dc3545;
+      color: white;
+      border: 1px solid #c82333;
+      
+      i {
+        color: white;
+      }
+    }
+  }
 }
 
 // Responsive design

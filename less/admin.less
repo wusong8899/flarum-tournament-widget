@@ -357,6 +357,31 @@
       }
     }
     
+    .ParticipantManagement-status {
+      .Badge {
+        &.Badge--success {
+          background-color: #28a745;
+          color: white;
+          border-color: #28a745;
+        }
+        
+        &.Badge--danger {
+          background-color: #dc3545;
+          color: white;
+          border-color: #dc3545;
+        }
+      }
+      
+      .ParticipantManagement-approvedInfo {
+        margin-top: 5px;
+        
+        small {
+          color: var(--muted-color);
+          font-size: 11px;
+        }
+      }
+    }
+    
     .FormControl--compact {
       max-width: 80px;
       padding: 8px;
@@ -380,6 +405,40 @@
         &:disabled {
           opacity: 0.6;
           cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .ParticipantManagement-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    
+    .Button {
+      border-radius: 6px;
+      
+      &.Button--primary {
+        &:nth-child(2) {
+          // Pending tab - add red accent when active
+          background-color: #dc3545;
+          border-color: #dc3545;
+          
+          &:hover {
+            background-color: #c82333;
+            border-color: #c82333;
+          }
+        }
+        
+        &:nth-child(3) {
+          // Approved tab - add green accent when active
+          background-color: #28a745;
+          border-color: #28a745;
+          
+          &:hover {
+            background-color: #1e7e34;
+            border-color: #1e7e34;
+          }
         }
       }
     }
