@@ -112,9 +112,64 @@
   }
 
   &-display {
-    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &-boxes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &-unit {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9));
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 8px;
+    padding: 8px 12px;
+    min-width: 40px;
+    text-align: center;
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+    strong {
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffd700;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    }
+  }
+
+  &-separator {
+    font-size: 18px;
     font-weight: bold;
     color: #ffd700;
+    margin: 0 4px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  }
+
+  &-labels {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &-label {
+    font-size: 11px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 40px;
+    text-align: center;
+    padding: 0 12px;
+  }
+
+  &-spacer {
+    width: 26px; // Match separator width + margins
   }
 }
 
@@ -447,7 +502,37 @@
     }
   }
 
-  .Timer-display {
-    font-size: 14px;
+  .Timer {
+    &-boxes {
+      gap: 6px;
+    }
+
+    &-unit {
+      padding: 6px 8px;
+      min-width: 32px;
+
+      strong {
+        font-size: 16px;
+      }
+    }
+
+    &-separator {
+      font-size: 14px;
+      margin: 0 2px;
+    }
+
+    &-labels {
+      gap: 6px;
+    }
+
+    &-label {
+      font-size: 9px;
+      min-width: 32px;
+      padding: 0 8px;
+    }
+
+    &-spacer {
+      width: 18px; // Match smaller separator width + margins
+    }
   }
 }

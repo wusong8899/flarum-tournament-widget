@@ -37,7 +37,32 @@ export default class TournamentCard extends Component<TournamentCardAttrs> {
           <div className="Timer">
             <label>{app.translator.trans('wusong8899-tournament-widget.forum.tournament.started_at')}</label>
             <div className="Timer-display">
-              {timeElapsed.days}天 {timeElapsed.hours}:{timeElapsed.mins}:{timeElapsed.secs}
+              <div className="Timer-boxes">
+                <div className="Timer-unit">
+                  <strong>{timeElapsed.days}</strong>
+                </div>
+                <span className="Timer-separator">:</span>
+                <div className="Timer-unit">
+                  <strong>{timeElapsed.hours}</strong>
+                </div>
+                <span className="Timer-separator">:</span>
+                <div className="Timer-unit">
+                  <strong>{timeElapsed.mins}</strong>
+                </div>
+                <span className="Timer-separator">:</span>
+                <div className="Timer-unit">
+                  <strong>{timeElapsed.secs}</strong>
+                </div>
+              </div>
+              <div className="Timer-labels">
+                <div className="Timer-label">DAYS</div>
+                <span className="Timer-spacer"></span>
+                <div className="Timer-label">HRS</div>
+                <span className="Timer-spacer"></span>
+                <div className="Timer-label">MINS</div>
+                <span className="Timer-spacer"></span>
+                <div className="Timer-label">SECS</div>
+              </div>
             </div>
           </div>
           {!userParticipated && app.session.user && (
