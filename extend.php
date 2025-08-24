@@ -17,6 +17,8 @@ use wusong8899\TournamentWidget\Api\Controller\UpdateRankTitlesController;
 use wusong8899\TournamentWidget\Api\Controller\ListParticipantsController;
 use wusong8899\TournamentWidget\Api\Controller\UpdateParticipantScoreController;
 use wusong8899\TournamentWidget\Api\Controller\DeleteParticipantController;
+use wusong8899\TournamentWidget\Api\Controller\ApproveParticipantController;
+use wusong8899\TournamentWidget\Api\Controller\ListPendingParticipantsController;
 
 return [
     (new Extend\Frontend('forum'))
@@ -37,7 +39,9 @@ return [
         ->get('/tournament/rank-titles', 'tournament.rank-titles.list', ListRankTitlesController::class)
         ->post('/tournament/rank-titles', 'tournament.rank-titles.update', UpdateRankTitlesController::class)
         ->get('/tournament/participants', 'tournament.participants.list', ListParticipantsController::class)
+        ->get('/tournament/participants/pending', 'tournament.participants.pending', ListPendingParticipantsController::class)
         ->patch('/tournament/participants/{id}', 'tournament.participants.update', UpdateParticipantScoreController::class)
+        ->patch('/tournament/participants/{id}/approve', 'tournament.participants.approve', ApproveParticipantController::class)
         ->delete('/tournament/participants/{id}', 'tournament.participants.delete', DeleteParticipantController::class),
 
 

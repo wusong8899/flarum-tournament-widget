@@ -52,21 +52,35 @@ wusong8899-tournament-widget:
     participants:
       title: Participant Management
       description: Manage participant scores and view tournament statistics
+      tab_all: All Participants
+      tab_pending: Pending Approval
+      tab_approved: Approved
       user: User
       platform: Platform
+      status: Status
+      status_pending: Pending
+      status_approved: Approved
       amount: Amount
       score: Score
       actions: Actions
       update: Update
       remove: Remove
+      approve: Approve
+      reject: Reject
       refresh: Refresh
       no_participants: No participants yet
       load_error: Failed to load participants
       update_success: Score updated successfully
       update_error: Failed to update score
+      approve_success: Participant application approved
+      approve_error: Failed to approve application
+      reject_success: Participant application rejected
+      reject_error: Failed to reject application
       confirm_remove: Are you sure you want to remove {username} from the tournament?
+      confirm_reject: Are you sure you want to reject {username}'s tournament application?
       remove_success: Participant removed successfully
       remove_error: Failed to remove participant
+      approved_by: Approved by {username} on {date}
 
     validation:
       invalid_url: Please enter a valid URL
@@ -84,6 +98,8 @@ wusong8899-tournament-widget:
       started_at: Started At
       participate_now: Participate Now
       participated: Participated
+      approved: Approved to Participate
+      pending_approval: Awaiting Approval
       login_to_participate: Login to Participate
       details: Details
 
@@ -107,7 +123,7 @@ wusong8899-tournament-widget:
       platform_account_label: Platform Account
       platform_account_placeholder: Please enter your platform account
       submit: Submit
-      success: Successfully joined!
+      success: Application submitted, awaiting admin approval!
       error: Failed to join, please try again
       already_participated: You have already participated in this tournament
       platform_required: Please select a platform

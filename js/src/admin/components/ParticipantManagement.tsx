@@ -24,6 +24,8 @@ interface Participant {
   amount: number;
   score: number;
   platformUsername: string;
+  isApproved: boolean;
+  approvedAt?: string;
   createdAt: string;
   user: {
     id: number;
@@ -36,6 +38,11 @@ interface Participant {
     id: number;
     name: string;
   };
+  approvedBy?: {
+    id: number;
+    username: string;
+    displayName: string;
+  };
 }
 
 export default class ParticipantManagement extends Component {
@@ -43,6 +50,8 @@ export default class ParticipantManagement extends Component {
   private loading = false;
   private saving = false;
   private deleting = false;
+  private approving = false;
+  private activeTab = 'all'; // 'all', 'pending', 'approved'
   private editingScores: Record<number, number> = {};
 
   oninit(vnode: Mithril.VnodeDOM) {
@@ -55,6 +64,9 @@ export default class ParticipantManagement extends Component {
       return <LoadingIndicator />;
     }
 
+    const filteredParticipants = this.getFilteredParticipants();
+    const pendingCount = this.participants.filter(p => !p.isApproved).length;
+
     return (
       <div className="ParticipantManagement">
         <div className="ParticipantManagement-header">
@@ -64,7 +76,29 @@ export default class ParticipantManagement extends Component {
           </p>
         </div>
 
-        {this.participants.length === 0 ? (
+        {/* Tab navigation */}
+        <div className="ParticipantManagement-tabs">
+          <button 
+            className={this.activeTab === 'all' ? 'Button Button--primary' : 'Button'}
+            onclick={() => this.switchTab('all')}
+          >
+            {app.translator.trans('wusong8899-tournament-widget.admin.participants.tab_all')} ({this.participants.length})
+          </button>
+          <button 
+            className={this.activeTab === 'pending' ? 'Button Button--primary' : 'Button'}
+            onclick={() => this.switchTab('pending')}
+          >
+            {app.translator.trans('wusong8899-tournament-widget.admin.participants.tab_pending')} ({pendingCount})
+          </button>
+          <button 
+            className={this.activeTab === 'approved' ? 'Button Button--primary' : 'Button'}
+            onclick={() => this.switchTab('approved')}
+          >
+            {app.translator.trans('wusong8899-tournament-widget.admin.participants.tab_approved')} ({this.participants.length - pendingCount})
+          </button>
+        </div>
+
+        {filteredParticipants.length === 0 ? (
           <div className="ParticipantManagement-empty">
             <p>{app.translator.trans('wusong8899-tournament-widget.admin.participants.no_participants')}</p>
           </div>
@@ -75,12 +109,13 @@ export default class ParticipantManagement extends Component {
                 <tr>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.user')}</th>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.platform')}</th>
+                  <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.status')}</th>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.score')}</th>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.actions')}</th>
                 </tr>
               </thead>
               <tbody>
-                {this.participants.map((participant) => (
+                {filteredParticipants.map((participant) => (
                   <tr key={participant.id}>
                     <td>
                       <div className="ParticipantManagement-user">
@@ -109,6 +144,29 @@ export default class ParticipantManagement extends Component {
                       </div>
                     </td>
                     <td>
+                      <div className="ParticipantManagement-status">
+                        {participant.isApproved ? (
+                          <span className="Badge Badge--success">
+                            {app.translator.trans('wusong8899-tournament-widget.admin.participants.status_approved')}
+                          </span>
+                        ) : (
+                          <span className="Badge Badge--warning">
+                            {app.translator.trans('wusong8899-tournament-widget.admin.participants.status_pending')}
+                          </span>
+                        )}
+                        {participant.approvedAt && participant.approvedBy && (
+                          <div className="ParticipantManagement-approvedInfo">
+                            <small>
+                              {app.translator.trans('wusong8899-tournament-widget.admin.participants.approved_by', {
+                                username: participant.approvedBy.displayName || participant.approvedBy.username,
+                                date: new Date(participant.approvedAt).toLocaleDateString()
+                              })}
+                            </small>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td>
                       <div style="display: flex; align-items: center; gap: 8px;">
                         <input
                           type="number"
@@ -122,7 +180,7 @@ export default class ParticipantManagement extends Component {
                         <Button
                           className="Button Button--primary Button--size-small"
                           loading={this.saving}
-                          disabled={this.saving || this.deleting}
+                          disabled={this.saving || this.deleting || this.approving}
                           onclick={() => this.updateScore(participant)}
                         >
                           {app.translator.trans('wusong8899-tournament-widget.admin.participants.update')}
@@ -130,11 +188,31 @@ export default class ParticipantManagement extends Component {
                       </div>
                     </td>
                     <td>
-                      <div style="display: flex; gap: 8px; justify-content: center;">
+                      <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                        {!participant.isApproved && (
+                          <>
+                            <Button
+                              className="Button Button--success Button--size-small"
+                              loading={this.approving}
+                              disabled={this.saving || this.deleting || this.approving}
+                              onclick={() => this.approveParticipant(participant)}
+                            >
+                              {app.translator.trans('wusong8899-tournament-widget.admin.participants.approve')}
+                            </Button>
+                            <Button
+                              className="Button Button--warning Button--size-small"
+                              loading={this.approving}
+                              disabled={this.saving || this.deleting || this.approving}
+                              onclick={() => this.rejectParticipant(participant)}
+                            >
+                              {app.translator.trans('wusong8899-tournament-widget.admin.participants.reject')}
+                            </Button>
+                          </>
+                        )}
                         <Button
                           className="Button Button--danger Button--size-small"
                           loading={this.deleting}
-                          disabled={this.saving || this.deleting}
+                          disabled={this.saving || this.deleting || this.approving}
                           onclick={() => this.confirmDeleteParticipant(participant)}
                         >
                           {app.translator.trans('wusong8899-tournament-widget.admin.participants.remove')}
@@ -191,6 +269,8 @@ export default class ParticipantManagement extends Component {
           amount?: number;
           score?: number;
           platformUsername?: string;
+          isApproved?: boolean;
+          approvedAt?: string;
           createdAt?: string;
         };
 
@@ -201,9 +281,19 @@ export default class ParticipantManagement extends Component {
           avatarUrl?: string;
         } | undefined;
 
+        // Find related approver
+        const approverId = item.relationships?.approvedBy?.data?.id;
+        const approverResource = users.find((u) => u.id === approverId);
+
         // Safely extract platform attributes
         const platformAttrs = platformResource?.attributes as {
           name?: string;
+        } | undefined;
+
+        // Safely extract approver attributes
+        const approverAttrs = approverResource?.attributes as {
+          username?: string;
+          displayName?: string;
         } | undefined;
 
         return {
@@ -211,6 +301,8 @@ export default class ParticipantManagement extends Component {
           amount: participantAttrs?.amount || 0,
           score: participantAttrs?.score || 0,
           platformUsername: participantAttrs?.platformUsername || '',
+          isApproved: participantAttrs?.isApproved || false,
+          approvedAt: participantAttrs?.approvedAt,
           createdAt: participantAttrs?.createdAt || '',
           user: userResource ? {
             id: parseInt(userResource.id, 10),
@@ -227,6 +319,11 @@ export default class ParticipantManagement extends Component {
           platform: platformResource ? {
             id: parseInt(platformResource.id, 10),
             name: platformAttrs?.name || 'Unknown',
+          } : undefined,
+          approvedBy: approverResource ? {
+            id: parseInt(approverResource.id, 10),
+            username: approverAttrs?.username || 'Unknown',
+            displayName: approverAttrs?.displayName || 'Unknown',
           } : undefined,
         };
       });
@@ -316,6 +413,107 @@ export default class ParticipantManagement extends Component {
       this.editingScores[participant.id] = participant.score;
     } finally {
       this.saving = false;
+      m.redraw();
+    }
+  }
+
+  private getFilteredParticipants(): Participant[] {
+    switch (this.activeTab) {
+      case 'pending':
+        return this.participants.filter(p => !p.isApproved);
+      case 'approved':
+        return this.participants.filter(p => p.isApproved);
+      case 'all':
+      default:
+        return this.participants;
+    }
+  }
+
+  private switchTab(tab: string): void {
+    this.activeTab = tab;
+    m.redraw();
+  }
+
+  private async approveParticipant(participant: Participant): Promise<void> {
+    this.approving = true;
+    m.redraw();
+
+    try {
+      await app.request({
+        method: 'PATCH',
+        url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}/approve`,
+        body: {
+          data: {
+            type: 'participants',
+            attributes: {
+              action: 'approve',
+            },
+          },
+        },
+      });
+
+      // Update local state
+      participant.isApproved = true;
+      participant.approvedAt = new Date().toISOString();
+      
+      app.alerts.show(
+        { type: 'success' }, 
+        app.translator.trans('wusong8899-tournament-widget.admin.participants.approve_success')
+      );
+    } catch (error) {
+      console.error('Failed to approve participant:', error);
+      app.alerts.show(
+        { type: 'error' }, 
+        app.translator.trans('wusong8899-tournament-widget.admin.participants.approve_error')
+      );
+    } finally {
+      this.approving = false;
+      m.redraw();
+    }
+  }
+
+  private async rejectParticipant(participant: Participant): Promise<void> {
+    const confirmMessage = app.translator.trans(
+      'wusong8899-tournament-widget.admin.participants.confirm_reject',
+      { username: participant.user.displayName || participant.user.username }
+    );
+
+    if (!confirm(confirmMessage)) {
+      return;
+    }
+
+    this.approving = true;
+    m.redraw();
+
+    try {
+      await app.request({
+        method: 'PATCH',
+        url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}/approve`,
+        body: {
+          data: {
+            type: 'participants',
+            attributes: {
+              action: 'reject',
+            },
+          },
+        },
+      });
+
+      // Remove participant from local state
+      this.participants = this.participants.filter(p => p.id !== participant.id);
+      
+      app.alerts.show(
+        { type: 'success' }, 
+        app.translator.trans('wusong8899-tournament-widget.admin.participants.reject_success')
+      );
+    } catch (error) {
+      console.error('Failed to reject participant:', error);
+      app.alerts.show(
+        { type: 'error' }, 
+        app.translator.trans('wusong8899-tournament-widget.admin.participants.reject_error')
+      );
+    } finally {
+      this.approving = false;
       m.redraw();
     }
   }

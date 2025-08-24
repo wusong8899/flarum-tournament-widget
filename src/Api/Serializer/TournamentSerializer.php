@@ -18,6 +18,7 @@ class TournamentSerializer extends AbstractSerializer
         $settings = $data->settings ?? resolve(SettingsRepositoryInterface::class);
 
         $participants = Participant::with(['user', 'platform'])
+            ->where('is_approved', true)
             ->orderBy('score', 'desc')
             ->orderBy('created_at', 'asc')
             ->get();
@@ -105,6 +106,11 @@ class TournamentSerializer extends AbstractSerializer
 
         return array_merge($tournamentData, [
             'userParticipated' => $userParticipation !== null,
+            'userApplicationStatus' => $userParticipation ? [
+                'isApproved' => $userParticipation->is_approved,
+                'submittedAt' => $userParticipation->created_at !== null ? $userParticipation->created_at->toISOString() : null,
+                'approvedAt' => $userParticipation->approved_at !== null ? $userParticipation->approved_at->toISOString() : null,
+            ] : null,
         ]);
     }
 }

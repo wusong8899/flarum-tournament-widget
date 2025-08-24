@@ -16,12 +16,17 @@ interface TournamentCardAttrs {
     secs: string;
   };
   userParticipated: boolean;
+  userApplicationStatus: {
+    isApproved: boolean;
+    submittedAt?: string;
+    approvedAt?: string;
+  } | null;
   onParticipate: () => void;
 }
 
 export default class TournamentCard extends Component<TournamentCardAttrs> {
   view(vnode: Vnode<TournamentCardAttrs>) {
-    const { title, prizePool, detailsUrl, backgroundImage, timeElapsed, userParticipated, onParticipate } = vnode.attrs;
+    const { title, prizePool, detailsUrl, backgroundImage, timeElapsed, userParticipated, userApplicationStatus, onParticipate } = vnode.attrs;
 
     return (
       <div className="TournamentCard" style={{ backgroundImage: `url(${backgroundImage})` }}>
@@ -77,9 +82,19 @@ export default class TournamentCard extends Component<TournamentCardAttrs> {
               {app.translator.trans('wusong8899-tournament-widget.forum.tournament.participate_now')}
             </Button>
           )}
-          {userParticipated && (
-            <div className="TournamentCard-participated">
-              <i className="fas fa-check-circle"></i> {app.translator.trans('wusong8899-tournament-widget.forum.tournament.participated')}
+          {userParticipated && userApplicationStatus && (
+            <div className={`TournamentCard-status ${userApplicationStatus.isApproved ? 'approved' : 'pending'}`}>
+              {userApplicationStatus.isApproved ? (
+                <>
+                  <i className="fas fa-check-circle"></i> 
+                  {app.translator.trans('wusong8899-tournament-widget.forum.tournament.approved')}
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-clock"></i> 
+                  {app.translator.trans('wusong8899-tournament-widget.forum.tournament.pending_approval')}
+                </>
+              )}
             </div>
           )}
           {!app.session.user && (

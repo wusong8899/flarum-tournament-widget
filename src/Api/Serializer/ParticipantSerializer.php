@@ -24,6 +24,8 @@ class ParticipantSerializer extends AbstractSerializer
             'platformAccount' => $participant->platform_account,
             'platformUsername' => $participant->platform_username,
             'score' => (int) $participant->score,
+            'isApproved' => (bool) $participant->is_approved,
+            'approvedAt' => $this->formatDate($participant->approved_at),
             'createdAt' => $this->formatDate($participant->created_at),
             'updatedAt' => $this->formatDate($participant->updated_at),
         ];
@@ -37,5 +39,10 @@ class ParticipantSerializer extends AbstractSerializer
     protected function platform(Participant $participant): ?\Tobscure\JsonApi\Relationship
     {
         return $this->hasOne($participant, PlatformSerializer::class);
+    }
+
+    protected function approvedBy(Participant $participant): ?\Tobscure\JsonApi\Relationship
+    {
+        return $this->hasOne($participant, UserSerializer::class);
     }
 }

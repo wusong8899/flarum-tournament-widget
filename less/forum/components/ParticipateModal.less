@@ -1,0 +1,38 @@
+.ParticipateModal {
+  .Modal-content {
+    background: #2a2a3e;
+    color: white;
+  }
+
+  .FormLabel {
+    color: white;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .FormControl {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    width: 100%;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    &:focus {
+      border-color: rgba(255, 255, 255, 0.4);
+      outline: none;
+    }
+  }
+
+  .Form-group {
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

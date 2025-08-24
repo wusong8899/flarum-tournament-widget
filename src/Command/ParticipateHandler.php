@@ -58,6 +58,7 @@ class ParticipateHandler
             $participant->user_id = $actor->id;
             $participant->platform_id = $platformId;
             $participant->platform_username = $platformUsername;
+            $participant->is_approved = false; // New participants need approval
             $participant->save();
             
         } else if (!empty($legacyPlatformAccount)) {
@@ -74,6 +75,7 @@ class ParticipateHandler
             $participant = new Participant();
             $participant->user_id = $actor->id;
             $participant->platform_account = $legacyPlatformAccount;
+            $participant->is_approved = false; // New participants need approval
             $participant->save();
             
         } else {

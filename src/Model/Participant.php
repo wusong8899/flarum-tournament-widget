@@ -15,10 +15,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $platform_username
  * @property string $platform_account
  * @property int $score
+ * @property bool $is_approved
+ * @property \Carbon\Carbon|null $approved_at
+ * @property int|null $approved_by
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read User $user
  * @property-read Platform|null $platform
+ * @property-read User|null $approvedBy
  */
 class Participant extends AbstractModel
 {
@@ -29,10 +33,17 @@ class Participant extends AbstractModel
         'platform_id', 
         'platform_username',
         'platform_account', // Keep for backward compatibility during migration
-        'score'
+        'score',
+        'is_approved',
+        'approved_at',
+        'approved_by'
     ];
     
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = ['created_at', 'updated_at', 'approved_at'];
+
+    protected $casts = [
+        'is_approved' => 'boolean',
+    ];
 
     public function user(): BelongsTo
     {
@@ -65,5 +76,13 @@ class Participant extends AbstractModel
     public function getPlatformUsernameDisplayAttribute(): string
     {
         return $this->platform_username ?: $this->platform_account ?: '';
+    }
+
+    /**
+     * Get the user who approved this participant
+     */
+    public function approvedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
     }
 }

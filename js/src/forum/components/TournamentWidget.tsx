@@ -40,6 +40,11 @@ interface ITournamentData {
   headerTitle: string;
   headerImage: string;
   userParticipated: boolean;
+  userApplicationStatus: {
+    isApproved: boolean;
+    submittedAt?: string;
+    approvedAt?: string;
+  } | null;
   totalParticipants: number;
   participants: IParticipant[];
 }
@@ -117,6 +122,7 @@ export default class TournamentWidget extends Component {
           backgroundImage={this.tournamentData.backgroundImage}
           timeElapsed={this.timeElapsed}
           userParticipated={this.tournamentData.userParticipated}
+          userApplicationStatus={this.tournamentData.userApplicationStatus}
           onParticipate={() => this.loadData()}
         />
         <Leaderboard 
@@ -165,6 +171,7 @@ export default class TournamentWidget extends Component {
         headerTitle: response.data.attributes.headerTitle,
         headerImage: response.data.attributes.headerImage,
         userParticipated: response.data.attributes.userParticipated,
+        userApplicationStatus: response.data.attributes.userApplicationStatus,
         totalParticipants: response.data.attributes.totalParticipants,
         participants: response.data.attributes.participants || []
       };
