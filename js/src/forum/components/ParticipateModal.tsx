@@ -139,7 +139,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
     }).then(
       () => {
         this.loading = false;
-        this.hide();
+        app.modal.close();
         app.alerts.show({ type: 'success' }, app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.success'));
         // Trigger a refresh of the tournament widget
         this.attrs.onParticipate?.();
