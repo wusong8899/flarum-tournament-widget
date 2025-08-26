@@ -3,7 +3,7 @@ import Component from 'flarum/common/Component';
 import Button from 'flarum/common/components/Button';
 import avatar from 'flarum/common/helpers/avatar';
 import User from 'flarum/common/models/User';
-import { Vnode } from 'mithril';
+import { Vnode, VnodeDOM } from 'mithril';
 
 interface IParticipant {
   id: string;
@@ -36,6 +36,43 @@ interface LeaderboardAttrs {
 
 export default class Leaderboard extends Component<LeaderboardAttrs> {
   showAll: boolean = false;
+  containerRef: HTMLElement | null = null;
+
+  oncreate(vnode: VnodeDOM<LeaderboardAttrs>) {
+    super.oncreate(vnode);
+    this.containerRef = vnode.dom as HTMLElement;
+    this.observeResize();
+  }
+
+  onremove() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
+  private resizeObserver?: ResizeObserver;
+
+  observeResize() {
+    if (!this.containerRef || typeof ResizeObserver === 'undefined') return;
+    
+    this.resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        const width = entry.contentRect.width;
+        // Add classes based on container width for additional responsive control
+        if (width < 640) {
+          this.containerRef?.classList.add('compact-view');
+          this.containerRef?.classList.remove('wide-view');
+        } else if (width > 1200) {
+          this.containerRef?.classList.add('wide-view');
+          this.containerRef?.classList.remove('compact-view');
+        } else {
+          this.containerRef?.classList.remove('compact-view', 'wide-view');
+        }
+      }
+    });
+    
+    this.resizeObserver.observe(this.containerRef);
+  }
 
   view(vnode: Vnode<LeaderboardAttrs>) {
     const { participants } = vnode.attrs;
@@ -65,7 +102,11 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
         <div className="Leaderboard-list">
           {rankingsToShow.length > 0 ? (
             rankingsToShow.map((participant) => (
-              <div className={`Leaderboard-item rank-${participant.rank}`} key={participant.id}>
+              <div 
+                className={`Leaderboard-item rank-${participant.rank}`} 
+                key={participant.id}
+                data-rank={`#${participant.rank}`}
+                title={`${participant.user.displayName} - ${participant.title}`}>
                 <div className="Leaderboard-cell rank">
                   <i className={this.getRankIcon(participant.rank)}></i>
                   <span className="rank-number">{participant.rank}</span>

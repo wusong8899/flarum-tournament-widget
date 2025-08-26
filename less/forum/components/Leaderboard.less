@@ -1,8 +1,8 @@
 .Leaderboard {
   padding: 20px;
   color: white;
-  white-space: nowrap;
-  width: fit-content;
+  width: 100%;
+  overflow-x: auto;
 
   &-header {
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
@@ -11,8 +11,13 @@
 
   &-headerRow {
     display: grid;
-    grid-template-columns: 80px 120px 1fr 150px 100px;
-    gap: 15px;
+    grid-template-columns: 
+      minmax(60px, 0.5fr)    
+      minmax(100px, 1fr)     
+      minmax(150px, 2fr)     
+      minmax(120px, 1.5fr)   
+      minmax(80px, 1fr);
+    gap: 10px;
     padding: 12px 0;
     align-items: center;
     font-weight: bold;
@@ -54,8 +59,13 @@
 
   &-item {
     display: grid;
-    grid-template-columns: 80px 120px 1fr 150px 100px;
-    gap: 15px;
+    grid-template-columns: 
+      minmax(60px, 0.5fr)    
+      minmax(100px, 1fr)     
+      minmax(150px, 2fr)     
+      minmax(120px, 1.5fr)   
+      minmax(80px, 1fr);
+    gap: 10px;
     padding: 15px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     align-items: center;
@@ -83,6 +93,8 @@
   }
 
   &-cell {
+    overflow: hidden;
+
     &.rank {
       display: flex;
       align-items: center;
@@ -130,6 +142,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        min-width: 0;
 
         .user-avatar {
           width: 32px;
@@ -151,6 +164,10 @@
         .user-name {
           font-weight: 600;
           font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          min-width: 0;
         }
       }
     }
@@ -183,6 +200,7 @@
         .platform-details {
           min-width: 0;
           flex: 1;
+          overflow: hidden;
 
           .platform-name {
             font-size: 12px;
@@ -197,6 +215,7 @@
             line-height: 1.2;
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }
@@ -235,20 +254,45 @@
 }
 
 // Responsive design
+// Tablet view
+@media (max-width: 1024px) {
+  .Leaderboard {
+    &-headerRow, &-item {
+      grid-template-columns: 
+        minmax(50px, 0.5fr)
+        minmax(80px, 1fr)
+        minmax(120px, 2fr)
+        minmax(100px, 1.5fr)
+        minmax(70px, 1fr);
+      gap: 8px;
+    }
+  }
+}
+
+// Mobile view
 @media (max-width: 768px) {
   .Leaderboard {
     padding: 15px;
-    overflow-x: auto;
 
     &-headerRow {
-      grid-template-columns: 50px 80px 1fr 120px 80px;
-      gap: 10px;
+      grid-template-columns: 
+        minmax(40px, 0.5fr)
+        minmax(70px, 1fr)
+        minmax(100px, 2fr)
+        minmax(80px, 1.2fr)
+        minmax(60px, 0.8fr);
+      gap: 6px;
       font-size: 12px;
     }
 
     &-item {
-      grid-template-columns: 50px 80px 1fr 120px 80px;
-      gap: 10px;
+      grid-template-columns: 
+        minmax(40px, 0.5fr)
+        minmax(70px, 1fr)
+        minmax(100px, 2fr)
+        minmax(80px, 1.2fr)
+        minmax(60px, 0.8fr);
+      gap: 6px;
       padding: 12px 0;
     }
 
