@@ -57,12 +57,7 @@ class UpdateParticipantScoreController extends AbstractShowController
             
             $scoreValue = (int) $score;
             
-            // Optional: Add score range validation
-            if ($scoreValue < 0) {
-                throw new ValidationException([
-                    'score' => 'Score cannot be negative.'
-                ]);
-            }
+            // Allow negative scores - removed validation restriction
             
             $participant->score = $scoreValue;
             $participant->save();

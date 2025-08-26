@@ -127,7 +127,12 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
                   </div>
                 </div>
                 <div className="Leaderboard-cell score">
-                  <span className="score-amount">{participant.amount}</span>
+                  <span className={`score-amount ${
+                    participant.amount < 0 ? 'negative' : 
+                    participant.amount > 0 ? 'positive' : 'zero'
+                  }`}>
+                    {participant.amount}
+                  </span>
                 </div>
               </div>
             ))

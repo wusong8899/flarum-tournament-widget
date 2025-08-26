@@ -174,7 +174,16 @@ export default class ParticipantManagement extends Component {
                           style="width: 100px;"
                           value={this.editingScores[participant.id] ?? participant.score}
                           oninput={(e: any) => {
-                            this.editingScores[participant.id] = parseInt(e.target.value) || 0;
+                            const value = e.target.value;
+                            // Allow negative numbers and empty input during editing
+                            if (value === '' || value === '-') {
+                              this.editingScores[participant.id] = value;
+                            } else {
+                              const numValue = parseInt(value);
+                              if (!isNaN(numValue)) {
+                                this.editingScores[participant.id] = numValue;
+                              }
+                            }
                           }}
                         />
                         <Button
@@ -381,8 +390,15 @@ export default class ParticipantManagement extends Component {
 
   private async updateScore(participant: Participant): Promise<void> {
     const newScore = this.editingScores[participant.id];
-    if (newScore === participant.score) {
-      return; // No change
+    
+    // Handle empty or invalid input
+    if (newScore === '' || newScore === '-') {
+      return;
+    }
+    
+    const scoreValue = parseInt(newScore);
+    if (isNaN(scoreValue) || scoreValue === participant.score) {
+      return; // No change or invalid input
     }
 
     this.saving = true;
@@ -396,15 +412,15 @@ export default class ParticipantManagement extends Component {
           data: {
             type: 'participants',
             attributes: {
-              score: newScore,
+              score: scoreValue,
             },
           },
         },
       });
 
       // Update local state
-      participant.score = newScore;
-      participant.amount = newScore; // Keep amount in sync
+      participant.score = scoreValue;
+      participant.amount = scoreValue; // Keep amount in sync
       app.alerts.show({ type: 'success' }, app.translator.trans('wusong8899-tournament-widget.admin.participants.update_success'));
     } catch (error) {
       console.error('Failed to update score:', error);

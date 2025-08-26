@@ -229,7 +229,18 @@
       .score-amount {
         font-weight: bold;
         font-size: 16px;
-        color: #ffd700;
+        
+        &.positive {
+          color: #ffd700; // Gold for positive scores
+        }
+        
+        &.negative {
+          color: #ff4444; // Red for negative scores
+        }
+        
+        &.zero {
+          color: #888888; // Gray for zero scores
+        }
       }
     }
   }
@@ -353,6 +364,11 @@
 
       &.score .score-amount {
         font-size: 12px;
+        
+        // Keep color classes in mobile view
+        &.positive { color: #ffd700; }
+        &.negative { color: #ff4444; }
+        &.zero { color: #888888; }
       }
     }
   }

@@ -13,10 +13,28 @@ export default class TournamentManagementPage extends ExtensionPage {
   private activeTab = Stream('general');
   private loading = false;
   private validationErrors: Record<string, string> = {};
+  private calculatedPrizePool: string = '0';
 
   oninit(vnode: Mithril.VnodeDOM) {
     super.oninit(vnode);
     app.setTitle(app.translator.trans('wusong8899-tournament-widget.admin.title'));
+    this.loadPrizePoolData();
+  }
+
+  private async loadPrizePoolData(): Promise<void> {
+    try {
+      const response = await app.request({
+        method: 'GET',
+        url: `${app.forum.attribute('apiUrl')}/tournament`,
+      });
+
+      if (response && response.data && response.data.attributes) {
+        this.calculatedPrizePool = response.data.attributes.prizePool || '0';
+        m.redraw();
+      }
+    } catch (error) {
+      console.error('Failed to load prize pool data:', error);
+    }
   }
 
   content() {
@@ -95,13 +113,11 @@ export default class TournamentManagementPage extends ExtensionPage {
 
           <div className="Form-group">
             <label className="FormLabel">{app.translator.trans('wusong8899-tournament-widget.admin.settings.prize_pool_label')}</label>
-            <input
-              className="FormControl"
-              type="text"
-              bidi={this.setting('wusong8899_tournament.prize_pool')}
-            />
+            <div className="FormControl--static" style="padding: 8px 12px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px;">
+              <strong style="font-size: 16px; color: #333;">{this.calculatedPrizePool}</strong>
+            </div>
             <div className="helpText">
-              {app.translator.trans('wusong8899-tournament-widget.admin.settings.prize_pool_help')}
+              自动计算：所有参赛者分数总和（包括负数）
             </div>
           </div>
 
