@@ -3,7 +3,7 @@ import Component from 'flarum/common/Component';
 import Button from 'flarum/common/components/Button';
 import avatar from 'flarum/common/helpers/avatar';
 import User from 'flarum/common/models/User';
-import { Vnode, VnodeDOM } from 'mithril';
+import m, { Vnode, VnodeDOM } from 'mithril';
 
 interface IParticipant {
   id: string;
@@ -150,7 +150,7 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
           <Button 
             className="Button Button--block Leaderboard-detailsBtn"
             onclick={() => { 
-              app.route('/tournament/rankings');
+              m.route.set('/tournament/rankings');
             }}
           >
             {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.view_details')}
