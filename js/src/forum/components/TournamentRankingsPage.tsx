@@ -192,7 +192,6 @@ export default class TournamentRankingsPage extends Page {
                   {this.renderPlatformIcon(participant.platform)}
                   <div className="platform-details">
                     <div className="platform-name">{participant.platform.name}</div>
-                    <div className="platform-username">{participant.platform.username}</div>
                   </div>
                 </div>
               </div>

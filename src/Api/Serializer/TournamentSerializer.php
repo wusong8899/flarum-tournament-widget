@@ -77,7 +77,7 @@ class TournamentSerializer extends AbstractSerializer
                 'platform' => [
                     'id' => $participant->platform_id,
                     'name' => $participant->platform_display_name,
-                    'username' => $participant->platform_username_display,
+                    // 'username' => $participant->platform_username_display, // Removed for privacy
                     'iconUrl' => $participant->platform?->icon_url,
                     'iconClass' => $participant->platform?->icon_class,
                     'usesUrlIcon' => $participant->platform?->uses_url_icon ?? false,
