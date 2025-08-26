@@ -116,7 +116,7 @@ export default class TournamentRankingsPage extends Page {
           <div className="TournamentRankingsPage-navigation">
             <LinkButton href="/" className="Button Button--text">
               <i className="fas fa-arrow-left"></i>
-              {app.translator.trans('core.forum.header.back_to_index_tooltip')}
+              返回
             </LinkButton>
           </div>
           
