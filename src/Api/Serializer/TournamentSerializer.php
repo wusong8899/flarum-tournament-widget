@@ -44,7 +44,7 @@ class TournamentSerializer extends AbstractSerializer
             } else {
                 // Check range titles like "4-10"
                 foreach ($rankTitles as $key => $value) {
-                    if (strpos($key, '-') !== false) {
+                    if (is_string($key) && strpos($key, '-') !== false) {
                         [$start, $end] = explode('-', $key);
                         if ($rank >= (int)$start && $rank <= (int)$end) {
                             $title = $value;
