@@ -2,7 +2,7 @@ wusong8899-tournament-widget:
   admin:
     title: 锦标赛管理
     description: 管理锦标赛设置、平台和排名称号
-    
+
     settings:
       title_label: 锦标赛标题
       title_help: 在前端显示的锦标赛名称
@@ -18,13 +18,13 @@ wusong8899-tournament-widget:
       header_title_help: 显示在排行榜顶部的标题文本，默认为"老哥榜"
       header_image_label: 排行榜标题图片
       header_image_help: 显示在排行榜标题旁边的图片URL
-      
+
     tabs:
       general: 基本设置
       platforms: 平台管理
       rank_titles: 排名称号
       participants: 参赛者管理
-      
+
     platforms:
       title: 平台管理
       name_label: 平台名称
@@ -37,7 +37,7 @@ wusong8899-tournament-widget:
       empty: 暂无平台
       enable: 启用
       disable: 禁用
-      
+
     rank_titles:
       title: 排名称号管理
       rank_label: 排名
@@ -47,7 +47,7 @@ wusong8899-tournament-widget:
       save_button: 保存所有称号
       help: 设置不同排名的称号，支持范围设置（如4-10）
       preview_title: 预览效果
-      
+
     participants:
       title: 参赛者管理
       description: 管理参赛者分数和查看比赛统计
@@ -88,7 +88,7 @@ wusong8899-tournament-widget:
   forum:
     tournament:
       title: "K8 无双积分王"
-      prize_pool: 奖池
+      prize_pool: 慈善会市值
       started_at: 开始于
       participate_now: 立即参加
       participated: 已参加
