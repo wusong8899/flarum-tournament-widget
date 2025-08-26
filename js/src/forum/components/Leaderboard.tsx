@@ -85,9 +85,6 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
             <div className="Leaderboard-headerCell rank">
               {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.rank')}
             </div>
-            <div className="Leaderboard-headerCell title">
-              {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.rank_title')}
-            </div>
             <div className="Leaderboard-headerCell user">
               {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.user')}
             </div>
@@ -111,13 +108,13 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
                   <i className={this.getRankIcon(participant.rank)}></i>
                   <span className="rank-number">{participant.rank}</span>
                 </div>
-                <div className="Leaderboard-cell title">
-                  <span className="title-text">{participant.title}</span>
-                </div>
                 <div className="Leaderboard-cell user">
                   <div className="user-info">
                     {this.renderUserAvatar(participant.user)}
-                    <span className="user-name">{participant.user.displayName}</span>
+                    <div className="user-details">
+                      <span className="user-name">{participant.user.displayName}</span>
+                      <span className="user-title">{participant.title}</span>
+                    </div>
                   </div>
                 </div>
                 <div className="Leaderboard-cell platform">
