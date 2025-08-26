@@ -10,7 +10,22 @@
   flex-direction: column;
   justify-content: space-between;
 
+  // 渐变叠加层
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(75.2deg, rgba(33, 41, 167, 0.7) 0.57%, rgba(19, 44, 209, 0.7) 72.59%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
   &-header {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto auto;
@@ -27,7 +42,6 @@
     color: white;
     text-decoration: none;
     background: rgba(0, 0, 0, 0.5);
-    padding: 5px 10px;
     border-radius: 15px;
     font-size: 12px;
     transition: background 0.3s;
@@ -39,6 +53,8 @@
   }
 
   &-content {
+    position: relative;
+    z-index: 1;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
