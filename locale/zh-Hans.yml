@@ -18,6 +18,8 @@ wusong8899-tournament-widget:
       header_title_help: 显示在排行榜顶部的标题文本，默认为"老哥榜"
       header_image_label: 排行榜标题图片
       header_image_help: 显示在排行榜标题旁边的图片URL
+      preview_limit_label: 预览用户数量
+      preview_limit_help: 排行榜预览显示的用户数量，默认为5人
 
     tabs:
       general: 基本设置
@@ -85,6 +87,12 @@ wusong8899-tournament-widget:
       participate: 参加锦标赛
       manage_platforms: 管理比赛平台
 
+    validation:
+      invalid_url: 请输入有效的URL地址
+      invalid_date: 请输入有效的日期时间
+      invalid_preview_limit: 预览数量必须在1-50之间
+      fix_errors: 请修复表单错误后再保存
+
   forum:
     tournament:
       title: "K8 无双积分王"
@@ -107,6 +115,8 @@ wusong8899-tournament-widget:
       no_participants: 暂无参与者
       view_all: "详情 (查看全部 {count} 名)"
       collapse: 收起
+      view_details: 详情
+      full_rankings_title: 完整排行榜
 
     participate_modal:
       title: 参加活动

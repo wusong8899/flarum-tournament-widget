@@ -35,7 +35,6 @@ interface LeaderboardAttrs {
 }
 
 export default class Leaderboard extends Component<LeaderboardAttrs> {
-  showAll: boolean = false;
   containerRef: HTMLElement | null = null;
 
   oncreate(vnode: VnodeDOM<LeaderboardAttrs>) {
@@ -76,7 +75,12 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
 
   view(vnode: Vnode<LeaderboardAttrs>) {
     const { participants } = vnode.attrs;
-    const rankingsToShow = this.showAll ? participants : participants.slice(0, 5);
+    
+    // Get preview limit from settings (default to 5)
+    const previewLimitSetting = app.forum.attribute('wusong8899_tournament.preview_limit');
+    const previewLimit = previewLimitSetting ? parseInt(previewLimitSetting) : 5;
+    
+    const rankingsToShow = participants.slice(0, previewLimit);
 
     return (
       <div className="Leaderboard">
@@ -142,24 +146,14 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
             </div>
           )}
         </div>
-        {!this.showAll && participants.length > 5 && (
+        {participants.length > previewLimit && (
           <Button 
-            className="Button Button--block Leaderboard-expandBtn"
+            className="Button Button--block Leaderboard-detailsBtn"
             onclick={() => { 
-              this.showAll = true; 
+              app.route('/tournament/rankings');
             }}
           >
-            {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.view_all', { count: participants.length })}
-          </Button>
-        )}
-        {this.showAll && participants.length > 5 && (
-          <Button 
-            className="Button Button--block Leaderboard-collapseBtn"
-            onclick={() => { 
-              this.showAll = false; 
-            }}
-          >
-            {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.collapse')}
+            {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.view_details')}
           </Button>
         )}
       </div>

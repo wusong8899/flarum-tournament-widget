@@ -206,6 +206,26 @@ export default class TournamentManagementPage extends ExtensionPage {
             </div>
           </div>
 
+          <div className="Form-group">
+            <label className="FormLabel">{app.translator.trans('wusong8899-tournament-widget.admin.settings.preview_limit_label')}</label>
+            <input
+              className={`FormControl ${this.validationErrors.preview_limit ? 'FormControl--error' : ''}`}
+              type="number"
+              min="1"
+              max="50"
+              bidi={this.setting('wusong8899_tournament.preview_limit')}
+              onchange={(e: Event) => this.validatePreviewLimit((e.target as HTMLInputElement).value)}
+            />
+            {this.validationErrors.preview_limit && (
+              <div className="FormGroup-error">
+                {this.validationErrors.preview_limit}
+              </div>
+            )}
+            <div className="helpText">
+              {app.translator.trans('wusong8899-tournament-widget.admin.settings.preview_limit_help')}
+            </div>
+          </div>
+
           {this.submitButton()}
         </div>
       </div>
@@ -249,6 +269,24 @@ export default class TournamentManagementPage extends ExtensionPage {
       this.setting('wusong8899_tournament.start_date')(isoString);
     } catch {
       this.validationErrors.start_date = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_date');
+    }
+    m.redraw();
+  }
+
+  private validatePreviewLimit(value: string): void {
+    if (!value.trim()) {
+      // Use default value of 5 if empty
+      delete this.validationErrors.preview_limit;
+      this.setting('wusong8899_tournament.preview_limit')('5');
+      return;
+    }
+
+    const num = parseInt(value);
+    if (isNaN(num) || num < 1 || num > 50) {
+      this.validationErrors.preview_limit = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_preview_limit');
+    } else {
+      delete this.validationErrors.preview_limit;
+      this.setting('wusong8899_tournament.preview_limit')(value);
     }
     m.redraw();
   }
@@ -306,6 +344,15 @@ export default class TournamentManagementPage extends ExtensionPage {
         new URL(headerImage);
       } catch {
         this.validationErrors.header_image = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_url');
+        hasErrors = true;
+      }
+    }
+    
+    const previewLimit = this.setting('wusong8899_tournament.preview_limit')();
+    if (previewLimit && previewLimit.trim()) {
+      const num = parseInt(previewLimit);
+      if (isNaN(num) || num < 1 || num > 50) {
+        this.validationErrors.preview_limit = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_preview_limit');
         hasErrors = true;
       }
     }
