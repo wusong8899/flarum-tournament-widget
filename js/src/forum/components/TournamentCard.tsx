@@ -30,15 +30,17 @@ export default class TournamentCard extends Component<TournamentCardAttrs> {
 
     return (
       <div className="TournamentCard" style={{ backgroundImage: `url(${backgroundImage})` }}>
-        <a className="TournamentCard-detailsLink" href={detailsUrl} target="_blank" rel="noopener noreferrer">
-          {app.translator.trans('wusong8899-tournament-widget.forum.tournament.details')}
-        </a>
-        <div className="TournamentCard-content">
+        <div className="TournamentCard-header">
           <div className="TournamentCard-title">{title}</div>
+          <a className="TournamentCard-detailsLink" href={detailsUrl} target="_blank" rel="noopener noreferrer">
+            {app.translator.trans('wusong8899-tournament-widget.forum.tournament.details')}
+          </a>
           <div className="TournamentCard-prizePool">
             <label>{app.translator.trans('wusong8899-tournament-widget.forum.tournament.prize_pool')}</label>
             <span>{prizePool}</span>
           </div>
+        </div>
+        <div className="TournamentCard-content">
           <div className="Timer">
             <label>{app.translator.trans('wusong8899-tournament-widget.forum.tournament.started_at')}</label>
             <div className="Timer-display">

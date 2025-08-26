@@ -10,10 +10,20 @@
   flex-direction: column;
   justify-content: space-between;
 
+  &-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "title details"
+      "prize empty";
+    gap: 15px 20px;
+    margin-bottom: 20px;
+  }
+
   &-detailsLink {
-    position: absolute;
-    top: 15px;
-    right: 20px;
+    grid-area: details;
+    align-self: start;
     color: white;
     text-decoration: none;
     background: rgba(0, 0, 0, 0.5);
@@ -29,23 +39,28 @@
   }
 
   &-content {
-    margin-top: 40px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 
   &-title {
+    grid-area: title;
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 15px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    align-self: start;
   }
 
   &-prizePool {
+    grid-area: prize;
     padding: 6px 16px;
-    margin-bottom: 15px;
     background: #e9b424;
     border-radius: 8px;
     width: fit-content;
     font-weight: bold;
+    align-self: end;
 
     label {
       color: #000;
