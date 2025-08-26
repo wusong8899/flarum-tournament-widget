@@ -17,9 +17,12 @@ class TournamentSerializer extends AbstractSerializer
         $actor = $data->actor ?? null;
         $settings = $data->settings ?? resolve(SettingsRepositoryInterface::class);
 
+        // Get sort order from settings (default to desc for backwards compatibility)
+        $sortOrder = $settings->get('wusong8899_tournament.sort_order', 'desc');
+        
         $participants = Participant::with(['user', 'platform'])
             ->where('is_approved', true)
-            ->orderBy('score', 'desc')
+            ->orderBy('score', $sortOrder)
             ->orderBy('created_at', 'asc')
             ->get();
 

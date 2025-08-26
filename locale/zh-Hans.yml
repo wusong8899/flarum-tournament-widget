@@ -20,6 +20,10 @@ wusong8899-tournament-widget:
       header_image_help: 显示在排行榜标题旁边的图片URL
       preview_limit_label: 预览用户数量
       preview_limit_help: 排行榜预览显示的用户数量，默认为5人
+      sort_order_label: 排名排序方式
+      sort_order_help: 选择排行榜的排序方式
+      sort_order_desc: 金额降序（从高到低）
+      sort_order_asc: 金额升序（从低到高）
 
     tabs:
       general: 基本设置

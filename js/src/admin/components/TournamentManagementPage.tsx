@@ -226,6 +226,20 @@ export default class TournamentManagementPage extends ExtensionPage {
             </div>
           </div>
 
+          <div className="Form-group">
+            <label className="FormLabel">{app.translator.trans('wusong8899-tournament-widget.admin.settings.sort_order_label')}</label>
+            <select
+              className="FormControl"
+              bidi={this.setting('wusong8899_tournament.sort_order')}
+            >
+              <option value="desc">{app.translator.trans('wusong8899-tournament-widget.admin.settings.sort_order_desc')}</option>
+              <option value="asc">{app.translator.trans('wusong8899-tournament-widget.admin.settings.sort_order_asc')}</option>
+            </select>
+            <div className="helpText">
+              {app.translator.trans('wusong8899-tournament-widget.admin.settings.sort_order_help')}
+            </div>
+          </div>
+
           {this.submitButton()}
         </div>
       </div>
