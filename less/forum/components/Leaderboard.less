@@ -21,11 +21,23 @@
   }
 
   &-headerCell {
-    &.rank { text-align: center; }
-    &.title { text-align: center; }
-    &.user { text-align: left; }
-    &.platform { text-align: left; }
-    &.score { text-align: right; }
+    white-space: nowrap;
+
+    &.rank {
+      text-align: center;
+    }
+
+    &.title {
+      text-align: center;
+    }
+
+    &.user {
+      text-align: left;
+    }
+
+    &.platform {
+      text-align: left;
+    }
   }
 
   &-list {
@@ -75,9 +87,17 @@
         margin-right: 6px;
         font-size: 16px;
 
-        &.rank-gold { color: #ffd700; }
-        &.rank-silver { color: #c0c0c0; }
-        &.rank-bronze { color: #cd7f32; }
+        &.rank-gold {
+          color: #ffd700;
+        }
+
+        &.rank-silver {
+          color: #c0c0c0;
+        }
+
+        &.rank-bronze {
+          color: #cd7f32;
+        }
       }
 
       .rank-number {
@@ -111,7 +131,7 @@
           border-radius: 50%;
           object-fit: cover;
           border: 2px solid rgba(255, 255, 255, 0.2);
-          
+
           &--default {
             background: rgba(255, 255, 255, 0.2);
             display: flex;
@@ -232,6 +252,7 @@
         i {
           font-size: 14px;
         }
+
         .rank-number {
           font-size: 14px;
         }
@@ -244,16 +265,16 @@
 
       &.user .user-info {
         gap: 6px;
-        
+
         .user-avatar {
           width: 24px;
           height: 24px;
-          
+
           &--default {
             font-size: 10px;
           }
         }
-        
+
         .user-name {
           font-size: 12px;
         }
@@ -261,21 +282,21 @@
 
       &.platform .platform-info {
         gap: 6px;
-        
+
         .platform-icon {
           width: 20px;
           height: 20px;
-          
+
           &.css-icon {
             font-size: 14px;
           }
         }
-        
+
         .platform-details {
           .platform-name {
             font-size: 11px;
           }
-          
+
           .platform-username {
             font-size: 10px;
           }
