@@ -11,11 +11,8 @@
 
   &-headerRow {
     display: grid;
-    grid-template-columns: 
-      minmax(60px, 0.5fr)    
-      minmax(200px, 2.5fr)     
-      minmax(120px, 1.5fr)   
-      minmax(80px, 1fr);
+    grid-template-columns:
+      minmax(60px, 0.5fr) minmax(200px, 2.5fr) minmax(120px, 1.5fr) minmax(80px, 1fr);
     gap: 10px;
     padding: 12px 0;
     align-items: center;
@@ -58,11 +55,8 @@
 
   &-item {
     display: grid;
-    grid-template-columns: 
-      minmax(60px, 0.5fr)    
-      minmax(200px, 2.5fr)     
-      minmax(120px, 1.5fr)   
-      minmax(80px, 1fr);
+    grid-template-columns:
+      minmax(60px, 0.5fr) minmax(200px, 2.5fr) minmax(120px, 1.5fr) minmax(80px, 1fr);
     gap: 10px;
     padding: 15px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -181,8 +175,8 @@
         gap: 8px;
 
         .platform-icon {
-          width: 24px;
-          height: 24px;
+          width: 30px;
+          height: 30px;
           flex-shrink: 0;
 
           &.image-icon {
@@ -222,15 +216,15 @@
       .score-amount {
         font-weight: bold;
         font-size: 16px;
-        
+
         &.positive {
           color: #ffd700; // Gold for positive scores
         }
-        
+
         &.negative {
           color: #ff4444; // Red for negative scores
         }
-        
+
         &.zero {
           color: #888888; // Gray for zero scores
         }
@@ -262,12 +256,11 @@
 // Tablet view
 @media (max-width: 1024px) {
   .Leaderboard {
-    &-headerRow, &-item {
-      grid-template-columns: 
-        minmax(50px, 0.5fr)
-        minmax(160px, 2.5fr)
-        minmax(100px, 1.5fr)
-        minmax(70px, 1fr);
+
+    &-headerRow,
+    &-item {
+      grid-template-columns:
+        minmax(50px, 0.5fr) minmax(160px, 2.5fr) minmax(100px, 1.5fr) minmax(70px, 1fr);
       gap: 8px;
     }
   }
@@ -279,21 +272,15 @@
     padding: 15px;
 
     &-headerRow {
-      grid-template-columns: 
-        minmax(40px, 0.5fr)
-        minmax(130px, 2.5fr)
-        minmax(80px, 1.2fr)
-        minmax(60px, 0.8fr);
+      grid-template-columns:
+        minmax(40px, 0.5fr) minmax(130px, 2.5fr) minmax(80px, 1.2fr) minmax(60px, 0.8fr);
       gap: 6px;
       font-size: 12px;
     }
 
     &-item {
-      grid-template-columns: 
-        minmax(40px, 0.5fr)
-        minmax(130px, 2.5fr)
-        minmax(80px, 1.2fr)
-        minmax(60px, 0.8fr);
+      grid-template-columns:
+        minmax(40px, 0.5fr) minmax(130px, 2.5fr) minmax(80px, 1.2fr) minmax(60px, 0.8fr);
       gap: 6px;
       padding: 12px 0;
     }
@@ -325,6 +312,7 @@
           .user-name {
             font-size: 13px;
           }
+
           .user-title {
             font-size: 11px;
           }
@@ -335,8 +323,6 @@
         gap: 6px;
 
         .platform-icon {
-          width: 20px;
-          height: 20px;
 
           &.css-icon {
             font-size: 14px;
@@ -354,11 +340,19 @@
 
       &.score .score-amount {
         font-size: 12px;
-        
+
         // Keep color classes in mobile view
-        &.positive { color: #ffd700; }
-        &.negative { color: #ff4444; }
-        &.zero { color: #888888; }
+        &.positive {
+          color: #ffd700;
+        }
+
+        &.negative {
+          color: #ff4444;
+        }
+
+        &.zero {
+          color: #888888;
+        }
       }
     }
   }
