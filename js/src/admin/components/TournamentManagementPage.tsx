@@ -2,6 +2,7 @@ import app from 'flarum/admin/app';
 import ExtensionPage from 'flarum/admin/components/ExtensionPage';
 import Button from 'flarum/common/components/Button';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
+import Select from 'flarum/common/components/Select';
 import Stream from 'flarum/common/utils/Stream';
 import type Mithril from 'mithril';
 import m from 'mithril';
@@ -228,13 +229,14 @@ export default class TournamentManagementPage extends ExtensionPage {
 
           <div className="Form-group">
             <label className="FormLabel">{app.translator.trans('wusong8899-tournament-widget.admin.settings.sort_order_label')}</label>
-            <select
-              className="FormControl"
-              bidi={this.setting('wusong8899_tournament.sort_order')}
-            >
-              <option value="desc">{app.translator.trans('wusong8899-tournament-widget.admin.settings.sort_order_desc')}</option>
-              <option value="asc">{app.translator.trans('wusong8899-tournament-widget.admin.settings.sort_order_asc')}</option>
-            </select>
+            <Select
+              value={this.setting('wusong8899_tournament.sort_order')() || 'desc'}
+              onchange={this.setting('wusong8899_tournament.sort_order')}
+              options={{
+                'desc': app.translator.trans('wusong8899-tournament-widget.admin.settings.sort_order_desc'),
+                'asc': app.translator.trans('wusong8899-tournament-widget.admin.settings.sort_order_asc')
+              }}
+            />
             <div className="helpText">
               {app.translator.trans('wusong8899-tournament-widget.admin.settings.sort_order_help')}
             </div>
