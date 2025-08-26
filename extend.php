@@ -23,7 +23,8 @@ use wusong8899\TournamentWidget\Api\Controller\ListPendingParticipantsController
 return [
     (new Extend\Frontend('forum'))
         ->js(__DIR__.'/js/dist/forum.js')
-        ->css(__DIR__.'/less/forum.less'),
+        ->css(__DIR__.'/less/forum.less')
+        ->route('/tournament/rankings', 'tournament.rankings'),
         
     (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js')
