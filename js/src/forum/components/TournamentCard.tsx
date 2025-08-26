@@ -29,7 +29,7 @@ export default class TournamentCard extends Component<TournamentCardAttrs> {
     const { title, prizePool, detailsUrl, backgroundImage, timeElapsed, userParticipated, userApplicationStatus, onParticipate } = vnode.attrs;
 
     return (
-      <div className="TournamentCard" style={{ backgroundImage: `url(${backgroundImage})` }}>
+      <div className="TournamentCard" style={{ background: `url(${backgroundImage}) center/cover no-repeat, linear-gradient(75.2deg, #2129a7 0.57%, #132cd1 72.59%)` }}>
         <div className="TournamentCard-header">
           <div className="TournamentCard-title">{title}</div>
           <a className="TournamentCard-detailsLink" href={detailsUrl} target="_blank" rel="noopener noreferrer">

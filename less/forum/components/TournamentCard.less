@@ -1,27 +1,11 @@
 .TournamentCard {
   position: relative;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   min-height: 200px;
   padding: 20px;
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  // 渐变叠加层
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(75.2deg, rgba(33, 41, 167, 0.7) 0.57%, rgba(19, 44, 209, 0.7) 72.59%);
-    pointer-events: none;
-    z-index: 0;
-  }
 
   &-header {
     position: relative;
@@ -154,7 +138,7 @@
 }
 
 // Responsive design
-@media (max-width: 768px) {
+@media @phone {
   .TournamentCard {
     min-height: 160px;
     padding: 15px;
