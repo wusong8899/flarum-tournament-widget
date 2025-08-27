@@ -70,6 +70,8 @@ export default class TournamentWidget extends Component {
   timeElapsed = { days: '00', hours: '00', mins: '00', secs: '00' };
   lastUpdateTime: number = 0;
   isRedrawing: boolean = false;
+  loadingStartTime: number = 0;
+  loadingTimeout: number | null = null;
 
   oninit(vnode: Vnode) {
     super.oninit(vnode);
@@ -78,7 +80,7 @@ export default class TournamentWidget extends Component {
 
   oncreate(vnode: Vnode) {
     super.oncreate(vnode);
-    this.startTimer();
+    // Note: Timer will be started after data is loaded in loadData()
   }
 
   onremove(vnode: Vnode) {
@@ -92,6 +94,12 @@ export default class TournamentWidget extends Component {
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame);
       this.animationFrame = null;
+    }
+    
+    // Clear loading timeout
+    if (this.loadingTimeout) {
+      clearTimeout(this.loadingTimeout);
+      this.loadingTimeout = null;
     }
     
     // Clear tournament data to prevent timer from continuing
@@ -153,9 +161,19 @@ export default class TournamentWidget extends Component {
   }
 
   startTimer() {
-    if (!this.tournamentData?.startDate) return;
+    if (!this.tournamentData?.startDate) {
+      console.warn('TournamentWidget: Cannot start timer - no tournament data or start date');
+      return;
+    }
     
+    // Validate startDate
     const startDate = new Date(this.tournamentData.startDate);
+    if (isNaN(startDate.getTime())) {
+      console.error('TournamentWidget: Invalid start date:', this.tournamentData.startDate);
+      return;
+    }
+    
+    console.log('TournamentWidget: Starting timer with start date:', startDate);
     this.lastUpdateTime = Date.now();
     
     const updateTimer = () => {
@@ -197,21 +215,52 @@ export default class TournamentWidget extends Component {
   }
 
   loadData() {
-    // Prevent multiple simultaneous loads
+    // Prevent multiple simultaneous loads, but allow retry after timeout
     if (this.loading) {
-      return Promise.resolve();
+      const now = Date.now();
+      const timeSinceLoadingStart = now - this.loadingStartTime;
+      // Allow retry if loading has been stuck for more than 10 seconds
+      if (timeSinceLoadingStart < 10000) {
+        console.log('TournamentWidget: Load already in progress, skipping');
+        return Promise.resolve();
+      } else {
+        console.warn('TournamentWidget: Loading timeout reached, forcing retry');
+        this.resetLoadingState();
+      }
     }
     
     this.loading = true;
+    this.loadingStartTime = Date.now();
+    
+    // Set a timeout to prevent infinite loading
+    this.loadingTimeout = window.setTimeout(() => {
+      if (this.loading) {
+        console.error('TournamentWidget: Loading timeout exceeded, resetting state');
+        this.resetLoadingState();
+        try {
+          m.redraw();
+        } catch (error) {
+          console.error('Failed to redraw after timeout reset:', error);
+        }
+      }
+    }, 15000); // 15 second timeout
+    
+    console.log('TournamentWidget: Starting data load request');
     
     return app.request({
       method: 'GET',
       url: app.forum.attribute('apiUrl') + '/tournament',
     }).then((response: any) => {
+      console.log('TournamentWidget: Received response:', response);
+      
       // Validate response structure
       if (!response || !response.data || !response.data.attributes) {
-        throw new Error('Invalid tournament data response');
+        console.error('TournamentWidget: Invalid response structure:', response);
+        throw new Error('Invalid tournament data response structure');
       }
+      
+      const attrs = response.data.attributes;
+      console.log('TournamentWidget: Processing tournament data with', attrs.participants?.length || 0, 'participants');
       
       this.tournamentData = {
         title: response.data.attributes.title || 'Tournament',
@@ -226,11 +275,24 @@ export default class TournamentWidget extends Component {
         totalParticipants: response.data.attributes.totalParticipants || 0,
         participants: response.data.attributes.participants || []
       };
+      
+      // Clear loading timeout on success
+      if (this.loadingTimeout) {
+        clearTimeout(this.loadingTimeout);
+        this.loadingTimeout = null;
+      }
       this.loading = false;
       
-      // Start timer after data is loaded
-      if (!this.timerInterval && this.tournamentData.startDate) {
+      console.log('TournamentWidget: Successfully loaded tournament data');
+      
+      // Start timer after data is loaded (only if not already running)
+      if (!this.animationFrame && this.tournamentData.startDate) {
+        console.log('TournamentWidget: Starting timer for tournament');
         this.startTimer();
+      } else if (this.animationFrame) {
+        console.log('TournamentWidget: Timer already running, skipping start');
+      } else {
+        console.warn('TournamentWidget: No start date provided, timer not started');
       }
       
       try {
@@ -239,8 +301,23 @@ export default class TournamentWidget extends Component {
         console.error('Failed to redraw after loading data:', redrawError);
       }
     }).catch((error: any) => {
+      // Clear loading timeout on error
+      if (this.loadingTimeout) {
+        clearTimeout(this.loadingTimeout);
+        this.loadingTimeout = null;
+      }
       this.loading = false;
-      console.error('Failed to load tournament data:', error);
+      
+      // Detailed error logging
+      if (error.response) {
+        console.error('TournamentWidget: Server error response:', error.response.status, error.response.data);
+      } else if (error.request) {
+        console.error('TournamentWidget: Network error - no response received:', error.request);
+      } else {
+        console.error('TournamentWidget: Request setup error:', error.message);
+      }
+      
+      console.warn('TournamentWidget: Setting fallback data to prevent complete failure');
       
       // Set fallback tournament data to prevent complete failure
       this.tournamentData = {
@@ -263,5 +340,18 @@ export default class TournamentWidget extends Component {
         console.error('Failed to redraw after error:', redrawError);
       }
     });
+  }
+
+  private resetLoadingState() {
+    this.loading = false;
+    this.isRedrawing = false;
+    this.loadingStartTime = 0;
+    
+    if (this.loadingTimeout) {
+      clearTimeout(this.loadingTimeout);
+      this.loadingTimeout = null;
+    }
+    
+    console.log('TournamentWidget: Loading state reset');
   }
 }
