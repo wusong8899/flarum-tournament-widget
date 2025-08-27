@@ -128,7 +128,7 @@ export default class TournamentWidget extends Component {
           <div className="TournamentHeader">
             <img 
               className="TournamentHeader-image" 
-              src={this.tournamentData.headerImage || "https://i.mji.rip/2025/08/23/678aa40f68db12909bb4a4871d603876.webp"}
+              src={this.tournamentData.headerImage || ""}
               alt="Tournament"
             />
             <span className="TournamentHeader-title">{this.tournamentData.headerTitle || "老哥榜"}</span>

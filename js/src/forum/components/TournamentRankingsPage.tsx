@@ -5,6 +5,7 @@ import LinkButton from 'flarum/common/components/LinkButton';
 import avatar from 'flarum/common/helpers/avatar';
 import User from 'flarum/common/models/User';
 import type Mithril from 'mithril';
+import m from 'mithril';
 
 interface IParticipant {
   id: string;
