@@ -126,11 +126,13 @@ export default class TournamentWidget extends Component {
       return (
         <div className="TournamentWidget">
           <div className="TournamentHeader">
-            <img 
-              className="TournamentHeader-image" 
-              src={this.tournamentData.headerImage || ""}
-              alt="Tournament"
-            />
+            {this.tournamentData.headerImage && (
+              <img 
+                className="TournamentHeader-image" 
+                src={this.tournamentData.headerImage}
+                alt="Tournament"
+              />
+            )}
             <span className="TournamentHeader-title">{this.tournamentData.headerTitle || "老哥榜"}</span>
           </div>
           <TournamentCard
