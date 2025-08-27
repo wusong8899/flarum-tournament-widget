@@ -1,11 +1,9 @@
 import app from 'flarum/forum/app';
 import Page from 'flarum/common/components/Page';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
-import Button from 'flarum/common/components/Button';
 import LinkButton from 'flarum/common/components/LinkButton';
 import avatar from 'flarum/common/helpers/avatar';
 import User from 'flarum/common/models/User';
-import ItemList from 'flarum/common/utils/ItemList';
 import type Mithril from 'mithril';
 
 interface IParticipant {
@@ -82,11 +80,28 @@ export default class TournamentRankingsPage extends Page {
   }
 
   view() {
-    return (
-      <div className="TournamentRankingsPage">
-        {this.content()}
-      </div>
-    );
+    try {
+      return (
+        <div className="TournamentRankingsPage">
+          {this.content()}
+        </div>
+      );
+    } catch (error) {
+      console.error('TournamentRankingsPage view error:', error);
+      return (
+        <div className="TournamentRankingsPage TournamentRankingsPage--error">
+          <div className="container">
+            <div className="TournamentRankingsPage-error">
+              <h2>Error loading tournament rankings</h2>
+              <p>Please refresh the page or go back to homepage.</p>
+              <LinkButton href="/" className="Button Button--primary">
+                返回首页
+              </LinkButton>
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 
   content() {

@@ -148,8 +148,24 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
         {participants.length > previewLimit && (
           <Button 
             className="Button Button--block Leaderboard-detailsBtn"
-            onclick={() => { 
-              m.route.set('/tournament/rankings');
+            onclick={(e: Event) => { 
+              e.preventDefault();
+              e.stopPropagation();
+              
+              try {
+                // Use app route helper for safer navigation
+                window.location.href = app.route('tournament.rankings');
+              } catch (error) {
+                console.error('Navigation error:', error);
+                // Fallback to direct navigation
+                try {
+                  m.route.set('/tournament/rankings');
+                } catch (fallbackError) {
+                  console.error('Fallback navigation failed:', fallbackError);
+                  // Last resort: direct window navigation
+                  window.location.href = '/tournament/rankings';
+                }
+              }
             }}
           >
             {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.view_details')}
