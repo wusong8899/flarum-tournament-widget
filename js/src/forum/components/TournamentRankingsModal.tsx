@@ -58,7 +58,7 @@ export default class TournamentRankingsModal extends Modal {
   }
 
   title() {
-    return app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.full_rankings_title');
+    return this.tournamentData?.headerTitle ;
   }
 
   private async loadTournamentData(): Promise<void> {

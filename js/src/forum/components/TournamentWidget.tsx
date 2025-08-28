@@ -133,7 +133,7 @@ export default class TournamentWidget extends Component {
                 alt="Tournament"
               />
             )}
-            <span className="TournamentHeader-title">{this.tournamentData.headerTitle || "老哥榜"}</span>
+            <span className="TournamentHeader-title">{this.tournamentData.headerTitle}</span>
           </div>
           <TournamentCard
             title={this.tournamentData.title}

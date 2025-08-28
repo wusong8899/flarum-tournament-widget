@@ -120,7 +120,6 @@ wusong8899-tournament-widget:
       view_all: "详情 (查看全部 {count} 名)"
       collapse: 收起
       view_details: 详情
-      full_rankings_title: 完整排行榜
 
     participate_modal:
       title: 参加活动
