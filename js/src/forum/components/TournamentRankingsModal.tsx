@@ -1,7 +1,7 @@
 import app from 'flarum/forum/app';
-import Page from 'flarum/common/components/Page';
+import Modal from 'flarum/common/components/Modal';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
-import LinkButton from 'flarum/common/components/LinkButton';
+import Button from 'flarum/common/components/Button';
 import avatar from 'flarum/common/helpers/avatar';
 import User from 'flarum/common/models/User';
 import type Mithril from 'mithril';
@@ -43,16 +43,22 @@ interface ITournamentData {
   participants: IParticipant[];
 }
 
-export default class TournamentRankingsPage extends Page {
+export default class TournamentRankingsModal extends Modal {
   private loading = true;
   private tournamentData: ITournamentData | null = null;
   private error: string | null = null;
 
   oninit(vnode: Mithril.Vnode) {
     super.oninit(vnode);
-    
-    app.setTitle(app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.full_rankings_title'));
     this.loadTournamentData();
+  }
+
+  className() {
+    return 'TournamentRankingsModal Modal--large';
+  }
+
+  title() {
+    return app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.full_rankings_title');
   }
 
   private async loadTournamentData(): Promise<void> {
@@ -80,46 +86,36 @@ export default class TournamentRankingsPage extends Page {
     }
   }
 
-  view() {
+  content() {
     try {
-      return (
-        <div className="TournamentRankingsPage">
-          {this.content()}
-        </div>
-      );
+      return this.renderContent();
     } catch (error) {
-      console.error('TournamentRankingsPage view error:', error);
+      console.error('TournamentRankingsModal content error:', error);
       return (
-        <div className="TournamentRankingsPage TournamentRankingsPage--error">
-          <div className="container">
-            <div className="TournamentRankingsPage-error">
-              <h2>Error loading tournament rankings</h2>
-              <p>Please refresh the page or go back to homepage.</p>
-              <LinkButton href="/" className="Button Button--primary">
-                返回首页
-              </LinkButton>
-            </div>
-          </div>
+        <div className="TournamentRankingsModal-error">
+          <h3>Error loading tournament rankings</h3>
+          <p>Please try again or contact support.</p>
+          <Button className="Button Button--primary" onclick={() => this.hide()}>
+            关闭
+          </Button>
         </div>
       );
     }
   }
 
-  content() {
+  private renderContent() {
     if (this.loading) {
       return <LoadingIndicator />;
     }
 
     if (this.error || !this.tournamentData) {
       return (
-        <div className="container">
-          <div className="TournamentRankingsPage-error">
-            <h2>{app.translator.trans('core.forum.error.generic_message')}</h2>
-            <p>{this.error || 'Tournament data not available'}</p>
-            <LinkButton href="/" className="Button Button--primary">
-              {app.translator.trans('core.forum.error.return_link')}
-            </LinkButton>
-          </div>
+        <div className="TournamentRankingsModal-error">
+          <h3>{app.translator.trans('core.forum.error.generic_message')}</h3>
+          <p>{this.error || 'Tournament data not available'}</p>
+          <Button className="Button Button--primary" onclick={() => this.hide()}>
+            关闭
+          </Button>
         </div>
       );
     }
@@ -127,28 +123,17 @@ export default class TournamentRankingsPage extends Page {
     const { tournamentData } = this;
 
     return (
-      <div className="container">
-        <div className="TournamentRankingsPage-header">
-          <div className="TournamentRankingsPage-navigation">
-            <LinkButton href="/" className="Button Button--text">
-              <i className="fas fa-arrow-left"></i>
-              返回
-            </LinkButton>
-          </div>
-          
-          <h1 className="TournamentRankingsPage-title">
-            {tournamentData.headerTitle || app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.full_rankings_title')}
-          </h1>
-          
-          <div className="TournamentRankingsPage-tournamentInfo">
-            <h2>{tournamentData.title}</h2>
-            <p className="TournamentRankingsPage-prizePool">
+      <div className="TournamentRankingsModal-content">
+        <div className="TournamentRankingsModal-header">
+          <div className="TournamentRankingsModal-tournamentInfo">
+            <h3>{tournamentData.title}</h3>
+            <p className="TournamentRankingsModal-prizePool">
               {app.translator.trans('wusong8899-tournament-widget.forum.tournament.prize_pool')}: {tournamentData.prizePool}
             </p>
           </div>
         </div>
 
-        <div className="TournamentRankingsPage-leaderboard">
+        <div className="TournamentRankingsModal-leaderboard">
           {this.renderFullLeaderboard()}
         </div>
       </div>
@@ -158,14 +143,14 @@ export default class TournamentRankingsPage extends Page {
   private renderFullLeaderboard() {
     if (!this.tournamentData || !this.tournamentData.participants.length) {
       return (
-        <div className="TournamentRankingsPage-empty">
+        <div className="TournamentRankingsModal-empty">
           {app.translator.trans('wusong8899-tournament-widget.forum.leaderboard.no_participants')}
         </div>
       );
     }
 
     return (
-      <div className="Leaderboard Leaderboard--fullPage">
+      <div className="Leaderboard Leaderboard--modal">
         <div className="Leaderboard-header">
           <div className="Leaderboard-headerRow">
             <div className="Leaderboard-headerCell rank">

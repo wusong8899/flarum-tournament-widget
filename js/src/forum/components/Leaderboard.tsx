@@ -3,7 +3,8 @@ import Component from 'flarum/common/Component';
 import Button from 'flarum/common/components/Button';
 import avatar from 'flarum/common/helpers/avatar';
 import User from 'flarum/common/models/User';
-import m, { Vnode, VnodeDOM } from 'mithril';
+import TournamentRankingsModal from './TournamentRankingsModal';
+import { Vnode, VnodeDOM } from 'mithril';
 
 interface IParticipant {
   id: string;
@@ -153,18 +154,11 @@ export default class Leaderboard extends Component<LeaderboardAttrs> {
               e.stopPropagation();
               
               try {
-                // Use app route helper for safer navigation
-                window.location.href = app.route('tournament.rankings');
+                app.modal.show(TournamentRankingsModal);
               } catch (error) {
-                console.error('Navigation error:', error);
-                // Fallback to direct navigation
-                try {
-                  m.route.set('/tournament/rankings');
-                } catch (fallbackError) {
-                  console.error('Fallback navigation failed:', fallbackError);
-                  // Last resort: direct window navigation
-                  window.location.href = '/tournament/rankings';
-                }
+                console.error('Modal show error:', error);
+                // Fallback to alert for user feedback
+                app.alerts.show({ type: 'error' }, '无法打开完整排行榜');
               }
             }}
           >

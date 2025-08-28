@@ -1,0 +1,98 @@
+.TournamentRankingsModal {
+  &-content {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  &-header {
+    padding: 0 0 20px;
+    border-bottom: 1px solid @muted-more-color;
+    margin-bottom: 20px;
+  }
+
+  &-tournamentInfo {
+    text-align: center;
+
+    h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin: 0 0 10px 0;
+      color: @primary-color;
+    }
+  }
+
+  &-prizePool {
+    font-size: 1rem;
+    color: @muted-color;
+    margin: 0;
+  }
+
+  &-leaderboard {
+    // Remove extra padding since modal has its own spacing
+  }
+
+  &-empty {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 1.1rem;
+    color: @muted-color;
+    font-style: italic;
+  }
+
+  &-error {
+    text-align: center;
+    padding: 40px 20px;
+
+    h3 {
+      color: @alert-error-color;
+      margin-bottom: 15px;
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: @muted-color;
+    }
+  }
+
+  // Modal-specific leaderboard styles
+  .Leaderboard--modal {
+    background: @body-bg;
+    border: 1px solid @control-bg;
+    border-radius: 8px;
+    
+    .Leaderboard-header {
+      background: @control-bg;
+      border-bottom: 1px solid @muted-more-color;
+      margin-bottom: 0;
+    }
+
+    .Leaderboard-item {
+      border-bottom: 1px solid fade(@muted-more-color, 50%);
+
+      &:hover {
+        background: fade(@primary-color, 5%);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+// Mobile responsiveness for modal
+@media @phone {
+  .TournamentRankingsModal {
+    &-content {
+      max-height: 60vh; // Slightly smaller on mobile
+    }
+
+    .Leaderboard--modal {
+      border-radius: 6px;
+    }
+
+    &-tournamentInfo h3 {
+      font-size: 1.2rem;
+    }
+  }
+}
