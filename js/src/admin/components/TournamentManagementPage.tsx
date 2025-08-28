@@ -9,6 +9,7 @@ import m from 'mithril';
 import PlatformManagement from './PlatformManagement';
 import RankTitleManagement from './RankTitleManagement';
 import ParticipantManagement from './ParticipantManagement';
+import { TOURNAMENT_COLORS } from '../../common/colors';
 
 export default class TournamentManagementPage extends ExtensionPage {
   private activeTab = Stream('general');
@@ -114,8 +115,8 @@ export default class TournamentManagementPage extends ExtensionPage {
 
           <div className="Form-group">
             <label className="FormLabel">{app.translator.trans('wusong8899-tournament-widget.admin.settings.prize_pool_label')}</label>
-            <div className="FormControl--static" style="padding: 8px 12px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px;">
-              <strong style="font-size: 16px; color: #333;">{this.calculatedPrizePool}</strong>
+            <div className="FormControl--static" style={`padding: 8px 12px; background: ${TOURNAMENT_COLORS.CONTROL_BG}; border: 1px solid ${TOURNAMENT_COLORS.BORDER}; border-radius: 4px;`}>
+              <strong style={`font-size: 16px; color: ${TOURNAMENT_COLORS.GRAY_DARK};`}>{this.calculatedPrizePool}</strong>
             </div>
             <div className="helpText">
               自动计算：所有参赛者分数总和（包括负数）

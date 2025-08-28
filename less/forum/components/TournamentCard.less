@@ -2,7 +2,7 @@
   position: relative;
   min-height: 200px;
   padding: 20px;
-  color: white;
+  color: @tournament-white;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -24,16 +24,16 @@
   &-detailsLink {
     grid-area: details;
     align-self: start;
-    color: white;
+    color: @tournament-white;
     text-decoration: none;
-    background: rgba(0, 0, 0, 0.5);
+    background: @tournament-black-50;
     border-radius: 15px;
     font-size: 12px;
     transition: background 0.3s;
 
     &:hover {
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
+      background: @tournament-black-70;
+      color: @tournament-white;
     }
   }
 
@@ -62,33 +62,33 @@
     grid-area: title;
     font-size: 24px;
     font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: @tournament-text-shadow-strong;
     align-self: start;
   }
 
   &-prizePool {
     grid-area: prize;
     padding: 6px 16px;
-    background: #e9b424;
+    background: @tournament-gold-dark;
     border-radius: 8px;
     width: fit-content;
     font-weight: bold;
     align-self: end;
 
     label {
-      color: #000;
+      color: @tournament-black;
       display: block;
       font-size: 12px;
       opacity: 0.8;
       margin-bottom: 5px;
       padding: 3px;
-      background: #e9b424;
+      background: @tournament-gold-dark;
     }
 
     span {
       font-size: 18px;
       font-weight: bold;
-      color: #000000;
+      color: @tournament-black;
     }
   }
 
@@ -99,7 +99,7 @@
 
   &-participated {
     margin-top: 0;
-    color: #4caf50;
+    color: @tournament-success-light;
     font-weight: bold;
 
     i {
@@ -117,22 +117,22 @@
     gap: 6px;
 
     &.approved {
-      background-color: #28a745;
-      color: white;
-      border: 1px solid #1e7e34;
+      background-color: @tournament-success;
+      color: @tournament-white;
+      border: 1px solid @tournament-success-border;
 
       i {
-        color: white;
+        color: @tournament-white;
       }
     }
 
     &.pending {
-      background-color: #dc3545;
-      color: white;
-      border: 1px solid #c82333;
+      background-color: @tournament-error;
+      color: @tournament-white;
+      border: 1px solid @tournament-error-border;
 
       i {
-        color: white;
+        color: @tournament-white;
       }
     }
   }

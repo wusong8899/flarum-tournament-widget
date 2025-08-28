@@ -5,14 +5,14 @@
   &-label {
     font-weight: 600;
     margin-bottom: 8px;
-    color: rgba(255, 255, 255, 0.8);
+    color: @tournament-white-80;
     font-size: 14px;
   }
 
   &-dropdown {
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid @tournament-white-20;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 0.1);
+    background: @tournament-white-10;
     padding: 12px;
     cursor: pointer;
     display: flex;
@@ -21,7 +21,7 @@
     transition: border-color 0.2s ease;
 
     &:hover {
-      border-color: rgba(255, 255, 255, 0.4);
+      border-color: @tournament-white-40;
     }
   }
 
@@ -71,18 +71,18 @@
       }
 
       .icon {
-        color: rgba(255, 255, 255, 0.6);
+        color: @tournament-white-60;
       }
     }
   }
 
   &-name {
     font-weight: 500;
-    color: white;
+    color: @tournament-white;
   }
 
   &-dropdownIcon {
-    color: rgba(255, 255, 255, 0.6);
+    color: @tournament-white-60;
     transition: transform 0.2s ease;
   }
 
@@ -91,10 +91,10 @@
     top: 100%;
     left: 0;
     right: 0;
-    background: #2a2a3e;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: @tournament-modal-bg;
+    border: 1px solid @tournament-white-20;
     border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: @tournament-dropdown-shadow;
     z-index: 1000;
     margin-top: 4px;
     max-height: 200px;
@@ -108,18 +108,18 @@
     gap: 10px;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    color: white;
+    color: @tournament-white;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: @tournament-button-hover-bg;
     }
 
     &:not(:last-child) {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid @tournament-border-white-10;
     }
 
     &.TournamentPlatformSelector-noData {
-      color: rgba(255, 255, 255, 0.6);
+      color: @tournament-white-60;
       cursor: default;
       font-style: italic;
       justify-content: center;

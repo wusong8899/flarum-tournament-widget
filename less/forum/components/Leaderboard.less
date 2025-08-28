@@ -1,11 +1,11 @@
 .Leaderboard {
   padding: 20px;
-  color: white;
+  color: @tournament-white;
   width: 100%;
   overflow-x: auto;
 
   &-header {
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 2px solid @tournament-white-20;
     margin-bottom: 15px;
   }
 
@@ -59,7 +59,7 @@
       minmax(60px, 0.5fr) minmax(200px, 2.5fr) minmax(120px, 1.5fr) minmax(80px, 1fr);
     gap: 10px;
     padding: 15px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid @tournament-white-10;
     align-items: center;
     transition: background-color 0.3s;
 
@@ -68,19 +68,19 @@
     }
 
     &.rank-1 {
-      background: linear-gradient(90deg, rgba(255, 215, 0, 0.15), transparent);
+      background: @tournament-gold-gradient-15;
     }
 
     &.rank-2 {
-      background: linear-gradient(90deg, rgba(192, 192, 192, 0.15), transparent);
+      background: @tournament-silver-gradient-15;
     }
 
     &.rank-3 {
-      background: linear-gradient(90deg, rgba(205, 127, 50, 0.15), transparent);
+      background: @tournament-bronze-gradient-15;
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.05);
+      background: @tournament-white-05;
     }
   }
 
@@ -98,15 +98,15 @@
         font-size: 16px;
 
         &.rank-gold {
-          color: #ffd700;
+          color: @tournament-rank-gold;
         }
 
         &.rank-silver {
-          color: #c0c0c0;
+          color: @tournament-rank-silver;
         }
 
         &.rank-bronze {
-          color: #cd7f32;
+          color: @tournament-rank-bronze;
         }
       }
 
@@ -128,14 +128,14 @@
           height: 32px;
           border-radius: 50%;
           object-fit: cover;
-          border: 2px solid rgba(255, 255, 255, 0.2);
+          border: 2px solid @tournament-white-20;
 
           &--default {
-            background: rgba(255, 255, 255, 0.2);
+            background: @tournament-white-20;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(255, 255, 255, 0.6);
+            color: @tournament-white-60;
             font-size: 14px;
           }
         }
@@ -157,7 +157,7 @@
 
           .user-title {
             font-size: 12px;
-            color: #ffd700;
+            color: @tournament-gold;
             opacity: 0.9;
             font-weight: 500;
             overflow: hidden;
@@ -189,7 +189,7 @@
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            color: #00bcd4;
+            color: @tournament-platform-color;
           }
         }
 
@@ -201,7 +201,7 @@
           .platform-name {
             font-size: 12px;
             font-weight: 600;
-            color: #00bcd4;
+            color: @tournament-platform-color;
             line-height: 1.2;
           }
 
@@ -218,15 +218,15 @@
         font-size: 16px;
 
         &.positive {
-          color: #ffd700; // Gold for positive scores
+          color: @tournament-gold; // Gold for positive scores
         }
 
         &.negative {
-          color: #ff4444; // Red for negative scores
+          color: @tournament-error-alt; // Red for negative scores
         }
 
         &.zero {
-          color: #888888; // Gray for zero scores
+          color: @tournament-gray; // Gray for zero scores
         }
       }
     }
@@ -242,12 +242,12 @@
 
   &-detailsBtn {
     margin-top: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
+    background: @tournament-white-10;
+    border: 1px solid @tournament-white-20;
+    color: @tournament-white;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: @tournament-white-20;
     }
   }
 }
@@ -343,15 +343,15 @@
 
         // Keep color classes in mobile view
         &.positive {
-          color: #ffd700;
+          color: @tournament-gold;
         }
 
         &.negative {
-          color: #ff4444;
+          color: @tournament-error-alt;
         }
 
         &.zero {
-          color: #888888;
+          color: @tournament-gray;
         }
       }
     }

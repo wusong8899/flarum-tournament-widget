@@ -2,6 +2,7 @@ import app from 'flarum/forum/app';
 import Component from 'flarum/common/Component';
 import Button from 'flarum/common/components/Button';
 import ParticipateModal from './ParticipateModal';
+import { createTournamentBackground } from '../../common/colors';
 import { Vnode } from 'mithril';
 
 interface TournamentCardAttrs {
@@ -29,7 +30,7 @@ export default class TournamentCard extends Component<TournamentCardAttrs> {
     const { title, prizePool, detailsUrl, backgroundImage, timeElapsed, userParticipated, userApplicationStatus, onParticipate } = vnode.attrs;
 
     return (
-      <div className="TournamentCard" style={{ background: `url(${backgroundImage}) center/cover no-repeat, linear-gradient(75.2deg, #2129a7 0.57%, #132cd1 72.59%)` }}>
+      <div className="TournamentCard" style={{ background: createTournamentBackground(backgroundImage) }}>
         <div className="TournamentCard-header">
           <div className="TournamentCard-title">{title}</div>
           <a className="TournamentCard-detailsLink" href={detailsUrl} target="_blank" rel="noopener noreferrer">

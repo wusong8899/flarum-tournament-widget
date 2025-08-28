@@ -5,8 +5,8 @@
   margin-bottom: 0;
 
   label {
-    background: #ffd700;
-    color: #000;
+    background: @tournament-gold;
+    color: @tournament-black;
     display: block;
     font-size: 14px;
     padding: 4px;
@@ -29,30 +29,28 @@
   }
 
   &-unit {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9));
-    border: 1px solid rgba(255, 215, 0, 0.3);
+    background: linear-gradient(135deg, @tournament-black-80, @tournament-black-90);
+    border: 1px solid @tournament-border-gold;
     border-radius: 8px;
     padding: 8px 12px;
     min-width: 40px;
     text-align: center;
-    box-shadow:
-      0 2px 8px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: @tournament-box-shadow;
 
     strong {
       font-size: 20px;
       font-weight: bold;
-      color: #ffd700;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+      color: @tournament-gold;
+      text-shadow: @tournament-text-shadow-light;
     }
   }
 
   &-separator {
     font-size: 18px;
     font-weight: bold;
-    color: #ffd700;
+    color: @tournament-gold;
     margin: 0 4px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    text-shadow: @tournament-text-shadow-light;
   }
 
   &-labels {
@@ -64,7 +62,7 @@
   &-label {
     font-size: 11px;
     font-weight: bold;
-    color: rgba(255, 255, 255, 0.7);
+    color: @tournament-white-70;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     min-width: 40px;

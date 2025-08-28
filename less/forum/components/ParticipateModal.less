@@ -1,29 +1,29 @@
 .ParticipateModal {
   .Modal-content {
-    background: #2a2a3e;
-    color: white;
+    background: @tournament-modal-bg;
+    color: @tournament-white;
   }
 
   .FormLabel {
-    color: white;
+    color: @tournament-white;
     margin-bottom: 8px;
     display: block;
   }
 
   .FormControl {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
+    background: @tournament-white-10;
+    border: 1px solid @tournament-white-20;
+    color: @tournament-white;
     padding: 10px;
     border-radius: 6px;
     width: 100%;
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.5);
+      color: @tournament-white-50;
     }
 
     &:focus {
-      border-color: rgba(255, 255, 255, 0.4);
+      border-color: @tournament-white-40;
       outline: none;
     }
   }
