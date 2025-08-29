@@ -92,7 +92,7 @@ class TournamentSerializer extends AbstractSerializer
         $totalScore = $participants->sum('score');
 
         $tournamentData = [
-            'title' => $settings->get('wusong8899_tournament.title', 'K8 无双积分王'),
+            'title' => $settings->get('wusong8899_tournament.title'),
             'prizePool' => (string)$totalScore,
             'startDate' => $settings->get('wusong8899_tournament.start_date', '2025-08-23T00:00:00Z'),
             'detailsUrl' => $settings->get('wusong8899_tournament.details_url', '#'),

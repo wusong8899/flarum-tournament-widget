@@ -265,7 +265,7 @@ export default class TournamentWidget extends Component {
       console.log('TournamentWidget: Processing tournament data with', attrs.participants?.length || 0, 'participants');
       
       this.tournamentData = {
-        title: response.data.attributes.title || 'Tournament',
+        title: response.data.attributes.title || '',
         prizePool: response.data.attributes.prizePool || '0',
         startDate: response.data.attributes.startDate || new Date().toISOString(),
         detailsUrl: response.data.attributes.detailsUrl || '',
