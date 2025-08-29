@@ -32,7 +32,7 @@ export default class TournamentCard extends Component<TournamentCardAttrs> {
     return (
       <div className="TournamentCard" style={{ background: createTournamentBackground(backgroundImage) }}>
         <div className="TournamentCard-header">
-          <div className="TournamentCard-title">{title}</div>
+          {title && <div className="TournamentCard-title">{title}</div>}
           <a className="TournamentCard-detailsLink" href={detailsUrl} target="_blank" rel="noopener noreferrer">
             {app.translator.trans('wusong8899-tournament-widget.forum.tournament.details')}
           </a>
