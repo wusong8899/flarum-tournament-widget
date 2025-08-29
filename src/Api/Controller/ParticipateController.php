@@ -31,18 +31,23 @@ class ParticipateController extends AbstractCreateController
         $platformId = Arr::get($attributes, 'platformId');
         $platformUsername = Arr::get($attributes, 'platformUsername');
         $legacyPlatformAccount = Arr::get($attributes, 'platformAccount');
+        $winLossAmount = Arr::get($attributes, 'winLossAmount', 0);
         
         // Cast platformId to integer if provided
         if ($platformId !== null) {
             $platformId = (int) $platformId;
         }
         
+        // Cast winLossAmount to integer
+        $winLossAmount = (int) $winLossAmount;
+        
         return $this->bus->dispatch(
             new Participate(
                 $actor,
                 $legacyPlatformAccount,
                 $platformId,
-                $platformUsername
+                $platformUsername,
+                $winLossAmount
             )
         );
     }

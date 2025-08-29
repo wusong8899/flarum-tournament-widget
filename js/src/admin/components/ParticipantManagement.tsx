@@ -23,6 +23,7 @@ interface Participant {
   id: number;
   amount: number;
   score: number;
+  initialScore: number;
   platformUsername: string;
   isApproved: boolean;
   approvedAt?: string;
@@ -110,6 +111,7 @@ export default class ParticipantManagement extends Component {
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.user')}</th>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.platform')}</th>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.status')}</th>
+                  <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.initial_score')}</th>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.score')}</th>
                   <th>{app.translator.trans('wusong8899-tournament-widget.admin.participants.actions')}</th>
                 </tr>
@@ -164,6 +166,15 @@ export default class ParticipantManagement extends Component {
                             </small>
                           </div>
                         )}
+                      </div>
+                    </td>
+                    <td>
+                      <div 
+                        className="ParticipantManagement-initialScore"
+                        data-negative={participant.initialScore < 0 ? "true" : "false"}
+                        data-positive={participant.initialScore > 0 ? "true" : "false"}
+                      >
+                        <strong>{participant.initialScore || 0}</strong>
                       </div>
                     </td>
                     <td>
@@ -277,6 +288,7 @@ export default class ParticipantManagement extends Component {
         const participantAttrs = item.attributes as {
           amount?: number;
           score?: number;
+          initialScore?: number;
           platformUsername?: string;
           isApproved?: boolean;
           approvedAt?: string;
@@ -309,6 +321,7 @@ export default class ParticipantManagement extends Component {
           id: parseInt(item.id, 10),
           amount: participantAttrs?.amount || 0,
           score: participantAttrs?.score || 0,
+          initialScore: participantAttrs?.initialScore || 0,
           platformUsername: participantAttrs?.platformUsername || '',
           isApproved: participantAttrs?.isApproved || false,
           approvedAt: participantAttrs?.approvedAt,

@@ -66,7 +66,8 @@ wusong8899-tournament-widget:
       status_pending: 待审批
       status_approved: 已批准
       amount: 金额
-      score: 分数
+      initial_score: 初始分数
+      score: 当前分数
       actions: 操作
       update: 更新
       remove: 踢出
@@ -129,6 +130,8 @@ wusong8899-tournament-widget:
       platform_username_placeholder: 请输入您在该平台的用户名
       platform_account_label: 平台账号
       platform_account_placeholder: 请输入您的平台账号
+      win_loss_amount_label: 输赢金额
+      win_loss_amount_placeholder: 请输入输赢金额（允许负数）
       submit: 提交
       success: 申请已提交，等待管理员审批！
       error: 参加失败，请重试

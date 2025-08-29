@@ -13,6 +13,7 @@ interface ParticipateModalAttrs {
 export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
   platformAccount: string = '';
   platformUsername: string = '';
+  winLossAmount: number = 0;
   selectedPlatform: TournamentPlatform | null = null;
   platforms: TournamentPlatform[] = [];
   loading: boolean = false;
@@ -85,6 +86,29 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
             )}
           </div>
           <div className="Form-group">
+            <label className="FormLabel">{app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.win_loss_amount_label')}</label>
+            <input
+              className={this.errors.winLossAmount ? 'FormControl FormControl--error' : 'FormControl'}
+              type="number"
+              placeholder={app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.win_loss_amount_placeholder')}
+              value={this.winLossAmount}
+              oninput={(e: Event) => {
+                const value = (e.target as HTMLInputElement).value;
+                this.winLossAmount = value === '' ? 0 : parseInt(value) || 0;
+                // Clear error when user starts typing
+                if (this.errors.winLossAmount) {
+                  delete this.errors.winLossAmount;
+                  m.redraw();
+                }
+              }}
+            />
+            {this.errors.winLossAmount && (
+              <div className="Alert Alert--error" style={{ marginTop: '8px' }}>
+                {this.errors.winLossAmount}
+              </div>
+            )}
+          </div>
+          <div className="Form-group">
             <Button
               className="Button Button--primary"
               type="submit"
@@ -131,6 +155,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
           attributes: {
             platformId: this.selectedPlatform.id,
             platformUsername: this.platformUsername.trim(),
+            winLossAmount: this.winLossAmount,
             // Keep legacy field for backward compatibility
             platformAccount: this.platformUsername.trim()
           }

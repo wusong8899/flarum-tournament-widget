@@ -24,6 +24,7 @@ class ParticipantSerializer extends AbstractSerializer
             'platformAccount' => $participant->platform_account,
             'platformUsername' => $participant->platform_username,
             'score' => (int) $participant->score,
+            'initialScore' => (int) $participant->score, // For display purposes, same as current score initially
             'isApproved' => (bool) $participant->is_approved,
             'approvedAt' => $this->formatDate($participant->approved_at),
             'createdAt' => $this->formatDate($participant->created_at),

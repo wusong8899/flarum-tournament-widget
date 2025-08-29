@@ -58,6 +58,7 @@ class ParticipateHandler
             $participant->user_id = $actor->id;
             $participant->platform_id = $platformId;
             $participant->platform_username = $platformUsername;
+            $participant->score = $command->winLossAmount;
             $participant->is_approved = false; // New participants need approval
             $participant->save();
             
@@ -75,6 +76,7 @@ class ParticipateHandler
             $participant = new Participant();
             $participant->user_id = $actor->id;
             $participant->platform_account = $legacyPlatformAccount;
+            $participant->score = $command->winLossAmount;
             $participant->is_approved = false; // New participants need approval
             $participant->save();
             

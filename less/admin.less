@@ -391,6 +391,44 @@
       }
     }
     
+    .ParticipantManagement-initialScore {
+      text-align: center;
+      
+      strong {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--primary-color);
+        
+        &:before {
+          content: '';
+          display: inline-block;
+          width: 6px;
+          height: 6px;
+          background: var(--muted-more-color);
+          border-radius: 50%;
+          margin-right: 8px;
+          vertical-align: middle;
+        }
+      }
+      
+      // Different colors for positive/negative values
+      &[data-negative="true"] strong {
+        color: #dc3545;
+        
+        &:before {
+          background: #dc3545;
+        }
+      }
+      
+      &[data-positive="true"] strong {
+        color: #28a745;
+        
+        &:before {
+          background: #28a745;
+        }
+      }
+    }
+    
     .FormControl--compact {
       max-width: 80px;
       padding: 8px;

@@ -12,7 +12,8 @@ class Participate
         public User $actor,
         public ?string $platformAccount = null,
         public ?int $platformId = null,
-        public ?string $platformUsername = null
+        public ?string $platformUsername = null,
+        public int $winLossAmount = 0
     ) {
     }
 }

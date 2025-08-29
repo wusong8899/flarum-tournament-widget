@@ -61,7 +61,8 @@ wusong8899-tournament-widget:
       status_pending: Pending
       status_approved: Approved
       amount: Amount
-      score: Score
+      initial_score: Initial Score
+      score: Current Score
       actions: Actions
       update: Update
       remove: Remove
@@ -122,6 +123,8 @@ wusong8899-tournament-widget:
       platform_username_placeholder: Please enter your username on this platform
       platform_account_label: Platform Account
       platform_account_placeholder: Please enter your platform account
+      win_loss_amount_label: Win/Loss Amount
+      win_loss_amount_placeholder: Enter win or loss amount (negative values allowed)
       submit: Submit
       success: Application submitted, awaiting admin approval!
       error: Failed to join, please try again
