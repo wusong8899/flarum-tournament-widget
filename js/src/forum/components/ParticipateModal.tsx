@@ -1,6 +1,7 @@
 import app from 'flarum/forum/app';
 import Modal from 'flarum/common/components/Modal';
 import Button from 'flarum/common/components/Button';
+import Stream from 'flarum/common/utils/Stream';
 import m from 'mithril';
 import { Vnode } from 'mithril';
 import PlatformSelector from './PlatformSelector';
@@ -12,8 +13,9 @@ interface ParticipateModalAttrs {
 
 export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
   platformAccount: string = '';
-  platformUsername: string = '';
-  winLossAmount: number = 0;
+  platformUsername: Stream<string> = Stream('');
+  winLossAmount: Stream<number> = Stream(0);
+  winLossAmountText: Stream<string> = Stream('0');
   selectedPlatform: TournamentPlatform | null = null;
   platforms: TournamentPlatform[] = [];
   loading: boolean = false;
@@ -69,9 +71,8 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
               className={this.errors.platformUsername ? 'FormControl FormControl--error' : 'FormControl'}
               type="text"
               placeholder="请输入您在该平台的用户名（支持中文、英文、数字等任意字符）"
-              value={this.platformUsername}
-              oninput={(e: Event) => {
-                this.platformUsername = (e.target as HTMLInputElement).value;
+              bidi={this.platformUsername}
+              oninput={() => {
                 // Clear error when user starts typing
                 if (this.errors.platformUsername) {
                   delete this.errors.platformUsername;
@@ -91,10 +92,19 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
               className={this.errors.winLossAmount ? 'FormControl FormControl--error' : 'FormControl'}
               type="number"
               placeholder={app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.win_loss_amount_placeholder')}
-              value={this.winLossAmount}
+              value={this.winLossAmountText()}
               oninput={(e: Event) => {
                 const value = (e.target as HTMLInputElement).value;
-                this.winLossAmount = value === '' ? 0 : parseInt(value) || 0;
+                this.winLossAmountText(value);
+                
+                // Update the numeric Stream with converted value
+                if (value === '' || value === '-') {
+                  this.winLossAmount(0);
+                } else {
+                  const numValue = parseInt(value) || 0;
+                  this.winLossAmount(numValue);
+                }
+                
                 // Clear error when user starts typing
                 if (this.errors.winLossAmount) {
                   delete this.errors.winLossAmount;
@@ -113,7 +123,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
               className="Button Button--primary"
               type="submit"
               loading={this.loading}
-              disabled={!this.selectedPlatform || !this.platformUsername.trim()}
+              disabled={!this.selectedPlatform || !this.platformUsername().trim()}
               onclick={this.onsubmit.bind(this)}
             >
               {app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.submit')}
@@ -135,7 +145,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
       this.errors.platform = app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.platform_required');
     }
     
-    if (!this.platformUsername.trim()) {
+    if (!this.platformUsername().trim()) {
       this.errors.platformUsername = app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.username_required');
     }
     
@@ -154,10 +164,10 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
         data: {
           attributes: {
             platformId: this.selectedPlatform.id,
-            platformUsername: this.platformUsername.trim(),
-            winLossAmount: this.winLossAmount,
+            platformUsername: this.platformUsername().trim(),
+            winLossAmount: this.winLossAmount(),
             // Keep legacy field for backward compatibility
-            platformAccount: this.platformUsername.trim()
+            platformAccount: this.platformUsername().trim()
           }
         }
       }
@@ -206,7 +216,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
   private onPlatformSelect(platform: TournamentPlatform) {
     this.selectedPlatform = platform;
     // Clear username when switching platforms
-    this.platformUsername = '';
+    this.platformUsername('');
     // Clear platform related errors
     delete this.errors.platform;
     delete this.errors.platformId;
