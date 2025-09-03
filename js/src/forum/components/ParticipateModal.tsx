@@ -6,7 +6,7 @@ import m from 'mithril';
 import { Vnode } from 'mithril';
 import PlatformSelector from './PlatformSelector';
 import type { TournamentPlatform } from '../types';
-import Platform from '../../common/models/Platform';
+ 
 
 interface ParticipateModalAttrs extends IInternalModalAttrs {
   onParticipate?: () => void;
@@ -189,17 +189,20 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
   }
 
   private loadPlatforms() {
-    app.store
-      .find('platforms')
-      .then((platforms: any) => {
-        const list = platforms as Platform[];
-        this.platforms = list.map((p: Platform) => ({
-          id: p.id()!,
-          name: p.name(),
-          iconUrl: p.iconUrl(),
-          iconClass: p.iconClass(),
-          isActive: p.isActive(),
-          displayOrder: p.displayOrder(),
+    app
+      .request({
+        method: 'GET',
+        url: app.forum.attribute('apiUrl') + '/tournament/platforms',
+      })
+      .then((response: any) => {
+        const list = (response?.data || []) as any[];
+        this.platforms = list.map((item: any) => ({
+          id: item.id,
+          name: item.attributes?.name,
+          iconUrl: item.attributes?.iconUrl,
+          iconClass: item.attributes?.iconClass,
+          isActive: item.attributes?.isActive,
+          displayOrder: item.attributes?.displayOrder,
         }));
         this.loadingPlatforms = false;
         m.redraw();
