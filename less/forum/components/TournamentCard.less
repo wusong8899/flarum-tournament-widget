@@ -12,17 +12,17 @@
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr auto auto;
+    grid-template-rows: auto;
     grid-template-areas:
-      "title details"
-      "prize empty";
+      "title details prize";
+    column-gap: 10px;
     margin-bottom: 20px;
   }
 
   &-detailsLink {
     grid-area: details;
-    align-self: start;
+    align-self: center;
     color: @tournament-white;
     text-decoration: none;
     background: @tournament-black-50;
@@ -73,7 +73,7 @@
     border-radius: 8px;
     width: fit-content;
     font-weight: bold;
-    align-self: end;
+    align-self: center;
 
     label {
       color: @tournament-black;
