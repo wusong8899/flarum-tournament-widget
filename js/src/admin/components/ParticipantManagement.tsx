@@ -265,45 +265,69 @@ export default class ParticipantManagement extends Component {
     m.redraw();
 
     try {
-      const records = await app.store.find('participants', {
-        include: 'user,platform,approvedBy',
-      }) as unknown as any[];
+      const response = await app.request<JsonApiResponse>({
+        method: 'GET',
+        url: `${app.forum.attribute('apiUrl')}/tournament/participants`,
+        params: { include: 'user,platform,approvedBy' },
+      });
 
-      this.participants = records.map((rec: any): AdminParticipant => {
-        const user = rec.user();
-        const platform = rec.platform();
-        const approvedBy = rec.approvedBy?.();
+      const findIncluded = (type: string, id: string) =>
+        response.included?.find((res) => res.type === type && res.id === id);
+
+      this.participants = (response.data || []).map((res: JsonApiResource): AdminParticipant => {
+        const attrs = (res.attributes || {}) as any;
+        const rels = (res.relationships || {}) as Record<string, { data?: { id: string; type: string } | null }>;
+
+        const userRef = rels.user?.data as { id: string; type: string } | undefined;
+        const platformRef = rels.platform?.data as { id: string; type: string } | undefined;
+        const approvedByRef = rels.approvedBy?.data as { id: string; type: string } | undefined;
+
+        const userRes = userRef ? findIncluded('users', userRef.id) : undefined;
+        const platformRes = platformRef ? findIncluded('platforms', platformRef.id) : undefined;
+        const approvedByRes = approvedByRef ? findIncluded('users', approvedByRef.id) : undefined;
 
         return {
-          id: parseInt(rec.id(), 10),
-          amount: rec.score() || 0,
-          score: rec.score() || 0,
-          initialScore: rec.initialScore() || 0,
-          platformUsername: rec.platformUsername() || '',
-          isApproved: !!rec.isApproved(),
-          approvedAt: rec.approvedAt() ? rec.approvedAt().toISOString() : undefined,
-          createdAt: rec.createdAt() ? rec.createdAt().toISOString() : '',
-          user: user ? {
-            id: parseInt(user.id(), 10),
-            username: user.username(),
-            displayName: user.displayName() || user.username(),
-            avatarUrl: user.avatarUrl(),
-            money: (user as any).money?.() || 0,
-          } : {
-            id: 0,
-            username: 'Deleted User',
-            displayName: 'Deleted User',
-            money: 0,
-          },
-          platform: platform ? {
-            id: parseInt(platform.id(), 10),
-            name: platform.name() || 'Unknown',
-          } : undefined,
-          approvedBy: approvedBy ? {
-            id: parseInt(approvedBy.id(), 10),
-            username: approvedBy.username(),
-            displayName: approvedBy.displayName() || approvedBy.username(),
-          } : undefined,
+          id: parseInt(res.id, 10),
+          amount: (attrs.score as number) || 0,
+          score: (attrs.score as number) || 0,
+          initialScore: (attrs.initialScore as number) || 0,
+          platformUsername: (attrs.platformUsername as string) || '',
+          isApproved: !!attrs.isApproved,
+          approvedAt: attrs.approvedAt ? new Date(attrs.approvedAt as string).toISOString() : undefined,
+          createdAt: attrs.createdAt ? new Date(attrs.createdAt as string).toISOString() : '',
+          user: userRes
+            ? {
+                id: parseInt(userRes.id, 10),
+                username: (userRes.attributes['username'] as string) || 'Unknown',
+                displayName:
+                  (userRes.attributes['displayName'] as string) ||
+                  (userRes.attributes['username'] as string) ||
+                  'Unknown',
+                avatarUrl: (userRes.attributes['avatarUrl'] as string | undefined) || undefined,
+                money: ((userRes.attributes as any)['money'] as number | undefined) ?? 0,
+              }
+            : {
+                id: 0,
+                username: 'Deleted User',
+                displayName: 'Deleted User',
+                money: 0,
+              },
+          platform: platformRes
+            ? {
+                id: parseInt(platformRes.id, 10),
+                name: (platformRes.attributes['name'] as string) || 'Unknown',
+              }
+            : undefined,
+          approvedBy: approvedByRes
+            ? {
+                id: parseInt(approvedByRes.id, 10),
+                username: (approvedByRes.attributes['username'] as string) || 'Unknown',
+                displayName:
+                  (approvedByRes.attributes['displayName'] as string) ||
+                  (approvedByRes.attributes['username'] as string) ||
+                  'Unknown',
+              }
+            : undefined,
         };
       });
     } catch (error) {
