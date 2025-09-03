@@ -1,13 +1,14 @@
 import app from 'flarum/forum/app';
-import Modal from 'flarum/common/components/Modal';
+import Modal, { IInternalModalAttrs } from 'flarum/common/components/Modal';
 import Button from 'flarum/common/components/Button';
 import Stream from 'flarum/common/utils/Stream';
 import m from 'mithril';
 import { Vnode } from 'mithril';
 import PlatformSelector from './PlatformSelector';
 import type { TournamentPlatform } from '../types';
+import Platform from '../../common/models/Platform';
 
-interface ParticipateModalAttrs {
+interface ParticipateModalAttrs extends IInternalModalAttrs {
   onParticipate?: () => void;
 }
 
@@ -52,7 +53,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
             <PlatformSelector
               platforms={this.platforms}
               selectedPlatform={this.selectedPlatform}
-              onPlatformSelect={(platform) => this.onPlatformSelect(platform)}
+              onPlatformSelect={(platform: TournamentPlatform) => this.onPlatformSelect(platform)}
             />
             {this.errors.platform && (
               <div className="Alert Alert--error" style={{ marginTop: '8px' }}>
@@ -142,11 +143,11 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
     
     // Client-side validation
     if (!this.selectedPlatform) {
-      this.errors.platform = app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.platform_required');
+      this.errors.platform = '需要选择平台';
     }
     
     if (!this.platformUsername().trim()) {
-      this.errors.platformUsername = app.translator.trans('wusong8899-tournament-widget.forum.participate_modal.username_required');
+      this.errors.platformUsername = '需要输入平台用户名';
     }
     
     // If there are validation errors, don't submit
@@ -163,7 +164,7 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
       body: {
         data: {
           attributes: {
-            platformId: this.selectedPlatform.id,
+            platformId: this.selectedPlatform!.id,
             platformUsername: this.platformUsername().trim(),
             winLossAmount: this.winLossAmount(),
             // Keep legacy field for backward compatibility
@@ -188,29 +189,27 @@ export default class ParticipateModal extends Modal<ParticipateModalAttrs> {
   }
 
   private loadPlatforms() {
-    app.request({
-      method: 'GET',
-      url: app.forum.attribute('apiUrl') + '/tournament/platforms'
-    }).then(
-      (response: any) => {
-        this.platforms = response.data.map((platform: any) => ({
-          id: platform.id,
-          name: platform.attributes.name,
-          iconUrl: platform.attributes.iconUrl,
-          iconClass: platform.attributes.iconClass,
-          isActive: platform.attributes.isActive,
-          displayOrder: platform.attributes.displayOrder
+    app.store
+      .find('platforms')
+      .then((platforms: any) => {
+        const list = platforms as Platform[];
+        this.platforms = list.map((p: Platform) => ({
+          id: p.id()!,
+          name: p.name(),
+          iconUrl: p.iconUrl(),
+          iconClass: p.iconClass(),
+          isActive: p.isActive(),
+          displayOrder: p.displayOrder(),
         }));
         this.loadingPlatforms = false;
         m.redraw();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.error('Failed to load platforms:', error);
         this.loadingPlatforms = false;
         app.alerts.show({ type: 'error' }, '加载平台信息失败');
         m.redraw();
-      }
-    );
+      });
   }
 
   private onPlatformSelect(platform: TournamentPlatform) {

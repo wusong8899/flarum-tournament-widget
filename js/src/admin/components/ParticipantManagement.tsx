@@ -2,7 +2,8 @@ import app from 'flarum/admin/app';
 import Component from 'flarum/common/Component';
 import Button from 'flarum/common/components/Button';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
-import type Mithril from 'mithril';
+import extractText from 'flarum/common/utils/extractText';
+import m, { VnodeDOM } from 'mithril';
 
 // JSON:API response types
 interface JsonApiResource {
@@ -19,7 +20,7 @@ interface JsonApiResponse {
   included?: JsonApiResource[];
 }
 
-interface Participant {
+interface AdminParticipant {
   id: number;
   amount: number;
   score: number;
@@ -47,15 +48,15 @@ interface Participant {
 }
 
 export default class ParticipantManagement extends Component {
-  private participants: Participant[] = [];
+  private participants: AdminParticipant[] = [];
   private loading = false;
   private saving = false;
   private deleting = false;
   private approving = false;
   private activeTab = 'all'; // 'all', 'pending', 'approved'
-  private editingScores: Record<number, number> = {};
+  private editingScores: Record<number, number | string> = {};
 
-  oninit(vnode: Mithril.VnodeDOM) {
+  oninit(vnode: VnodeDOM) {
     super.oninit(vnode);
     this.loadParticipants();
   }
@@ -264,93 +265,47 @@ export default class ParticipantManagement extends Component {
     m.redraw();
 
     try {
-      const response = await app.request({
-        method: 'GET',
-        url: `${app.forum.attribute('apiUrl')}/tournament/participants?include=user,platform`,
-      });
+      const records = await app.store.find('participants', {
+        include: 'user,platform,approvedBy',
+      }) as unknown as any[];
 
-      // Handle included data properly with proper typing
-      const apiResponse = response as JsonApiResponse;
-      const included = apiResponse.included || [];
-      const users = included.filter((item): item is JsonApiResource => item.type === 'users');
-      const platforms = included.filter((item): item is JsonApiResource => item.type === 'platforms');
-
-      this.participants = apiResponse.data.map((item): Participant => {
-        // Find related user
-        const userId = item.relationships?.user?.data?.id;
-        const userResource = users.find((u) => u.id === userId);
-        
-        // Find related platform
-        const platformId = item.relationships?.platform?.data?.id;
-        const platformResource = platforms.find((p) => p.id === platformId);
-
-        // Safely extract participant attributes
-        const participantAttrs = item.attributes as {
-          amount?: number;
-          score?: number;
-          initialScore?: number;
-          platformUsername?: string;
-          isApproved?: boolean;
-          approvedAt?: string;
-          createdAt?: string;
-        };
-
-        // Safely extract user attributes
-        const userAttrs = userResource?.attributes as {
-          username?: string;
-          displayName?: string;
-          avatarUrl?: string;
-        } | undefined;
-
-        // Find related approver
-        const approverId = item.relationships?.approvedBy?.data?.id;
-        const approverResource = users.find((u) => u.id === approverId);
-
-        // Safely extract platform attributes
-        const platformAttrs = platformResource?.attributes as {
-          name?: string;
-        } | undefined;
-
-        // Safely extract approver attributes
-        const approverAttrs = approverResource?.attributes as {
-          username?: string;
-          displayName?: string;
-        } | undefined;
+      this.participants = records.map((rec: any): AdminParticipant => {
+        const user = rec.user();
+        const platform = rec.platform();
+        const approvedBy = rec.approvedBy?.();
 
         return {
-          id: parseInt(item.id, 10),
-          amount: participantAttrs?.amount || 0,
-          score: participantAttrs?.score || 0,
-          initialScore: participantAttrs?.initialScore || 0,
-          platformUsername: participantAttrs?.platformUsername || '',
-          isApproved: participantAttrs?.isApproved || false,
-          approvedAt: participantAttrs?.approvedAt,
-          createdAt: participantAttrs?.createdAt || '',
-          user: userResource ? {
-            id: parseInt(userResource.id, 10),
-            username: userAttrs?.username || 'Unknown',
-            displayName: userAttrs?.displayName || 'Unknown',
-            avatarUrl: userAttrs?.avatarUrl,
-            money: userAttrs?.money || 0,
+          id: parseInt(rec.id(), 10),
+          amount: rec.score() || 0,
+          score: rec.score() || 0,
+          initialScore: rec.initialScore() || 0,
+          platformUsername: rec.platformUsername() || '',
+          isApproved: !!rec.isApproved(),
+          approvedAt: rec.approvedAt() ? rec.approvedAt().toISOString() : undefined,
+          createdAt: rec.createdAt() ? rec.createdAt().toISOString() : '',
+          user: user ? {
+            id: parseInt(user.id(), 10),
+            username: user.username(),
+            displayName: user.displayName() || user.username(),
+            avatarUrl: user.avatarUrl(),
+            money: (user as any).money?.() || 0,
           } : {
             id: 0,
             username: 'Deleted User',
             displayName: 'Deleted User',
             money: 0,
           },
-          platform: platformResource ? {
-            id: parseInt(platformResource.id, 10),
-            name: platformAttrs?.name || 'Unknown',
+          platform: platform ? {
+            id: parseInt(platform.id(), 10),
+            name: platform.name() || 'Unknown',
           } : undefined,
-          approvedBy: approverResource ? {
-            id: parseInt(approverResource.id, 10),
-            username: approverAttrs?.username || 'Unknown',
-            displayName: approverAttrs?.displayName || 'Unknown',
+          approvedBy: approvedBy ? {
+            id: parseInt(approvedBy.id(), 10),
+            username: approvedBy.username(),
+            displayName: approvedBy.displayName() || approvedBy.username(),
           } : undefined,
         };
       });
-
-      // Participants loaded successfully
     } catch (error) {
       console.error('Failed to load participants:', error);
       app.alerts.show({ type: 'error' }, app.translator.trans('wusong8899-tournament-widget.admin.participants.load_error'));
@@ -361,10 +316,12 @@ export default class ParticipantManagement extends Component {
   }
 
 
-  private confirmDeleteParticipant(participant: Participant): void {
-    const confirmMessage = app.translator.trans(
-      'wusong8899-tournament-widget.admin.participants.confirm_remove',
-      { username: participant.user.displayName || participant.user.username }
+  private confirmDeleteParticipant(participant: AdminParticipant): void {
+    const confirmMessage = extractText(
+      app.translator.trans(
+        'wusong8899-tournament-widget.admin.participants.confirm_remove',
+        { username: participant.user.displayName || participant.user.username }
+      )
     );
 
     if (confirm(confirmMessage)) {
@@ -372,15 +329,20 @@ export default class ParticipantManagement extends Component {
     }
   }
 
-  private async deleteParticipant(participant: Participant): Promise<void> {
+  private async deleteParticipant(participant: AdminParticipant): Promise<void> {
     this.deleting = true;
     m.redraw();
 
     try {
-      await app.request({
-        method: 'DELETE',
-        url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}`
-      });
+      const model = app.store.getById('participants', String(participant.id)) as any;
+      if (model) {
+        await model.delete();
+      } else {
+        await app.request({
+          method: 'DELETE',
+          url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}`
+        });
+      }
 
       // Remove participant from local state
       this.participants = this.participants.filter(p => p.id !== participant.id);
@@ -401,7 +363,7 @@ export default class ParticipantManagement extends Component {
     }
   }
 
-  private async updateScore(participant: Participant): Promise<void> {
+  private async updateScore(participant: AdminParticipant): Promise<void> {
     const newScore = this.editingScores[participant.id];
     
     // Handle empty or invalid input
@@ -409,7 +371,7 @@ export default class ParticipantManagement extends Component {
       return;
     }
     
-    const scoreValue = parseInt(newScore);
+    const scoreValue = typeof newScore === 'number' ? newScore : parseInt(newScore, 10);
     if (isNaN(scoreValue) || scoreValue === participant.score) {
       return; // No change or invalid input
     }
@@ -418,18 +380,23 @@ export default class ParticipantManagement extends Component {
     m.redraw();
 
     try {
-      await app.request({
-        method: 'PATCH',
-        url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}`,
-        body: {
-          data: {
-            type: 'participants',
-            attributes: {
-              score: scoreValue,
+      const model = app.store.getById('participants', String(participant.id)) as any;
+      if (model) {
+        await model.save({ score: scoreValue });
+      } else {
+        await app.request({
+          method: 'PATCH',
+          url: `${app.forum.attribute('apiUrl')}/tournament/participants/${participant.id}`,
+          body: {
+            data: {
+              type: 'participants',
+              attributes: {
+                score: scoreValue,
+              },
             },
           },
-        },
-      });
+        });
+      }
 
       // Update local state
       participant.score = scoreValue;
@@ -446,7 +413,7 @@ export default class ParticipantManagement extends Component {
     }
   }
 
-  private getFilteredParticipants(): Participant[] {
+  private getFilteredParticipants(): AdminParticipant[] {
     switch (this.activeTab) {
       case 'pending':
         return this.participants.filter(p => !p.isApproved);
@@ -463,7 +430,7 @@ export default class ParticipantManagement extends Component {
     m.redraw();
   }
 
-  private async approveParticipant(participant: Participant): Promise<void> {
+  private async approveParticipant(participant: AdminParticipant): Promise<void> {
     this.approving = true;
     m.redraw();
 
@@ -501,10 +468,12 @@ export default class ParticipantManagement extends Component {
     }
   }
 
-  private async rejectParticipant(participant: Participant): Promise<void> {
-    const confirmMessage = app.translator.trans(
-      'wusong8899-tournament-widget.admin.participants.confirm_reject',
-      { username: participant.user.displayName || participant.user.username }
+  private async rejectParticipant(participant: AdminParticipant): Promise<void> {
+    const confirmMessage = extractText(
+      app.translator.trans(
+        'wusong8899-tournament-widget.admin.participants.confirm_reject',
+        { username: participant.user.displayName || participant.user.username }
+      )
     );
 
     if (!confirm(confirmMessage)) {

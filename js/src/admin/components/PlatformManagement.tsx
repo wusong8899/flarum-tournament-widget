@@ -4,7 +4,7 @@ import Button from 'flarum/common/components/Button';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import Switch from 'flarum/common/components/Switch';
 import Stream from 'flarum/common/utils/Stream';
-import type Mithril from 'mithril';
+import m, { Children, VnodeDOM } from 'mithril';
 
 interface Platform {
   id: number;
@@ -25,12 +25,12 @@ export default class PlatformManagement extends Component {
   private newPlatformIconClass = Stream('');
   private submitting = false;
 
-  oninit(vnode: Mithril.VnodeDOM) {
+  oninit(vnode: VnodeDOM) {
     super.oninit(vnode);
     this.loadPlatforms();
   }
 
-  view(): Mithril.Children {
+  view(): Children {
     if (this.loading) {
       return <LoadingIndicator />;
     }
@@ -244,7 +244,7 @@ export default class PlatformManagement extends Component {
     }
   }
 
-  private renderPlatformIcon(platform: Platform): Mithril.Children {
+  private renderPlatformIcon(platform: Platform): Children {
     const { iconUrl, iconClass } = platform.attributes;
     
     if (iconUrl) {

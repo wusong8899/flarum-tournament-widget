@@ -44,9 +44,9 @@ interface ITournamentData {
 }
 
 export default class TournamentRankingsModal extends Modal {
-  private loading = true;
-  private tournamentData: ITournamentData | null = null;
-  private error: string | null = null;
+  protected loading = true;
+  protected tournamentData: ITournamentData | null = null;
+  protected error: string | null = null;
 
   oninit(vnode: Mithril.Vnode) {
     super.oninit(vnode);
@@ -69,9 +69,9 @@ export default class TournamentRankingsModal extends Modal {
       const response = await app.request({
         method: 'GET',
         url: `${app.forum.attribute('apiUrl')}/tournament`,
-      });
+      }) as { data?: { attributes?: ITournamentData } };
 
-      if (response && response.data && response.data.attributes) {
+      if (response?.data?.attributes) {
         this.tournamentData = response.data.attributes;
         this.error = null;
       } else {
