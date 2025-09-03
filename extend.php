@@ -22,12 +22,12 @@ use wusong8899\TournamentWidget\Api\Controller\ListPendingParticipantsController
 
 return [
     (new Extend\Frontend('forum'))
-        ->js(__DIR__.'/js/dist/forum.js')
-        ->css(__DIR__.'/less/forum.less'),
-        
+        ->js(__DIR__ . '/js/dist/forum.js')
+        ->css(__DIR__ . '/less/forum.less'),
+
     (new Extend\Frontend('admin'))
-        ->js(__DIR__.'/js/dist/admin.js')
-        ->css(__DIR__.'/less/admin.less'),
+        ->js(__DIR__ . '/js/dist/admin.js')
+        ->css(__DIR__ . '/less/admin.less'),
 
     (new Extend\Routes('api'))
         ->get('/tournament', 'tournament.show', ShowTournamentController::class)
@@ -51,8 +51,12 @@ return [
                 'tournamentDetailsUrl' => resolve('flarum.settings')->get('wusong8899_tournament.details_url', '#'),
                 'tournamentStartDate' => resolve('flarum.settings')->get('wusong8899_tournament.start_date', '2025-08-23T00:00:00Z'),
                 'tournamentBackgroundImage' => resolve('flarum.settings')->get('wusong8899_tournament.background_image', 'https://via.placeholder.com/400x200'),
+                'wusong8899_tournament.preview_limit' => resolve('flarum.settings')->get('wusong8899_tournament.preview_limit', '5'),
+                'wusong8899_tournament.sort_order' => resolve('flarum.settings')->get('wusong8899_tournament.sort_order', 'desc'),
+                'wusong8899_tournament.header_title' => resolve('flarum.settings')->get('wusong8899_tournament.header_title', ''),
+                'wusong8899_tournament.header_image' => resolve('flarum.settings')->get('wusong8899_tournament.header_image', ''),
             ];
         }),
 
-    new Extend\Locales(__DIR__.'/locale'),
+    new Extend\Locales(__DIR__ . '/locale'),
 ];

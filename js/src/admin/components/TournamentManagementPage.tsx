@@ -6,6 +6,7 @@ import Select from 'flarum/common/components/Select';
 import Stream from 'flarum/common/utils/Stream';
 import type Mithril from 'mithril';
 import m from 'mithril';
+import extractText from 'flarum/common/utils/extractText';
 import PlatformManagement from './PlatformManagement';
 import RankTitleManagement from './RankTitleManagement';
 import ParticipantManagement from './ParticipantManagement';
@@ -13,25 +14,29 @@ import { TOURNAMENT_COLORS } from '../../common/colors';
 
 export default class TournamentManagementPage extends ExtensionPage {
   private activeTab = Stream('general');
-  private loading = false;
+  loading = false;
   private validationErrors: Record<string, string> = {};
   private calculatedPrizePool: string = '0';
 
   oninit(vnode: Mithril.VnodeDOM) {
     super.oninit(vnode);
-    app.setTitle(app.translator.trans('wusong8899-tournament-widget.admin.title'));
+    app.setTitle(extractText(app.translator.trans('wusong8899-tournament-widget.admin.title')));
     this.loadPrizePoolData();
   }
 
   private async loadPrizePoolData(): Promise<void> {
     try {
-      const response = await app.request({
+      const response = await app.request<{ data?: { attributes?: { prizePool?: string } } }>({
         method: 'GET',
         url: `${app.forum.attribute('apiUrl')}/tournament`,
       });
 
-      if (response && response.data && response.data.attributes) {
-        this.calculatedPrizePool = response.data.attributes.prizePool || '0';
+      const prize = response?.data?.attributes?.prizePool;
+      if (typeof prize === 'string') {
+        this.calculatedPrizePool = prize;
+        m.redraw();
+      } else {
+        this.calculatedPrizePool = '0';
         m.redraw();
       }
     } catch (error) {
@@ -262,7 +267,9 @@ export default class TournamentManagementPage extends ExtensionPage {
       delete this.validationErrors[field];
       this.setting(`wusong8899_tournament.${field}`)(url);
     } catch {
-      this.validationErrors[field] = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_url');
+      this.validationErrors[field] = extractText(
+        app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_url')
+      );
     }
     m.redraw();
   }
@@ -285,7 +292,9 @@ export default class TournamentManagementPage extends ExtensionPage {
       delete this.validationErrors.start_date;
       this.setting('wusong8899_tournament.start_date')(isoString);
     } catch {
-      this.validationErrors.start_date = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_date');
+      this.validationErrors.start_date = extractText(
+        app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_date')
+      );
     }
     m.redraw();
   }
@@ -300,7 +309,9 @@ export default class TournamentManagementPage extends ExtensionPage {
 
     const num = parseInt(value);
     if (isNaN(num) || num < 1 || num > 50) {
-      this.validationErrors.preview_limit = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_preview_limit');
+      this.validationErrors.preview_limit = extractText(
+        app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_preview_limit')
+      );
     } else {
       delete this.validationErrors.preview_limit;
       this.setting('wusong8899_tournament.preview_limit')(value);
@@ -328,7 +339,7 @@ export default class TournamentManagementPage extends ExtensionPage {
     }
   }
 
-  saveSettings(e?: MouseEvent) {
+  saveSettings(e: any) {
     // Clear any existing validation errors
     this.validationErrors = {};
     
@@ -340,7 +351,9 @@ export default class TournamentManagementPage extends ExtensionPage {
       try {
         new URL(detailsUrl);
       } catch {
-        this.validationErrors.details_url = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_url');
+        this.validationErrors.details_url = extractText(
+          app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_url')
+        );
         hasErrors = true;
       }
     }
@@ -350,7 +363,9 @@ export default class TournamentManagementPage extends ExtensionPage {
       try {
         new URL(backgroundImage);
       } catch {
-        this.validationErrors.background_image = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_url');
+        this.validationErrors.background_image = extractText(
+          app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_url')
+        );
         hasErrors = true;
       }
     }
@@ -360,7 +375,9 @@ export default class TournamentManagementPage extends ExtensionPage {
       try {
         new URL(headerImage);
       } catch {
-        this.validationErrors.header_image = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_url');
+        this.validationErrors.header_image = extractText(
+          app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_url')
+        );
         hasErrors = true;
       }
     }
@@ -369,7 +386,9 @@ export default class TournamentManagementPage extends ExtensionPage {
     if (previewLimit && previewLimit.trim()) {
       const num = parseInt(previewLimit);
       if (isNaN(num) || num < 1 || num > 50) {
-        this.validationErrors.preview_limit = app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_preview_limit');
+        this.validationErrors.preview_limit = extractText(
+          app.translator.trans('wusong8899-tournament-widget.admin.validation.invalid_preview_limit')
+        );
         hasErrors = true;
       }
     }
@@ -380,13 +399,15 @@ export default class TournamentManagementPage extends ExtensionPage {
       return Promise.resolve();
     }
     
-    return super.saveSettings(e).then(
+    return super.saveSettings(e as any).then(
       () => {
         // Flarum automatically shows success message
       },
       (error) => {
         console.error('Settings save error:', error);
-        const errorMessage = error?.response?.errors?.[0]?.detail || app.translator.trans('wusong8899-tournament-widget.admin.settings.save_error');
+        const errorMessage =
+          error?.response?.errors?.[0]?.detail ||
+          extractText(app.translator.trans('wusong8899-tournament-widget.admin.settings.save_error'));
         app.alerts.show({ type: 'error' }, errorMessage);
       }
     );
